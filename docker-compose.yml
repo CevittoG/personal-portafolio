@@ -1,0 +1,32 @@
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: dev
+    image: portfolio-dev
+    container_name: portfolio-dev
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_TELEMETRY_DISABLED: "1"
+      WATCHPACK_POLLING: "true"
+      CHOKIDAR_USEPOLLING: "true"
+    volumes:
+      - ./:/app
+      - portfolio_node_modules:/app/node_modules
+    command: ["pnpm", "dev"]
+
+  preview:
+    profiles: ["preview"]
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: prod
+    image: portfolio-prod
+    container_name: portfolio-preview
+    ports:
+      - "8080:80"
+
+volumes:
+  portfolio_node_modules:
