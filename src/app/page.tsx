@@ -2,9 +2,11 @@
 
 import { useMemo, useState } from "react";
 import { ExperienceCard } from "@/components/experience/ExperienceCard";
+import { ActiveFilterChips } from "@/components/filters/ActiveFilterChips";
 import { SearchBar } from "@/components/search/SearchBar";
 import { TagPill, type TagPillState } from "@/components/tags/TagPill";
 import type { ExperienceEntry } from "@/lib/experience/types";
+import { useFilterTags } from "@/lib/filters/use-filter-tags";
 import { topTagsByUsage } from "@/lib/taxonomy/top-tags";
 import {
   TAG_TYPES,
@@ -106,13 +108,12 @@ function titleize(slug: string): string {
 
 export default function ExplorerPage() {
   const [removed, setRemoved] = useState<Record<string, boolean>>({});
-  const [activeSlugs, setActiveSlugs] = useState<string[]>([]);
+  const filter = useFilterTags();
+  const activeSlugs = filter.slugs;
 
   const taxonomy = useMemo(mockTaxonomy, []);
   const topTags = useMemo(() => topTagsByUsage(MOCK_ENTRIES, 6), []);
 
-  // For each selected slug, look up its TaxonomyEntry so we can render it
-  // as a typed Tag Pill in the chip row.
   const taxonomyBySlug = useMemo(
     () => new Map(taxonomy.map((t) => [t.slug, t])),
     [taxonomy],
@@ -123,15 +124,15 @@ export default function ExplorerPage() {
       <div className="mx-auto max-w-6xl space-y-12">
         <header className="space-y-3 text-center">
           <p className="text-xs uppercase tracking-[0.2em] text-text-secondary">
-            Shape in progress — Build Order step 7 landed
+            Shape in progress — Build Order step 8 landed
           </p>
           <h1 className="text-3xl sm:text-4xl font-semibold tracking-tight text-text-primary">
             Component playground
           </h1>
           <p className="text-base text-text-secondary leading-relaxed mx-auto max-w-xl">
-            SearchBar drives the live filter below. Pick a tag (or use ↑/↓ +
-            Enter), watch the cards reshape. Real Explorer assembly lands at
-            step 10.
+            SearchBar drives the live filter below. Picks become removable
+            chips synced to the URL (`?tags=…`) — refresh, share, or hit back
+            and the state survives. Real Explorer assembly lands at step 10.
           </p>
         </header>
 
@@ -158,39 +159,15 @@ export default function ExplorerPage() {
             suggestions={taxonomy}
             topSuggestions={topTags}
             excludeSlugs={activeSlugs}
-            onSelect={(slug) =>
-              setActiveSlugs((s) => (s.includes(slug) ? s : [...s, slug]))
-            }
+            onSelect={filter.add}
           />
 
-          {/* Minimal chip row — full Active Filter Chips component lands in step 8. */}
-          {activeSlugs.length > 0 && (
-            <div className="flex flex-wrap items-center gap-1.5">
-              {activeSlugs.map((slug) => {
-                const tax = taxonomyBySlug.get(slug);
-                if (!tax) return null;
-                return (
-                  <TagPill
-                    key={slug}
-                    slug={slug}
-                    label={tax.display_name}
-                    type={tax.type}
-                    state="removable"
-                    onRemove={() =>
-                      setActiveSlugs((s) => s.filter((x) => x !== slug))
-                    }
-                  />
-                );
-              })}
-              <button
-                type="button"
-                onClick={() => setActiveSlugs([])}
-                className="ml-2 cursor-pointer text-xs text-text-muted hover:text-text-secondary transition-colors duration-150"
-              >
-                Clear all
-              </button>
-            </div>
-          )}
+          <ActiveFilterChips
+            slugs={activeSlugs}
+            taxonomyBySlug={taxonomyBySlug}
+            onRemove={filter.remove}
+            onClear={filter.clear}
+          />
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {MOCK_ENTRIES.map((entry) => (
@@ -289,7 +266,7 @@ export default function ExplorerPage() {
         </section>
 
         <p className="text-center text-xs text-text-muted">
-          Next: Build Order step 8 — Active Filter Chips + URL sync.
+          Next: Build Order step 9 — Stats Bar wired to filtered entries.
         </p>
       </div>
     </main>
