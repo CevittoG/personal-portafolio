@@ -1,0 +1,93 @@
+@import "tailwindcss";
+
+/* ──────────────────────────────────────────────────────────────────────
+   Color tokens — the single source of truth for every color in the app.
+   Per portfolio-website-plan.md §4: nothing outside this file may hold
+   a hex/rgb value. Tailwind v4's @theme block exposes these as utility
+   tokens (bg-bg, text-text-primary, bg-tag-roles, etc.).
+   ────────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Backgrounds */
+  --color-bg:               #0A0A0F;
+  --color-surface:          #13131A;
+  --color-surface-elevated: #1C1C26;
+  --color-border:           #2A2A38;
+
+  /* Text */
+  --color-text-primary:     #F0F0FF;
+  --color-text-secondary:   #8888AA;
+  --color-text-muted:       #44445A;
+
+  /* Accent */
+  --color-accent:           #6E56CF;
+  --color-accent-hover:     #8670E0;
+  --color-accent-subtle:    #6E56CF22;
+
+  /* Tag-type colors (one per taxonomy type — see plan §3) */
+  --color-tag-roles:        #CF566E;
+  --color-tag-languages:    #56A0CF;
+  --color-tag-technologies: #56CF9E;
+  --color-tag-libraries:    #CF9A56;
+  --color-tag-domains:      #9E56CF;
+  --color-tag-concepts:     #CF7856;
+  --color-tag-scale:        #56CF56;
+  --color-tag-soft-skills:  #CF56B8;
+}
+
+/* Optional light mode — dark is the primary experience per plan §4 */
+[data-theme="light"] {
+  --color-bg:               #FAFAFC;
+  --color-surface:          #FFFFFF;
+  --color-surface-elevated: #F2F2F7;
+  --color-border:           #E2E2EC;
+  --color-text-primary:     #0F172A;
+  --color-text-secondary:   #475569;
+  --color-text-muted:       #94A3B8;
+}
+
+/* Expose CSS vars as Tailwind v4 theme tokens */
+@theme inline {
+  --color-bg:               var(--color-bg);
+  --color-surface:          var(--color-surface);
+  --color-surface-elevated: var(--color-surface-elevated);
+  --color-border:           var(--color-border);
+  --color-text-primary:     var(--color-text-primary);
+  --color-text-secondary:   var(--color-text-secondary);
+  --color-text-muted:       var(--color-text-muted);
+  --color-accent:           var(--color-accent);
+  --color-accent-hover:     var(--color-accent-hover);
+  --color-accent-subtle:    var(--color-accent-subtle);
+  --color-tag-roles:        var(--color-tag-roles);
+  --color-tag-languages:    var(--color-tag-languages);
+  --color-tag-technologies: var(--color-tag-technologies);
+  --color-tag-libraries:    var(--color-tag-libraries);
+  --color-tag-domains:      var(--color-tag-domains);
+  --color-tag-concepts:     var(--color-tag-concepts);
+  --color-tag-scale:        var(--color-tag-scale);
+  --color-tag-soft-skills:  var(--color-tag-soft-skills);
+}
+
+html,
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text-primary);
+  font-family:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
