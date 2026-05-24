@@ -74,6 +74,32 @@ export function getImpactHighlight(entry: ExperienceEntry): string | null {
   return entry.impact[0] ?? null;
 }
 
+/** Teaser paragraph for the Drawer (plan §11) — first \\n-separated chunk
+ *  of `description`, trimmed. Empty string when description is blank. */
+export function getDescriptionTeaser(entry: ExperienceEntry): string {
+  const desc = entry.description?.trim() ?? "";
+  if (!desc) return "";
+  const [first] = desc.split(/\n{2,}|\r\n\r\n/);
+  return first.trim();
+}
+
+/** Location/employment meta line for any entry type — used by the Drawer
+ *  sub-header (plan §11 Content). Returns `null` when nothing meaningful. */
+export function getDrawerSubMeta(entry: ExperienceEntry): string | null {
+  switch (entry.type) {
+    case "job": {
+      const bits = [entry.location, labelizeEmployment(entry.employment_type)];
+      return bits.filter(Boolean).join(" · ");
+    }
+    case "project":
+      return capitalize(entry.status);
+    case "education":
+      return [capitalize(entry.credential), entry.issuer].filter(Boolean).join(" · ");
+    case "personal":
+      return entry.region;
+  }
+}
+
 /* ── private ─────────────────────────────────────────────────────────── */
 
 function labelizeEmployment(t: string): string {
