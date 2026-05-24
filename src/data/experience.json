@@ -1,0 +1,188 @@
+[
+  {
+    "id": "aidprof-product-owner-2020",
+    "title": "Product Owner & Sole Technical Co-Founder",
+    "type": "job",
+    "company": {
+      "name": "AidProf",
+      "url": null,
+      "industry": "edtech"
+    },
+    "location": "Chile (Remote)",
+    "employment_type": "full-time",
+    "team": "Founding team (3 co-founders)",
+    "period": { "start": "2020-12", "end": "2022-02" },
+    "summary": "Co-founded an EdTech SaaS that automated STEM exam grading using computer vision, OCR, and NLP; as the only engineer, designed and shipped the entire platform — Django app, AWS infrastructure, and a 10-stage automated grading pipeline.",
+    "description": "AidProf was an early-stage SaaS startup targeting educational institutions in Chile and Latin America. The product let teachers upload scanned student exams and receive automated, annotated feedback reports, gradebooks, and performance analytics — combining computer vision, OCR, and NLP to interpret handwritten math and text responses against teacher-defined rubrics.\n\nOfficial title was Product Owner, chosen intentionally to signal to investors that the product was driven by both engineering and a deep understanding of business logic. In practice the role was solo full-stack developer, data engineer, ML engineer, DevOps engineer, and product manager — ~90% of the codebase was written single-handedly.\n\nOwned the entire stack end-to-end: the Django web application (auth, multi-institution data model, rubric builder, bulk PDF upload, review dashboard, analytics, grade predictions), the AWS infrastructure (EC2 with nginx + gunicorn, S3, RDS MySQL, Lambda prototypes, IAM), the CI/CD pipeline (GitHub Actions deploying to a single production environment), and a separate WordPress marketing site.\n\nThe technical centerpiece was the automated grading pipeline: PDFs were rasterized via pdf2image + Poppler, ROIs (answer boxes) were detected with OpenCV using Gaussian blur, inverse binary thresholding, and contour hierarchy filtering, then labelled interactively by the teacher. Each ROI was base64-encoded and POSTed to the Mathpix /v3/latex endpoint for handwritten math OCR (chosen after benchmarking AWS Textract via Lambda). Rubric and student LaTeX strings were vectorized with CountVectorizer and compared via cosine similarity, with bucketed thresholds surfacing borderline cases for manual review. Results were pivoted into a multi-index DataFrame, mapped onto Chile's 1–7 grading scale, and exported as styled .xlsx files via openpyxl. Matplotlib generated donut, bar/box, and histogram charts; PIL overlaid ✓/✗ icons and scores on student page images to produce per-student feedback PDFs.\n\nKey product decisions reflected the startup constraints: Django server-rendered templates over an SPA for delivery speed; bag-of-words + cosine similarity over a fine-tuned model because there wasn't enough data yet; rubric-defined-in-UI as the design choice that made automated grading possible at all — capturing scoring weights, data types, expected answers, and key sections upfront gave the system everything it needed to grade without further annotation.\n\nThe product was demoed to 3 colleges and 5 independent teachers with consistent positive feedback. The startup concluded in February 2022 not because the technology failed but because of go-to-market resistance: B2C buyers (teachers) wouldn't pay out-of-pocket for institutional tooling, and B2B buyers (institutions) had functioning manual workflows with switching costs that overrode the demonstrated time savings.",
+    "tags": {
+      "roles": [
+        "product-owner",
+        "founder",
+        "full-stack",
+        "backend",
+        "data-engineer",
+        "ml-engineer",
+        "devops"
+      ],
+      "languages": ["python", "sql", "html", "css"],
+      "technologies": [
+        "aws",
+        "ec2",
+        "s3",
+        "aws-lambda",
+        "aws-rds",
+        "aws-iam",
+        "mysql",
+        "nginx",
+        "gunicorn",
+        "github-actions",
+        "github",
+        "wordpress",
+        "mathpix",
+        "poppler"
+      ],
+      "libraries": [
+        "django",
+        "pandas",
+        "numpy",
+        "scikit-learn",
+        "opencv",
+        "pillow",
+        "matplotlib",
+        "openpyxl",
+        "pdf2image",
+        "pywin32"
+      ],
+      "domains": ["edtech", "saas"],
+      "concepts": [
+        "ocr",
+        "computer-vision",
+        "nlp",
+        "machine-learning",
+        "linear-regression",
+        "cosine-similarity",
+        "bag-of-words",
+        "etl",
+        "data-pipelines",
+        "ci-cd",
+        "rest-apis",
+        "api-integration",
+        "cloud-infrastructure",
+        "relational-databases"
+      ],
+      "scale": [
+        "production-system",
+        "greenfield",
+        "mvp",
+        "early-stage-startup",
+        "solo-engineer"
+      ],
+      "soft_skills": [
+        "entrepreneurship",
+        "product-ownership",
+        "technical-leadership",
+        "leadership",
+        "decision-making",
+        "communication",
+        "adaptability"
+      ]
+    },
+    "impact": [
+      "Sole technical co-founder on a 3-person team; wrote ~90% of the codebase across product, infrastructure, and ML pipeline",
+      "Designed and shipped a 10-stage automated grading pipeline (PDF → image → OCR → NLP comparison → annotated feedback PDFs + gradebook + analytics charts)",
+      "Built the full Django SaaS platform from scratch: auth, multi-institution data model, rubric builder, bulk upload, review dashboard, per-student analytics, and linear-regression grade predictions",
+      "Architected and operated full AWS infrastructure (EC2 + nginx/gunicorn, S3, RDS MySQL, Lambda, IAM) with GitHub Actions CI/CD to production",
+      "Integrated Mathpix /v3/latex OCR API after benchmarking against AWS Textract for superior handwritten-math accuracy",
+      "Demoed the live product to 3 colleges and 5 independent teachers with consistent positive validation on automation and time savings",
+      "Navigated two go-to-market pivots (B2C → B2B) and presented to investors as the technical co-founder"
+    ],
+    "media": [],
+    "featured": true
+  },
+  {
+    "id": "uplanner-data-engineer-2021",
+    "title": "Data Engineer",
+    "type": "job",
+    "company": {
+      "name": "uPlanner",
+      "url": "https://uplanner.com/en",
+      "industry": "edtech"
+    },
+    "location": "Remote (Chile)",
+    "employment_type": "full-time",
+    "team": "Data Services (3–6 engineers)",
+    "period": { "start": "2021-07", "end": "2024-10" },
+    "summary": "Data Engineer at a 90-person AI-powered EdTech SaaS (FT Fastest Growing 2023, ISO 27001) serving 30+ higher-education institutions across 3 continents — owned ETL/ELT pipelines, all D2L Brightspace LMS integrations across 5 international clients, the Pentaho → Azure Synapse migration, and a Streamlit internal platform with 20+ tools.",
+    "description": "uPlanner is an AI-powered B2B SaaS for higher education (founded 2012, HQ Miami, 90+ specialists, offices across 8 countries). It serves 30+ institutions including Universidad de los Andes, PUC Chile, and Aliat Universities Mexico — at scale, 20 Peruvian public universities simultaneously covering 350,000 students. The company was named one of the Americas' Fastest Growing Companies by the Financial Times in 2023 and holds ISO/IEC 27001 certification. Products span the full institutional lifecycle: uForecast (demand), uPlanning (scheduling), uBooking (events), uAssessment (curriculum), uEngagement (retention), uClass (attendance/grades), uExperience (mobile app), and uSuite (integrated platform). Solutions are frequently customized per client — every product can vary in implementation detail, so engineers must maintain deep awareness of client-specific configurations across multiple simultaneous deployments.\n\nAs a Data Engineer on the Data Services team (3–6 people, fully remote), responsibilities spanned the full lifecycle of data pipelines: design, development, maintenance, documentation, and client-facing support. Operated simultaneously as a pipeline developer, integration engineer, cloud-migration contributor, internal-tooling builder, and technical representative in international client meetings. Carried significant autonomy — owning end-to-end integrations, leading client meetings, and independently driving projects from requirements through delivery.\n\n**ETL/ELT pipeline ownership.** The core ETL system was built on Pentaho Data Integration, organized into 6 sequential steps per client per run (SFTP file discovery → format validation → staging load to MariaDB → cross-referencing into product DB → algorithm execution → report generation, plus a MongoDB key-value step for mobile data). Python scripts were layered throughout the pipeline to handle client-specific transformations, validations, and business logic across multiple simultaneous deployments.\n\n**D2L Brightspace LMS integration suite.** Owned all integrations with D2L Brightspace REST API — uPlanner's primary external data source, used across 5 international clients in Colombia, Mexico, Argentina, France, and others. Built grades processing, attendance tracking, course/curriculum fetching, and curriculum upload automation, all following a uPlanner-MySQL → D2L-API → cross-reference → business-logic → output pattern. Handled token-based auth (credentials in DB, access tokens refreshed per session), pagination for endpoints returning tens of thousands of records, and async export-job polling for D2L endpoints that trigger background jobs rather than returning data immediately.\n\n**Curriculum upload automation (Colombia client).** A custom Python integration that fetched uPlanner's generated curricula from MySQL, cross-referenced each against D2L courses via the Brightspace API, and programmatically uploaded curriculum files to D2L as they became ready. Replaced a manual teacher workflow consuming 250+ hours per semester.\n\n**Automated error logging.** Designed and implemented systematic error capture, categorization, and surfacing across ETL transformation and validation stages — reducing diagnostic and resolution time on pipeline issues by 43%.\n\n**Pentaho → Azure Synapse migration.** Initiated as greenfield: designed and built the first complete ETL pipeline from scratch on Synapse to evaluate the tooling, establish development patterns, and measure performance. Used findings to define the migration strategy for legacy pipelines, then began migrating in batches. Synapse components used: Pipelines, Notebooks (Python/PySpark), Spark Pools, SQL Pools, Data Lake storage. Improved integration efficiency by 35%. Migration was underway at time of departure (first new pipeline built; 2 legacy pipelines successfully migrated).\n\n**Internal Streamlit platform.** Designed and developed a Streamlit web platform consolidating 20+ internal tools used across Data Engineering, Product, Customer Success, and Data Science. After two years of repeatedly solving the same categories of CS-reported issues, the recurring query patterns were compiled into purpose-built, form-driven tools — CS staff went from waiting up to 2 hours per issue (no SQL knowledge, blocked on engineer availability) to under 2 minutes via instant self-service. Tools included file transformation/parsing utilities, recurrent DB query runners with friendly UIs, DB job management, environment/client config comparison, and API testing interfaces.\n\n**Data model restructuring.** Led cross-functional meetings with technical, product, and customer service teams to restructure the data model and realign product requirements, identifying misalignments between internal data structure and client onboarding needs. Reduced initial customer data delivery time by 20%.\n\n**Client-facing work.** Served as the technical face of the Data Services team in international client meetings — requirements gathering, feasibility evaluation, project follow-ups, and live-deployment issue resolution. Frequently led meetings directly across Colombia, Mexico, Argentina, France, and other countries.\n\n**Mentorship & documentation.** Mentored 2–3 engineers across the team lifecycle, both during onboarding and as part of formal growth plans. Maintained technical documentation for all owned developments (pipelines, integrations, automations, tools) as a team-wide standard.",
+    "tags": {
+      "roles": ["data-engineer", "backend"],
+      "languages": ["python", "sql"],
+      "technologies": [
+        "azure",
+        "azure-synapse",
+        "azure-data-lake",
+        "pentaho",
+        "mariadb",
+        "mysql",
+        "sql-server",
+        "mongodb",
+        "spark",
+        "sftp",
+        "d2l-brightspace"
+      ],
+      "libraries": ["pandas", "streamlit", "pyspark"],
+      "domains": ["edtech", "saas", "b2b-saas", "higher-education"],
+      "concepts": [
+        "etl",
+        "elt",
+        "data-pipelines",
+        "data-modeling",
+        "legacy-migration",
+        "modernization",
+        "internal-tooling",
+        "developer-experience",
+        "rest-apis",
+        "api-integration",
+        "pagination",
+        "async-processing",
+        "cloud-infrastructure",
+        "relational-databases",
+        "nosql",
+        "data-validation",
+        "observability",
+        "error-logging"
+      ],
+      "scale": [
+        "production-system",
+        "multi-tenant",
+        "multi-client",
+        "international-clients",
+        "mid-size-company"
+      ],
+      "soft_skills": [
+        "mentorship",
+        "cross-functional-collaboration",
+        "client-facing",
+        "requirements-gathering",
+        "communication",
+        "technical-writing",
+        "cross-cultural",
+        "technical-leadership",
+        "decision-making",
+        "adaptability"
+      ]
+    },
+    "impact": [
+      "Eliminated 250+ hours of manual teacher work per semester for a Colombian university client via curriculum-upload automation against the D2L Brightspace API",
+      "Reduced common Customer Success query resolution from up to 2 hours to under 2 minutes via a Streamlit internal platform with 20+ self-service tools",
+      "Reduced data-validation and transformation work time by 43% through systematic automated error logging across ETL pipelines",
+      "Improved integration efficiency by 35% as part of the Pentaho → Azure Synapse migration (first greenfield pipeline + 2 legacy pipelines migrated at time of departure)",
+      "Reduced initial customer data delivery time by 20% by leading a cross-functional data-model restructuring",
+      "Owned all D2L Brightspace LMS integrations end-to-end across 5 international clients in Colombia, Mexico, Argentina, France, and others",
+      "Mentored 2–3 engineers across onboarding and formal growth plans",
+      "Led international client meetings as the technical representative of the Data Services team"
+    ],
+    "media": [],
+    "featured": true
+  }
+]

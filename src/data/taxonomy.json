@@ -1,0 +1,1179 @@
+{
+  "roles": {
+    "product-owner": {
+      "slug": "product-owner",
+      "display_name": "Product Owner",
+      "type": "roles",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "founder",
+        "full-stack"
+      ]
+    },
+    "founder": {
+      "slug": "founder",
+      "display_name": "Founder",
+      "type": "roles",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "product-owner",
+        "full-stack"
+      ]
+    },
+    "full-stack": {
+      "slug": "full-stack",
+      "display_name": "Full Stack Developer",
+      "type": "roles",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "backend",
+        "devops"
+      ]
+    },
+    "backend": {
+      "slug": "backend",
+      "display_name": "Backend Developer",
+      "type": "roles",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "full-stack",
+        "devops"
+      ]
+    },
+    "data-engineer": {
+      "slug": "data-engineer",
+      "display_name": "Data Engineer",
+      "type": "roles",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "ml-engineer",
+        "backend"
+      ]
+    },
+    "ml-engineer": {
+      "slug": "ml-engineer",
+      "display_name": "ML Engineer",
+      "type": "roles",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "data-engineer",
+        "ai-engineer"
+      ]
+    },
+    "devops": {
+      "slug": "devops",
+      "display_name": "DevOps Engineer",
+      "type": "roles",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "backend",
+        "full-stack"
+      ]
+    }
+  },
+  "languages": {
+    "python": {
+      "slug": "python",
+      "display_name": "Python",
+      "type": "languages",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/python",
+      "color": null,
+      "related": [
+        "django",
+        "pandas"
+      ]
+    },
+    "sql": {
+      "slug": "sql",
+      "display_name": "SQL",
+      "type": "languages",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "mysql",
+        "mariadb",
+        "sql-server"
+      ]
+    },
+    "html": {
+      "slug": "html",
+      "display_name": "HTML",
+      "type": "languages",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/html5",
+      "color": null,
+      "related": [
+        "css"
+      ]
+    },
+    "css": {
+      "slug": "css",
+      "display_name": "CSS",
+      "type": "languages",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/css3",
+      "color": null,
+      "related": [
+        "html"
+      ]
+    }
+  },
+  "technologies": {
+    "aws": {
+      "slug": "aws",
+      "display_name": "AWS",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/amazonaws",
+      "color": null,
+      "related": [
+        "ec2",
+        "s3",
+        "aws-rds",
+        "aws-lambda",
+        "aws-iam"
+      ]
+    },
+    "ec2": {
+      "slug": "ec2",
+      "display_name": "AWS EC2",
+      "type": "technologies",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "aws",
+        "nginx",
+        "gunicorn"
+      ]
+    },
+    "s3": {
+      "slug": "s3",
+      "display_name": "AWS S3",
+      "type": "technologies",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "aws"
+      ]
+    },
+    "aws-lambda": {
+      "slug": "aws-lambda",
+      "display_name": "AWS Lambda",
+      "type": "technologies",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "aws"
+      ]
+    },
+    "aws-rds": {
+      "slug": "aws-rds",
+      "display_name": "AWS RDS",
+      "type": "technologies",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "aws",
+        "mysql"
+      ]
+    },
+    "aws-iam": {
+      "slug": "aws-iam",
+      "display_name": "AWS IAM",
+      "type": "technologies",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "aws"
+      ]
+    },
+    "azure": {
+      "slug": "azure",
+      "display_name": "Azure",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/microsoftazure",
+      "color": null,
+      "related": [
+        "azure-synapse",
+        "azure-data-lake"
+      ]
+    },
+    "azure-synapse": {
+      "slug": "azure-synapse",
+      "display_name": "Azure Synapse Analytics",
+      "type": "technologies",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "azure",
+        "azure-data-lake",
+        "spark",
+        "pyspark"
+      ]
+    },
+    "azure-data-lake": {
+      "slug": "azure-data-lake",
+      "display_name": "Azure Data Lake",
+      "type": "technologies",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "azure",
+        "azure-synapse"
+      ]
+    },
+    "pentaho": {
+      "slug": "pentaho",
+      "display_name": "Pentaho Data Integration",
+      "type": "technologies",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "etl"
+      ]
+    },
+    "mysql": {
+      "slug": "mysql",
+      "display_name": "MySQL",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/mysql",
+      "color": null,
+      "related": [
+        "sql",
+        "aws-rds"
+      ]
+    },
+    "mariadb": {
+      "slug": "mariadb",
+      "display_name": "MariaDB",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/mariadb",
+      "color": null,
+      "related": [
+        "sql",
+        "mysql"
+      ]
+    },
+    "sql-server": {
+      "slug": "sql-server",
+      "display_name": "SQL Server",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/microsoftsqlserver",
+      "color": null,
+      "related": [
+        "sql"
+      ]
+    },
+    "mongodb": {
+      "slug": "mongodb",
+      "display_name": "MongoDB",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/mongodb",
+      "color": null,
+      "related": [
+        "nosql"
+      ]
+    },
+    "spark": {
+      "slug": "spark",
+      "display_name": "Apache Spark",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/apachespark",
+      "color": null,
+      "related": [
+        "pyspark",
+        "azure-synapse"
+      ]
+    },
+    "sftp": {
+      "slug": "sftp",
+      "display_name": "SFTP",
+      "type": "technologies",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": []
+    },
+    "d2l-brightspace": {
+      "slug": "d2l-brightspace",
+      "display_name": "D2L Brightspace LMS",
+      "type": "technologies",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "rest-apis",
+        "api-integration"
+      ]
+    },
+    "nginx": {
+      "slug": "nginx",
+      "display_name": "nginx",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/nginx",
+      "color": null,
+      "related": [
+        "gunicorn",
+        "ec2"
+      ]
+    },
+    "gunicorn": {
+      "slug": "gunicorn",
+      "display_name": "Gunicorn",
+      "type": "technologies",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "nginx",
+        "django"
+      ]
+    },
+    "github-actions": {
+      "slug": "github-actions",
+      "display_name": "GitHub Actions",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/githubactions",
+      "color": null,
+      "related": [
+        "ci-cd",
+        "github"
+      ]
+    },
+    "github": {
+      "slug": "github",
+      "display_name": "GitHub",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/github",
+      "color": null,
+      "related": [
+        "github-actions"
+      ]
+    },
+    "wordpress": {
+      "slug": "wordpress",
+      "display_name": "WordPress",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/wordpress",
+      "color": null,
+      "related": []
+    },
+    "mathpix": {
+      "slug": "mathpix",
+      "display_name": "Mathpix API",
+      "type": "technologies",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "ocr"
+      ]
+    },
+    "poppler": {
+      "slug": "poppler",
+      "display_name": "Poppler",
+      "type": "technologies",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "pdf2image"
+      ]
+    }
+  },
+  "libraries": {
+    "django": {
+      "slug": "django",
+      "display_name": "Django",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/django",
+      "color": null,
+      "related": [
+        "python",
+        "gunicorn"
+      ]
+    },
+    "pandas": {
+      "slug": "pandas",
+      "display_name": "Pandas",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/pandas",
+      "color": null,
+      "related": [
+        "python",
+        "numpy",
+        "etl"
+      ]
+    },
+    "numpy": {
+      "slug": "numpy",
+      "display_name": "NumPy",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/numpy",
+      "color": null,
+      "related": [
+        "python",
+        "pandas"
+      ]
+    },
+    "scikit-learn": {
+      "slug": "scikit-learn",
+      "display_name": "scikit-learn",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/scikitlearn",
+      "color": null,
+      "related": [
+        "python",
+        "machine-learning"
+      ]
+    },
+    "opencv": {
+      "slug": "opencv",
+      "display_name": "OpenCV",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/opencv",
+      "color": null,
+      "related": [
+        "computer-vision",
+        "pillow"
+      ]
+    },
+    "pillow": {
+      "slug": "pillow",
+      "display_name": "Pillow (PIL)",
+      "type": "libraries",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "python",
+        "opencv"
+      ]
+    },
+    "matplotlib": {
+      "slug": "matplotlib",
+      "display_name": "Matplotlib",
+      "type": "libraries",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "python",
+        "pandas"
+      ]
+    },
+    "openpyxl": {
+      "slug": "openpyxl",
+      "display_name": "openpyxl",
+      "type": "libraries",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "python"
+      ]
+    },
+    "pdf2image": {
+      "slug": "pdf2image",
+      "display_name": "pdf2image",
+      "type": "libraries",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "python",
+        "poppler"
+      ]
+    },
+    "pywin32": {
+      "slug": "pywin32",
+      "display_name": "pywin32 (win32gui/win32com)",
+      "type": "libraries",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "python"
+      ]
+    },
+    "streamlit": {
+      "slug": "streamlit",
+      "display_name": "Streamlit",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/streamlit",
+      "color": null,
+      "related": [
+        "python",
+        "internal-tooling"
+      ]
+    },
+    "pyspark": {
+      "slug": "pyspark",
+      "display_name": "PySpark",
+      "type": "libraries",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "python",
+        "spark",
+        "azure-synapse"
+      ]
+    }
+  },
+  "domains": {
+    "edtech": {
+      "slug": "edtech",
+      "display_name": "EdTech",
+      "type": "domains",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "saas",
+        "higher-education"
+      ]
+    },
+    "saas": {
+      "slug": "saas",
+      "display_name": "SaaS",
+      "type": "domains",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "b2b-saas"
+      ]
+    },
+    "b2b-saas": {
+      "slug": "b2b-saas",
+      "display_name": "B2B SaaS",
+      "type": "domains",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "saas"
+      ]
+    },
+    "higher-education": {
+      "slug": "higher-education",
+      "display_name": "Higher Education",
+      "type": "domains",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "edtech"
+      ]
+    }
+  },
+  "concepts": {
+    "ocr": {
+      "slug": "ocr",
+      "display_name": "OCR",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "computer-vision",
+        "mathpix"
+      ]
+    },
+    "computer-vision": {
+      "slug": "computer-vision",
+      "display_name": "Computer Vision",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "opencv",
+        "ocr"
+      ]
+    },
+    "nlp": {
+      "slug": "nlp",
+      "display_name": "NLP",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "machine-learning",
+        "bag-of-words",
+        "cosine-similarity"
+      ]
+    },
+    "machine-learning": {
+      "slug": "machine-learning",
+      "display_name": "Machine Learning",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "scikit-learn",
+        "linear-regression",
+        "nlp"
+      ]
+    },
+    "linear-regression": {
+      "slug": "linear-regression",
+      "display_name": "Linear Regression",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "machine-learning",
+        "scikit-learn"
+      ]
+    },
+    "cosine-similarity": {
+      "slug": "cosine-similarity",
+      "display_name": "Cosine Similarity",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "nlp",
+        "bag-of-words"
+      ]
+    },
+    "bag-of-words": {
+      "slug": "bag-of-words",
+      "display_name": "Bag-of-Words",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "nlp",
+        "cosine-similarity"
+      ]
+    },
+    "etl": {
+      "slug": "etl",
+      "display_name": "ETL",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "elt",
+        "data-pipelines",
+        "data-engineer",
+        "pandas"
+      ]
+    },
+    "elt": {
+      "slug": "elt",
+      "display_name": "ELT",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "etl",
+        "data-pipelines"
+      ]
+    },
+    "data-pipelines": {
+      "slug": "data-pipelines",
+      "display_name": "Data Pipelines",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "etl",
+        "elt",
+        "data-engineer"
+      ]
+    },
+    "data-modeling": {
+      "slug": "data-modeling",
+      "display_name": "Data Modeling",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "relational-databases",
+        "data-engineer"
+      ]
+    },
+    "legacy-migration": {
+      "slug": "legacy-migration",
+      "display_name": "Legacy Migration",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "modernization"
+      ]
+    },
+    "modernization": {
+      "slug": "modernization",
+      "display_name": "Modernization",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "legacy-migration"
+      ]
+    },
+    "internal-tooling": {
+      "slug": "internal-tooling",
+      "display_name": "Internal Tooling",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "streamlit",
+        "developer-experience"
+      ]
+    },
+    "developer-experience": {
+      "slug": "developer-experience",
+      "display_name": "Developer Experience",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "internal-tooling"
+      ]
+    },
+    "pagination": {
+      "slug": "pagination",
+      "display_name": "Pagination",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "rest-apis",
+        "api-integration"
+      ]
+    },
+    "async-processing": {
+      "slug": "async-processing",
+      "display_name": "Async Processing",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "api-integration"
+      ]
+    },
+    "ci-cd": {
+      "slug": "ci-cd",
+      "display_name": "CI/CD",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "devops",
+        "github-actions"
+      ]
+    },
+    "rest-apis": {
+      "slug": "rest-apis",
+      "display_name": "REST APIs",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "api-integration",
+        "backend"
+      ]
+    },
+    "api-integration": {
+      "slug": "api-integration",
+      "display_name": "API Integration",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "rest-apis",
+        "backend"
+      ]
+    },
+    "cloud-infrastructure": {
+      "slug": "cloud-infrastructure",
+      "display_name": "Cloud Infrastructure",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "aws",
+        "azure",
+        "devops"
+      ]
+    },
+    "relational-databases": {
+      "slug": "relational-databases",
+      "display_name": "Relational Databases",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "sql",
+        "mysql",
+        "mariadb",
+        "sql-server"
+      ]
+    },
+    "nosql": {
+      "slug": "nosql",
+      "display_name": "NoSQL",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "mongodb"
+      ]
+    },
+    "data-validation": {
+      "slug": "data-validation",
+      "display_name": "Data Validation",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "etl",
+        "data-pipelines"
+      ]
+    },
+    "observability": {
+      "slug": "observability",
+      "display_name": "Observability",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "error-logging"
+      ]
+    },
+    "error-logging": {
+      "slug": "error-logging",
+      "display_name": "Error Logging",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "observability"
+      ]
+    }
+  },
+  "scale": {
+    "production-system": {
+      "slug": "production-system",
+      "display_name": "Production System",
+      "type": "scale",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": []
+    },
+    "greenfield": {
+      "slug": "greenfield",
+      "display_name": "Greenfield",
+      "type": "scale",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "mvp"
+      ]
+    },
+    "mvp": {
+      "slug": "mvp",
+      "display_name": "MVP",
+      "type": "scale",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "greenfield",
+        "early-stage-startup"
+      ]
+    },
+    "early-stage-startup": {
+      "slug": "early-stage-startup",
+      "display_name": "Early-Stage Startup",
+      "type": "scale",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "mvp",
+        "greenfield"
+      ]
+    },
+    "solo-engineer": {
+      "slug": "solo-engineer",
+      "display_name": "Solo Engineer",
+      "type": "scale",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "greenfield"
+      ]
+    },
+    "multi-tenant": {
+      "slug": "multi-tenant",
+      "display_name": "Multi-Tenant",
+      "type": "scale",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "multi-client"
+      ]
+    },
+    "multi-client": {
+      "slug": "multi-client",
+      "display_name": "Multi-Client",
+      "type": "scale",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "multi-tenant",
+        "international-clients"
+      ]
+    },
+    "international-clients": {
+      "slug": "international-clients",
+      "display_name": "International Clients",
+      "type": "scale",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "multi-client"
+      ]
+    },
+    "mid-size-company": {
+      "slug": "mid-size-company",
+      "display_name": "Mid-Size Company",
+      "type": "scale",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": []
+    }
+  },
+  "soft_skills": {
+    "entrepreneurship": {
+      "slug": "entrepreneurship",
+      "display_name": "Entrepreneurship",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "product-ownership",
+        "leadership"
+      ]
+    },
+    "product-ownership": {
+      "slug": "product-ownership",
+      "display_name": "Product Ownership",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "entrepreneurship",
+        "decision-making"
+      ]
+    },
+    "technical-leadership": {
+      "slug": "technical-leadership",
+      "display_name": "Technical Leadership",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "decision-making",
+        "leadership"
+      ]
+    },
+    "leadership": {
+      "slug": "leadership",
+      "display_name": "Leadership",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "technical-leadership",
+        "entrepreneurship"
+      ]
+    },
+    "decision-making": {
+      "slug": "decision-making",
+      "display_name": "Decision Making",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "technical-leadership",
+        "product-ownership"
+      ]
+    },
+    "communication": {
+      "slug": "communication",
+      "display_name": "Communication",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "client-facing",
+        "technical-writing"
+      ]
+    },
+    "adaptability": {
+      "slug": "adaptability",
+      "display_name": "Adaptability",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": []
+    },
+    "mentorship": {
+      "slug": "mentorship",
+      "display_name": "Mentorship",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "leadership",
+        "communication"
+      ]
+    },
+    "cross-functional-collaboration": {
+      "slug": "cross-functional-collaboration",
+      "display_name": "Cross-Functional Collaboration",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "communication"
+      ]
+    },
+    "client-facing": {
+      "slug": "client-facing",
+      "display_name": "Client-Facing",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "communication",
+        "requirements-gathering"
+      ]
+    },
+    "requirements-gathering": {
+      "slug": "requirements-gathering",
+      "display_name": "Requirements Gathering",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "client-facing",
+        "product-ownership"
+      ]
+    },
+    "technical-writing": {
+      "slug": "technical-writing",
+      "display_name": "Technical Writing",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "communication"
+      ]
+    },
+    "cross-cultural": {
+      "slug": "cross-cultural",
+      "display_name": "Cross-Cultural",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "communication",
+        "adaptability"
+      ]
+    }
+  }
+}
