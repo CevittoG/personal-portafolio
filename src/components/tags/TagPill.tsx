@@ -20,6 +20,10 @@ export interface TagPillProps {
   /** Taxonomy type — drives the pill's color via a CSS var lookup. */
   type: TagType;
   state?: TagPillState;
+  /** Optional secondary label rendered after a thin separator (e.g. taxonomy
+   *  type name on a filter chip — "Python · Language"). Visually quieter than
+   *  the primary label. */
+  sublabel?: string;
   /** Click handler (e.g. add to filter). Ignored when state is "removable". */
   onClick?: () => void;
   /** Required when state is "removable". */
@@ -74,6 +78,7 @@ export function TagPill({
   label,
   type,
   state = "inactive",
+  sublabel,
   onClick,
   onRemove,
   className,
@@ -98,6 +103,14 @@ export function TagPill({
       style={styleFor(type, state)}
     >
       <span>{label}</span>
+      {sublabel && (
+        <span
+          aria-hidden="true"
+          className="text-[0.65rem] uppercase tracking-wider opacity-60"
+        >
+          · {sublabel}
+        </span>
+      )}
       {state === "removable" && (
         <button
           type="button"
