@@ -14,14 +14,13 @@ function monthsBetween(start: string, end: string | null): number {
 export const yearsOfExperienceComputer: StatComputer<number> = {
   id: "years-of-experience",
   label: "Years of relevant experience",
+  // suffix keeps the count-up animation while still showing the unit
+  suffix: " yrs",
   compute(entries: ExperienceEntry[]): number {
     const months = entries.reduce(
       (acc, entry) => acc + monthsBetween(entry.period.start, entry.period.end),
       0,
     );
     return Math.round((months / 12) * 10) / 10;
-  },
-  format(value: number): string {
-    return `${value} yrs`;
   },
 };
