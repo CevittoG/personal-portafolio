@@ -1,12 +1,20 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { OWNER_NAME, SOCIAL_LINKS } from "./social-links";
+import { useTranslations } from "@/i18n/I18nProvider";
 
 /**
- * Global Footer (plan §5 — "GitHub · LinkedIn · Email · Copyright line.
- * Nothing else."). Server component — no state needed.
+ * Global Footer (plan §5, §18).
+ *
+ * Single line of socials + copyright. Client component so it can read
+ * locale-specific copy via `useTranslations()` — the strings are tiny
+ * but they need to be in the right language.
  */
 export function Footer() {
+  const t = useTranslations();
   const year = new Date().getFullYear();
+
   return (
     <footer className="mt-auto border-t border-border">
       <div
@@ -16,14 +24,14 @@ export function Footer() {
         )}
       >
         <p className="text-xs text-text-muted">
-          © {year} {OWNER_NAME}
+          {t("footer.rights", { year, name: OWNER_NAME })}
         </p>
         <ul className="flex items-center gap-2">
           {SOCIAL_LINKS.map((link) => (
             <li key={link.label}>
               <a
                 href={link.href}
-                aria-label={link.ariaLabel}
+                aria-label={t(link.labelKey)}
                 target={link.href.startsWith("mailto:") ? undefined : "_blank"}
                 rel={
                   link.href.startsWith("mailto:")

@@ -5,10 +5,13 @@
  * Each entry exposes the data the Footer renders; the Footer itself
  * stays oblivious to which links exist (OCP).
  */
+import type { MessageKey } from "@/i18n/translator";
+
 export interface SocialLink {
   label: string;
   href: string;
-  ariaLabel: string;
+  /** i18n key for the aria-label / tooltip (plan §18). */
+  labelKey: MessageKey;
   /** Heroicons-style 24×24 SVG path. Filled via `currentColor`. */
   iconPath: string;
 }
@@ -27,19 +30,19 @@ export const SOCIAL_LINKS: readonly SocialLink[] = [
   {
     label: "GitHub",
     href: "https://github.com/CevittoG",
-    ariaLabel: "GitHub profile",
+    labelKey: "footer.github",
     iconPath: ICON_GITHUB,
   },
   {
     label: "LinkedIn",
     href: "https://www.linkedin.com/in/asebagutierrezm/",
-    ariaLabel: "LinkedIn profile",
+    labelKey: "footer.linkedin",
     iconPath: ICON_LINKEDIN,
   },
   {
     label: "Email",
     href: "mailto:aseba.gutierrezm@gmail.com",
-    ariaLabel: "Send an email",
+    labelKey: "footer.email",
     iconPath: ICON_MAIL,
   },
 ];

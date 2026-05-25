@@ -1,6 +1,7 @@
 "use client";
 
 import { TagPill } from "@/components/tags/TagPill";
+import { useTranslations } from "@/i18n/I18nProvider";
 import type { TaxonomyEntry } from "@/lib/taxonomy/types";
 import { cn } from "@/lib/utils";
 
@@ -29,16 +30,18 @@ export function RoleShortcuts({
   roles,
   activeSlugs,
   onSelect,
-  label = "Common searches",
+  label,
   className,
 }: RoleShortcutsProps) {
+  const t = useTranslations();
   if (roles.length === 0) return null;
   const active = new Set(activeSlugs);
+  const resolvedLabel = label ?? t("search.commonSearches");
 
   return (
     <div className={cn("flex flex-wrap items-center gap-2", className)}>
       <span className="text-xs uppercase tracking-wider text-text-muted mr-1">
-        {label}
+        {resolvedLabel}
       </span>
       {roles.map((role) => {
         const isActive = active.has(role.slug);

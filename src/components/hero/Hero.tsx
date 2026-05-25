@@ -2,6 +2,9 @@
 
 import Link from "next/link";
 import { AnimatedRoleLine } from "./AnimatedRoleLine";
+import { LogoDropCluster, type LogoItem } from "./LogoDropCluster";
+import { useLocale, useTranslations } from "@/i18n/I18nProvider";
+import { withLocale } from "@/i18n/path";
 import { cn } from "@/lib/utils";
 
 /**
@@ -9,12 +12,11 @@ import { cn } from "@/lib/utils";
  *
  * First impression in under 5 seconds. Name, animated role line, one sharp
  * positioning sentence, two CTAs that intentionally split the audience
- * (technical recruiter vs culture-curious hiring manager). Ambient visual
- * is a subtle radial gradient — full polish (particles/Aceternity section)
- * lands at step 15.
+ * (technical recruiter vs culture-curious hiring manager), and a
+ * Logo Drop Cluster sitting beneath the CTAs (step 17).
  *
- * Owns no data: name + statement come from `siteConfig`, role labels from
- * the caller. SRP — only renders.
+ * Owns no data: name + statement come from `siteConfig`, role labels and
+ * the logo list come from the caller. SRP — only renders.
  */
 export interface HeroProps {
   name: string;
@@ -23,6 +25,8 @@ export interface HeroProps {
   roleLabels: readonly string[];
   /** ID of the scroll target for the primary CTA (Zone 2 anchor). */
   exploreTargetId: string;
+  /** Logos for the drop cluster band (step 17). Empty list = no cluster. */
+  logos?: readonly LogoItem[];
   className?: string;
 }
 
@@ -31,31 +35,36 @@ export function Hero({
   positioningStatement,
   roleLabels,
   exploreTargetId,
+  logos,
   className,
 }: HeroProps) {
+  const t = useTranslations();
+  const locale = useLocale();
   return (
     <section
-      aria-label="Introduction"
+      aria-label={t("hero.greeting")}
       className={cn(
         "relative isolate overflow-hidden",
         "px-6 pt-20 pb-24 sm:pt-28 sm:pb-32",
         className,
       )}
     >
-      {/* Ambient visual — placeholder per plan §6; step 15 will swap in
-          the Aceternity ambient option chosen at design time. */}
+      {/* Ambient visual — soft accent blooms + a top-edge vignette.
+          Step 15 keeps this restrained because the Logo Drop Cluster in
+          step 17 will land in the band below and own the signature
+          motion; a busy Hero ambient would compete with it. */}
       <AmbientBackdrop />
 
       <div className="relative mx-auto max-w-4xl text-center">
         <p className="mb-4 text-xs uppercase tracking-[0.25em] text-text-secondary">
-          Hi, I&rsquo;m
+          {t("hero.greeting")}
         </p>
         <h1 className="text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-text-primary">
           {name}
         </h1>
 
         <p className="mt-6 text-xl sm:text-2xl text-text-secondary leading-snug">
-          <span className="mr-2">I work as a</span>
+          <span className="mr-2">{t("hero.introVerb")}</span>
           <AnimatedRoleLine
             labels={roleLabels}
             className="font-medium text-accent"
@@ -79,13 +88,13 @@ export function Hero({
               "focus-visible:ring-offset-bg",
             )}
           >
-            Explore my experience
+            {t("hero.cta.explore")}
             <span aria-hidden="true" className="ml-2">
               ↓
             </span>
           </a>
           <Link
-            href="/story"
+            href={withLocale("/story", locale)}
             className={cn(
               "inline-flex items-center justify-center rounded-full",
               "px-6 py-3 text-sm font-medium",
@@ -97,22 +106,44 @@ export function Hero({
               "focus-visible:ring-offset-bg",
             )}
           >
-            Read my story
+            {t("hero.cta.story")}
           </Link>
         </div>
       </div>
+
+      {/* Logo Drop Cluster — signature visual (plan §6, step 17). Sits in
+          its own band beneath the CTAs and above Zone 2's search title. */}
+      {logos && logos.length > 0 && (
+        <div className="relative mt-12 sm:mt-16">
+          <LogoDropCluster logos={logos} />
+        </div>
+      )}
     </section>
   );
 }
 
-/** Subtle, non-distracting backdrop. Two soft accent-colored radial blooms
- *  on top of the page background. Replaced in step 15. */
+/**
+ * Subtle, non-distracting backdrop: two soft accent radial blooms, a faint
+ * top-edge vignette to anchor the name, and a bottom fade into the bg so
+ * Zone 2 picks up cleanly. All CSS, no canvas — keeps the Logo Drop Cluster
+ * (step 17) as the signature visual in the band below.
+ */
 function AmbientBackdrop() {
   return (
     <div
       aria-hidden="true"
       className="pointer-events-none absolute inset-0 -z-10"
     >
+      {/* Top-edge vignette: faint darkening at the very top, fades fast.
+          Reads as "frame" without ever announcing itself. */}
+      <div
+        className="absolute inset-x-0 top-0 h-40"
+        style={{
+          background:
+            "linear-gradient(to bottom, color-mix(in srgb, var(--color-bg) 80%, transparent) 0%, transparent 100%)",
+        }}
+      />
+      {/* Accent radial blooms */}
       <div
         className="absolute inset-0 opacity-60"
         style={{

@@ -7,23 +7,34 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS } from "./nav-items";
 import { OWNER_NAME } from "./social-links";
+import { ThemeToggle } from "./ThemeToggle";
+import { LanguageSwitcher } from "./LanguageSwitcher";
+import { useLocale, useTranslations } from "@/i18n/I18nProvider";
+import { withLocale } from "@/i18n/path";
+import type { MessageKey } from "@/i18n/translator";
 
 const SCROLL_THRESHOLD_PX = 16;
 
 /**
- * Global Navbar (plan §10).
+ * Global Navbar (plan §10, §18).
  * - Sticky top-0, 64px tall.
  * - Transparent by default; backdrop-blur + bg-surface/80 once scrolled.
  * - Active route gets accent treatment + aria-current.
  * - Mobile breakpoint: hamburger toggles a full-screen overlay with large
  *   nav links (Framer Motion fade + scale).
+ * - Theme toggle + language switcher live to the right of the nav links.
+ *
+ * Nav `href` is the EN path; `withLocale()` prefixes the active locale so
+ * `/story` becomes `/es/story` when ES is active. Owner name and all labels
+ * resolve through `useTranslations()`.
  */
 export function Navbar() {
   const pathname = usePathname();
+  const t = useTranslations();
+  const locale = useLocale();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
-  // Scroll-aware background
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > SCROLL_THRESHOLD_PX);
     onScroll();
@@ -31,12 +42,10 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close mobile menu on route change
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
-  // Close mobile menu on Escape
   useEffect(() => {
     if (!mobileOpen) return;
     const onKey = (e: KeyboardEvent) => {
@@ -46,7 +55,6 @@ export function Navbar() {
     return () => document.removeEventListener("keydown", onKey);
   }, [mobileOpen]);
 
-  // Lock body scroll while overlay is open
   useEffect(() => {
     if (!mobileOpen) return;
     const prev = document.body.style.overflow;
@@ -55,6 +63,8 @@ export function Navbar() {
       document.body.style.overflow = prev;
     };
   }, [mobileOpen]);
+
+  const homeHref = withLocale("/", locale);
 
   return (
     <header
@@ -67,11 +77,11 @@ export function Navbar() {
       )}
     >
       <nav
-        aria-label="Primary"
+        aria-label={t("nav.primary")}
         className="mx-auto flex h-full max-w-6xl items-center justify-between px-6"
       >
         <Link
-          href="/"
+          href={homeHref}
           className={cn(
             "text-sm font-semibold tracking-tight text-text-primary",
             "hover:text-accent transition-colors duration-150",
@@ -82,30 +92,45 @@ export function Navbar() {
           {OWNER_NAME}
         </Link>
 
-        {/* Desktop links */}
-        <ul className="hidden sm:flex items-center gap-1">
-          {NAV_ITEMS.map((item) => (
-            <NavLink key={item.href} {...item} pathname={pathname} />
-          ))}
-        </ul>
+        {/* Desktop links + controls */}
+        <div className="hidden sm:flex items-center gap-1">
+          <ul className="flex items-center gap-1">
+            {NAV_ITEMS.map((item) => (
+              <NavLink
+                key={item.href}
+                labelKey={item.labelKey}
+                href={withLocale(item.href, locale)}
+                pathname={pathname}
+                label={t(item.labelKey)}
+              />
+            ))}
+          </ul>
+          <span className="mx-2 h-5 w-px bg-border" aria-hidden="true" />
+          <LanguageSwitcher />
+          <ThemeToggle className="ml-1" />
+        </div>
 
-        {/* Mobile hamburger */}
-        <button
-          type="button"
-          aria-label={mobileOpen ? "Close menu" : "Open menu"}
-          aria-expanded={mobileOpen}
-          aria-controls="mobile-nav"
-          onClick={() => setMobileOpen((o) => !o)}
-          className={cn(
-            "sm:hidden grid h-10 w-10 place-items-center rounded-md",
-            "text-text-primary hover:bg-surface-elevated cursor-pointer",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
-            "focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
-            "transition-colors duration-150",
-          )}
-        >
-          <HamburgerIcon open={mobileOpen} />
-        </button>
+        {/* Mobile: theme + language toggles + hamburger */}
+        <div className="sm:hidden flex items-center gap-1">
+          <LanguageSwitcher />
+          <ThemeToggle />
+          <button
+            type="button"
+            aria-label={mobileOpen ? t("nav.closeMenu") : t("nav.openMenu")}
+            aria-expanded={mobileOpen}
+            aria-controls="mobile-nav"
+            onClick={() => setMobileOpen((o) => !o)}
+            className={cn(
+              "grid h-10 w-10 place-items-center rounded-md",
+              "text-text-primary hover:bg-surface-elevated cursor-pointer",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+              "focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
+              "transition-colors duration-150",
+            )}
+          >
+            <HamburgerIcon open={mobileOpen} />
+          </button>
+        </div>
       </nav>
 
       {/* Mobile overlay */}
@@ -115,7 +140,7 @@ export function Navbar() {
             id="mobile-nav"
             role="dialog"
             aria-modal="true"
-            aria-label="Site navigation"
+            aria-label={t("nav.site")}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
@@ -130,11 +155,12 @@ export function Navbar() {
               className="flex flex-col gap-2 px-6 py-10"
             >
               {NAV_ITEMS.map((item) => {
-                const active = isActive(item.href, pathname);
+                const href = withLocale(item.href, locale);
+                const active = isActive(href, pathname);
                 return (
                   <li key={item.href}>
                     <Link
-                      href={item.href}
+                      href={href}
                       aria-current={active ? "page" : undefined}
                       className={cn(
                         "block py-4 text-3xl font-medium tracking-tight",
@@ -147,7 +173,7 @@ export function Navbar() {
                         "focus-visible:ring-accent rounded-sm",
                       )}
                     >
-                      {item.label}
+                      {t(item.labelKey)}
                     </Link>
                   </li>
                 );
@@ -169,12 +195,14 @@ function isActive(href: string, pathname: string | null): boolean {
 }
 
 function NavLink({
-  label,
   href,
+  label,
   pathname,
 }: {
-  label: string;
+  /** i18n key — used as a React key only, label is pre-resolved by caller. */
+  labelKey: MessageKey;
   href: string;
+  label: string;
   pathname: string | null;
 }) {
   const active = isActive(href, pathname);

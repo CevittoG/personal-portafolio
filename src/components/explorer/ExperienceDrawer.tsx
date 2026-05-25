@@ -16,6 +16,8 @@ import {
   getMetaBadge,
 } from "@/lib/experience/format";
 import type { ExperienceEntry } from "@/lib/experience/types";
+import { useLocale, useTranslations } from "@/i18n/I18nProvider";
+import { withLocale } from "@/i18n/path";
 import { useMediaQuery } from "@/lib/hooks/use-media-query";
 import { formatTagLabel } from "@/lib/taxonomy/format";
 import { tagTypeLabel } from "@/lib/taxonomy/labels";
@@ -52,13 +54,18 @@ const DESKTOP_QUERY = "(min-width: 640px)"; // matches Tailwind `sm`
 export function ExperienceDrawer({
   entry,
   onClose,
-  detailHref = (e) => `/experience/${e.id}`,
+  detailHref,
 }: ExperienceDrawerProps) {
   const open = entry !== null;
   const isDesktop = useMediaQuery(DESKTOP_QUERY, true);
   const reduceMotion = useReducedMotion();
+  const t = useTranslations();
+  const locale = useLocale();
   const titleId = useId();
   const closeRef = useRef<HTMLButtonElement | null>(null);
+  // Default deep-dive href is locale-aware so "Dig deeper" preserves locale.
+  const resolveDetailHref =
+    detailHref ?? ((e: ExperienceEntry) => withLocale(`/experience/${e.id}`, locale));
 
   // Body scroll lock while open
   useEffect(() => {
@@ -119,7 +126,7 @@ export function ExperienceDrawer({
           {/* Overlay */}
           <motion.button
             type="button"
-            aria-label="Close drawer"
+            aria-label={t("drawer.closeDrawer")}
             onClick={onClose}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -158,7 +165,7 @@ export function ExperienceDrawer({
               titleId={titleId}
               closeRef={closeRef}
               onClose={onClose}
-              detailHref={detailHref(entry)}
+              detailHref={resolveDetailHref(entry)}
               isDesktop={isDesktop}
             />
           </motion.aside>
@@ -179,6 +186,23 @@ interface DrawerContentProps {
   isDesktop: boolean;
 }
 
+// Body section stagger: each direct child of the scroll body fades up
+// sequentially once the drawer panel finishes opening. Quiet by design.
+const BODY_CONTAINER = {
+  hidden: {},
+  show: {
+    transition: { staggerChildren: 0.05, delayChildren: 0.12 },
+  },
+} as const;
+const BODY_ITEM = {
+  hidden: { opacity: 0, y: 6 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.28, ease: [0.22, 1, 0.36, 1] as const },
+  },
+} as const;
+
 function DrawerContent({
   entry,
   titleId,
@@ -187,12 +211,14 @@ function DrawerContent({
   detailHref,
   isDesktop,
 }: DrawerContentProps) {
+  const t = useTranslations();
   const heading = getHeadingLine(entry);
   const subMeta = getDrawerSubMeta(entry);
   const badge = getMetaBadge(entry);
   const period = formatPeriod(entry.period);
   const teaser = getDescriptionTeaser(entry);
   const topImpact = entry.impact.slice(0, 3);
+  const reduceMotion = useReducedMotion();
 
   // Tags grouped by type, in canonical order — empty buckets skipped
   const tagBuckets = TAG_TYPES
@@ -228,7 +254,7 @@ function DrawerContent({
           ref={closeRef}
           type="button"
           onClick={onClose}
-          aria-label="Close"
+          aria-label={t("drawer.close")}
           className={cn(
             "shrink-0 cursor-pointer rounded-full p-2 text-text-secondary",
             "hover:bg-surface-elevated hover:text-text-primary",
@@ -251,9 +277,17 @@ function DrawerContent({
       </header>
 
       {/* Scrollable body */}
-      <div className="flex-1 overflow-y-auto px-6 py-5 space-y-6">
+      <motion.div
+        variants={reduceMotion ? undefined : BODY_CONTAINER}
+        initial={reduceMotion ? false : "hidden"}
+        animate={reduceMotion ? undefined : "show"}
+        className="flex-1 overflow-y-auto px-6 py-5 space-y-6"
+      >
         {/* Meta row */}
-        <div className="flex flex-wrap items-center gap-2 text-sm text-text-secondary">
+        <motion.div
+          variants={reduceMotion ? undefined : BODY_ITEM}
+          className="flex flex-wrap items-center gap-2 text-sm text-text-secondary"
+        >
           <span>{period}</span>
           {badge && (
             <>
@@ -274,30 +308,40 @@ function DrawerContent({
               <span>{subMeta}</span>
             </>
           )}
-        </div>
+        </motion.div>
 
         {/* Summary */}
         {entry.summary && (
-          <p className="text-base leading-relaxed text-text-primary">
+          <motion.p
+            variants={reduceMotion ? undefined : BODY_ITEM}
+            className="text-base leading-relaxed text-text-primary"
+          >
             {entry.summary}
-          </p>
+          </motion.p>
         )}
 
         {/* Description teaser */}
         {teaser && teaser !== entry.summary && (
-          <p className="text-sm leading-relaxed text-text-secondary">
+          <motion.p
+            variants={reduceMotion ? undefined : BODY_ITEM}
+            className="text-sm leading-relaxed text-text-secondary"
+          >
             {teaser}
-          </p>
+          </motion.p>
         )}
 
         {/* Top impact */}
         {topImpact.length > 0 && (
-          <section aria-labelledby={`${titleId}-impact`} className="space-y-2">
+          <motion.section
+            variants={reduceMotion ? undefined : BODY_ITEM}
+            aria-labelledby={`${titleId}-impact`}
+            className="space-y-2"
+          >
             <h3
               id={`${titleId}-impact`}
               className="text-xs uppercase tracking-wider text-text-muted"
             >
-              Impact
+              {t("drawer.impact")}
             </h3>
             <ul className="space-y-1.5">
               {topImpact.map((line, i) => (
@@ -312,12 +356,13 @@ function DrawerContent({
                 </li>
               ))}
             </ul>
-          </section>
+          </motion.section>
         )}
 
         {/* Tag cloud, grouped by type */}
         {tagBuckets.length > 0 && (
-          <section
+          <motion.section
+            variants={reduceMotion ? undefined : BODY_ITEM}
             aria-labelledby={`${titleId}-tags`}
             className="space-y-3"
           >
@@ -325,16 +370,16 @@ function DrawerContent({
               id={`${titleId}-tags`}
               className="text-xs uppercase tracking-wider text-text-muted"
             >
-              Tags
+              {t("drawer.tags")}
             </h3>
             <div className="space-y-2">
               {tagBuckets.map(({ type, slugs }) => (
                 <TagBucket key={type} type={type} slugs={slugs} />
               ))}
             </div>
-          </section>
+          </motion.section>
         )}
-      </div>
+      </motion.div>
 
       {/* Footer — Dig deeper opens in new tab (plan §11) */}
       <footer className="border-t border-border px-6 py-4">
@@ -351,7 +396,7 @@ function DrawerContent({
             "focus-visible:ring-offset-surface",
           )}
         >
-          Dig deeper
+          {t("drawer.digDeeper")}
           <span aria-hidden="true">↗</span>
         </a>
       </footer>
