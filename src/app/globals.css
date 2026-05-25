@@ -35,15 +35,52 @@
   --color-tag-soft-skills:  #CF56B8;
 }
 
-/* Optional light mode — dark is the primary experience per plan §4 */
+/* Light mode override (plan §17). Dark remains default; this block only
+   takes effect when `<html data-theme="light">` is set. Same eight tag-type
+   hues, darkened and slightly desaturated so chips stay legible on a light
+   surface without burning the eye. Accent darkens to keep AA contrast on
+   white. */
 [data-theme="light"] {
+  /* Backgrounds — near-white with a faint warm cast, not pure #fff */
   --color-bg:               #FAFAFC;
   --color-surface:          #FFFFFF;
   --color-surface-elevated: #F2F2F7;
   --color-border:           #E2E2EC;
+
+  /* Text — deep slate stack */
   --color-text-primary:     #0F172A;
   --color-text-secondary:   #475569;
   --color-text-muted:       #94A3B8;
+
+  /* Accent — darker violet for AA contrast on light bg */
+  --color-accent:           #5840B8;
+  --color-accent-hover:     #6A52CC;
+  --color-accent-subtle:    #5840B81F;
+
+  /* Tag-type colors — same hue, dropped saturation + lightness */
+  --color-tag-roles:        #B23F5A;
+  --color-tag-languages:    #2F7EB3;
+  --color-tag-technologies: #2FA67F;
+  --color-tag-libraries:    #B5803B;
+  --color-tag-domains:      #7F3FB5;
+  --color-tag-concepts:     #B55F3F;
+  --color-tag-scale:        #3FAA3F;
+  --color-tag-soft-skills:  #B53F9F;
+}
+
+/* Smooth theme cross-fade. Scoped to the root and the shared border-color
+   broadcast so individual components keep their own (faster, intentional)
+   hover/focus transitions. The root fade carries the bulk of the visual
+   shift; everything else inherits via CSS var resolution. */
+html {
+  transition:
+    background-color 200ms ease-out,
+    color 200ms ease-out;
+}
+html * {
+  transition-property: border-color;
+  transition-duration: 200ms;
+  transition-timing-function: ease-out;
 }
 
 /* Expose CSS vars as Tailwind v4 theme tokens */
