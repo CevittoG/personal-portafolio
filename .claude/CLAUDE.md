@@ -6,7 +6,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Status
 
-The **real Explorer page is live at `/` (Build Order steps 1–10 done)**: Next.js 15.4.11 + TS + Tailwind v4 app, Docker dev/preview pipeline, color tokens, real JSON data (2 jobs + a full taxonomy), a SOLID-aligned `src/lib` layer (taxonomy, experience [+ sort + csv], filters, related, stats, search, site — interfaces + impls + helpers + `useFilterTags()` URL-sync hook), the `cn()` utility, the `TagPill` primitive with all four states plus an optional `sublabel` slot (`src/components/tags/`), a global shell (`Navbar` + `Footer` under `src/components/layout/`, nav items and socials driven by config), the `ExperienceCard` component, the `SearchBar` accessible combobox + `RoleShortcuts` quick-filter row (`src/components/search/`), `ActiveFilterChips` (`src/components/filters/`) syncing the active slug set to `?tags=…`, `StatsBar` + `StatCard` (`src/components/stats/`) with Framer Motion count-up + unit suffix, `Hero` + `AnimatedRoleLine` (`src/components/hero/`) for Zone 1, and `ExperienceGrid` (`src/components/explorer/`) wrapping the card grid with sort/count/CSV-export/empty-state. All components consume the typed repositories — no JSON imports outside `src/lib/` (DIP). The old component playground lives at `/playground` (not in nav). The next pass starts at **Build Order step 11: Drawer (right-side slide-over + mobile bottom sheet)**.
+**All 18 plan steps shipped (1–18 done).** Next.js 15.4.11 + TS + Tailwind v4 + Framer Motion 11 app, Docker dev/preview pipeline, fully bilingual (EN/ES), dark + light themed, with a signature Logo Drop Cluster on Hero and site-wide polish (scroll reveals, route fade, micro-interactions). 14 prerendered routes (7 EN at `/...` + 7 ES at `/es/...`).
+
+**Routing:** `app/(en)/...` (invisible route group, unprefixed — Explorer, Story, Contact, Deep-dive, Playground) and `app/es/...` (Spanish mirror). Each tree has its own `layout.tsx` wrapping in `I18nProvider` + shared `Navbar` + `Footer`. Root `app/layout.tsx` owns `<html>`, theme + lang inline scripts, the `ThemeProvider`, and `template.tsx` (180ms global route fade).
+
+**i18n (`src/i18n/`):** custom thin layer (not `next-intl` — static export blocks middleware-based EN-unprefixed routing). `locale.ts`, `messages/{en,es,index}.ts` (typed catalogues, parity via `Messages = typeof en`), `translator.ts` (dot-notation + `{name}` interpolation + typed `MessageKey<T>`), `I18nProvider.tsx` (`useTranslations` / `useLocale` / `useMessages`), `server.ts` (`getTranslator(locale)` for RSCs), `path.ts` (`withLocale` / `switchLocale`), `inline-script.ts` (pre-paint `<html lang>` patch).
+
+**Theme (`src/lib/theme/`):** `types.ts`, `storage.ts` (`ThemeStorage` interface + `LocalStorageThemeStorage` — DIP), `inline-script.ts` (FOUC-safe pre-paint resolver), `ThemeProvider.tsx`. Light palette lives under `[data-theme="light"]` in `globals.css` with all 8 tag-type colors retuned.
+
+**SOLID `src/lib/` layer:** `taxonomy` (+ `logos.ts` feeding the cluster), `experience` (+ `sort.ts`, `csv.ts`, description renderer), `filters`, `related`, `stats` (computers now expose optional `labelKey: MessageKey`), `search`, `site`, `hooks`.
+
+**Shared page bodies:** `Explorer.tsx` (client), `Story.tsx` / `Contact.tsx` / `DeepDive.tsx` (server, take `locale: Locale` prop). Route files are tiny wrappers — both EN and ES routes call the same component with their locale.
+
+**Motion primitive:** `src/components/motion/Reveal.tsx` (`<Reveal>` + `<RevealStagger>`, 320ms ease-out-quint). Honors `prefers-reduced-motion` everywhere.
+
+**Navbar:** scroll-aware, includes `ThemeToggle` (sun/moon cross-fade) + `LanguageSwitcher` (writes `NEXT_LOCALE` cookie, preserves query + hash via `switchLocale()`).
+
+**Documented deviations** (see plan Status Log): (i) `/story` rail uses custom Framer Motion `useScroll`/`useSpring` instead of Aceternity TracingBeam (TracingBeam is hard-coded for a left-rail layout that doesn't fit the alternating centre rail); (ii) i18n uses a custom thin layer instead of next-intl (static export blocks next-intl's middleware-based EN-unprefixed routing).
+
+**Deferred (plan §18 Phase 2):** taxonomy `display_name_es`; experience entry translations. Both stay in authored language (English) for v1.
 
 `docs/portfolio-website-plan.md` remains the single source of truth for design and architecture. Experience documentation for JSON data population lives in `docs/experience/`.
 
