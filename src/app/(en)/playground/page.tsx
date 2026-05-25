@@ -62,7 +62,7 @@ const MOCK_ENTRIES: ExperienceEntry[] = [
       "Built a SaaS that helps teachers structure feedback at scale. Wore every hat — product, backend, fundraising.",
     description: "",
     tags: {
-      roles: ["full-stack", "founder"],
+      roles: ["full-stack", "co-founder"],
       languages: ["typescript", "python"],
       technologies: ["postgres", "docker"],
       libraries: ["fastapi", "nextjs"],
@@ -71,7 +71,7 @@ const MOCK_ENTRIES: ExperienceEntry[] = [
       scale: ["greenfield"],
       soft_skills: ["leadership", "communication"],
     },
-    impact: ["100+ institutions onboarded in pilot phase"],
+    impact: ["10+ institutions onboarded in pilot phase"],
     media: [],
     featured: true,
   },
