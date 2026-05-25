@@ -28,6 +28,9 @@ export interface TagPillProps {
   onClick?: () => void;
   /** Required when state is "removable". */
   onRemove?: () => void;
+  /** Override aria-label on the × button when state is "removable" — used
+   *  by callers that need a localized label (defaults to `Remove {label}`). */
+  removeAriaLabel?: string;
   className?: string;
 }
 
@@ -36,7 +39,7 @@ export interface TagPillProps {
 const BASE_CLASSES = cn(
   "inline-flex items-center gap-1.5 rounded-full border",
   "px-2.5 py-1 text-xs font-medium leading-none whitespace-nowrap",
-  "transition-colors duration-150",
+  "transition-[color,background-color,border-color,transform] duration-150 ease-out",
   "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2",
   "focus-visible:ring-offset-bg",
 );
@@ -81,6 +84,7 @@ export function TagPill({
   sublabel,
   onClick,
   onRemove,
+  removeAriaLabel,
   className,
 }: TagPillProps) {
   const interactive = state !== "muted" && (onClick || state === "removable");
@@ -97,7 +101,9 @@ export function TagPill({
       className={cn(
         BASE_CLASSES,
         STATE_CLASSES[state],
-        interactive && state !== "removable" && "cursor-pointer",
+        interactive &&
+          state !== "removable" &&
+          "cursor-pointer active:scale-[0.97] motion-reduce:active:scale-100",
         className,
       )}
       style={styleFor(type, state)}
@@ -115,7 +121,7 @@ export function TagPill({
         <button
           type="button"
           onClick={onRemove}
-          aria-label={`Remove ${label}`}
+          aria-label={removeAriaLabel ?? `Remove ${label}`}
           className={cn(
             "-mr-1 grid h-4 w-4 place-items-center rounded-full",
             "cursor-pointer hover:bg-current/15",

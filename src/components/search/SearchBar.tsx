@@ -8,10 +8,12 @@ import {
   useState,
   type KeyboardEvent,
 } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { defaultSearchStrategy } from "@/lib/search/substring";
 import type { SearchStrategy } from "@/lib/search/types";
 import { TAG_TYPES, type TagType, type TaxonomyEntry } from "@/lib/taxonomy/types";
 import { tagColorVar } from "@/components/tags/tag-colors";
+import { useTranslations } from "@/i18n/I18nProvider";
 import { cn } from "@/lib/utils";
 
 /**
@@ -40,7 +42,6 @@ export interface SearchBarProps {
   className?: string;
 }
 
-const DEFAULT_PLACEHOLDER = "Search by skill, tool, or role…";
 const MAX_VISIBLE = 24;
 
 export function SearchBar({
@@ -49,9 +50,11 @@ export function SearchBar({
   excludeSlugs = [],
   onSelect,
   searchStrategy = defaultSearchStrategy,
-  placeholder = DEFAULT_PLACEHOLDER,
+  placeholder,
   className,
 }: SearchBarProps) {
+  const t = useTranslations();
+  const resolvedPlaceholder = placeholder ?? t("search.placeholder");
   const [query, setQuery] = useState("");
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
@@ -146,10 +149,20 @@ export function SearchBar({
       ? optionDomId(listboxId, options[activeIndex].slug)
       : undefined;
 
+  const reduceMotion = useReducedMotion();
+  const panelMotion = reduceMotion
+    ? {}
+    : {
+        initial: { opacity: 0, y: -6 },
+        animate: { opacity: 1, y: 0 },
+        exit: { opacity: 0, y: -6 },
+        transition: { duration: 0.18, ease: [0.22, 1, 0.36, 1] as const },
+      };
+
   return (
     <div ref={containerRef} className={cn("relative w-full", className)}>
       <label htmlFor={inputId} className="sr-only">
-        Search experiences by tag
+        {t("search.inputLabel")}
       </label>
       <div className="relative">
         <SearchIcon className="absolute left-4 top-1/2 -translate-y-1/2 text-text-muted" />
@@ -165,7 +178,7 @@ export function SearchBar({
           aria-controls={listboxId}
           aria-activedescendant={activeId}
           value={query}
-          placeholder={placeholder}
+          placeholder={resolvedPlaceholder}
           onChange={(e) => {
             setQuery(e.target.value);
             setOpen(true);
@@ -185,11 +198,13 @@ export function SearchBar({
         />
       </div>
 
-      {showDropdown && (
-        <div
+      <AnimatePresence>
+        {showDropdown && (
+        <motion.div
+          {...panelMotion}
           id={listboxId}
           role="listbox"
-          aria-label="Tag suggestions"
+          aria-label={t("search.suggestionsLabel")}
           className={cn(
             "absolute z-50 mt-2 w-full max-h-[24rem] overflow-y-auto",
             "rounded-xl border border-border bg-surface-elevated shadow-xl",
@@ -198,7 +213,7 @@ export function SearchBar({
         >
           {query.trim().length === 0 && (
             <p className="px-3 py-1.5 text-[10px] uppercase tracking-wider text-text-muted">
-              Common starting points
+              {t("search.commonStartingPoints")}
             </p>
           )}
           {grouped.map(({ type, items }) => (
@@ -249,21 +264,25 @@ export function SearchBar({
               </ul>
             </div>
           ))}
-        </div>
-      )}
+        </motion.div>
+        )}
+      </AnimatePresence>
 
-      {open && options.length === 0 && (
-        <div
-          className={cn(
-            "absolute z-50 mt-2 w-full rounded-xl border border-border",
-            "bg-surface-elevated px-4 py-3 text-sm text-text-secondary shadow-xl",
-          )}
-        >
-          {query.trim().length === 0
-            ? "Start typing to see tag suggestions…"
-            : `No tags match “${query.trim()}”.`}
-        </div>
-      )}
+      <AnimatePresence>
+        {open && options.length === 0 && (
+          <motion.div
+            {...panelMotion}
+            className={cn(
+              "absolute z-50 mt-2 w-full rounded-xl border border-border",
+              "bg-surface-elevated px-4 py-3 text-sm text-text-secondary shadow-xl",
+            )}
+          >
+            {query.trim().length === 0
+              ? t("search.empty")
+              : t("search.noMatch", { query: query.trim() })}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

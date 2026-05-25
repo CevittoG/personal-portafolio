@@ -1,7 +1,9 @@
 "use client";
 
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { TagPill } from "@/components/tags/TagPill";
 import { tagTypeLabel } from "@/lib/taxonomy/labels";
+import { useTranslations } from "@/i18n/I18nProvider";
 import type { TaxonomyEntry } from "@/lib/taxonomy/types";
 import { cn } from "@/lib/utils";
 
@@ -35,32 +37,48 @@ export function ActiveFilterChips({
   onClear,
   className,
 }: ActiveFilterChipsProps) {
+  const reduceMotion = useReducedMotion();
+  const t = useTranslations();
   if (slugs.length === 0) return null;
+
+  const chipMotion = reduceMotion
+    ? {}
+    : {
+        initial: { opacity: 0, scale: 0.92, y: -2 },
+        animate: { opacity: 1, scale: 1, y: 0 },
+        exit: { opacity: 0, scale: 0.92, y: -2 },
+        transition: { duration: 0.18, ease: [0.22, 1, 0.36, 1] as const },
+        layout: true,
+      };
 
   return (
     <div
       role="region"
-      aria-label="Active filters"
+      aria-label={t("filters.region")}
       className={cn(
         "flex flex-wrap items-center gap-2",
         className,
       )}
     >
-      {slugs.map((slug) => {
-        const tag = taxonomyBySlug.get(slug);
-        if (!tag) return null;
-        return (
-          <TagPill
-            key={slug}
-            slug={slug}
-            label={tag.display_name}
-            sublabel={tagTypeLabel(tag.type)}
-            type={tag.type}
-            state="removable"
-            onRemove={() => onRemove(slug)}
-          />
-        );
-      })}
+      <AnimatePresence initial={false}>
+        {slugs.map((slug) => {
+          const tag = taxonomyBySlug.get(slug);
+          if (!tag) return null;
+          return (
+            <motion.span key={slug} {...chipMotion} className="inline-flex">
+              <TagPill
+                slug={slug}
+                label={tag.display_name}
+                sublabel={tagTypeLabel(tag.type)}
+                type={tag.type}
+                state="removable"
+                onRemove={() => onRemove(slug)}
+                removeAriaLabel={t("filters.removeTag", { label: tag.display_name })}
+              />
+            </motion.span>
+          );
+        })}
+      </AnimatePresence>
       <button
         type="button"
         onClick={onClear}
@@ -70,7 +88,7 @@ export function ActiveFilterChips({
           "focus-visible:outline-none focus-visible:underline",
         )}
       >
-        Clear all
+        {t("filters.clearAll")}
       </button>
     </div>
   );

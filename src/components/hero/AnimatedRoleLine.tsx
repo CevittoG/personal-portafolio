@@ -24,7 +24,7 @@ export interface AnimatedRoleLineProps {
 
 export function AnimatedRoleLine({
   labels,
-  intervalMs = 2200,
+  intervalMs = 2800,
   className,
 }: AnimatedRoleLineProps) {
   const reduceMotion = useReducedMotion();
@@ -60,10 +60,10 @@ export function AnimatedRoleLine({
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
           key={labels[index]}
-          initial={{ opacity: 0, y: 8 }}
+          initial={{ opacity: 0, y: 6 }}
           animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -8 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
+          exit={{ opacity: 0, y: -6 }}
+          transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
           className="absolute inset-0 whitespace-nowrap"
         >
           {labels[index]}

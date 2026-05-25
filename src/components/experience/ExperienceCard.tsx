@@ -10,6 +10,7 @@ import {
 import { formatTagLabel } from "@/lib/taxonomy/format";
 import { TAG_TYPES, type TagType } from "@/lib/taxonomy/types";
 import { TagPill, type TagPillState } from "@/components/tags/TagPill";
+import { useTranslations } from "@/i18n/I18nProvider";
 import { cn } from "@/lib/utils";
 
 /**
@@ -38,6 +39,7 @@ export function ExperienceCard({
   onSelect,
   className,
 }: ExperienceCardProps) {
+  const t = useTranslations();
   const heading = getHeadingLine(entry);
   const badge = getMetaBadge(entry);
   const impact = getImpactHighlight(entry);
@@ -59,9 +61,14 @@ export function ExperienceCard({
       className={cn(
         "group flex h-full flex-col gap-4 rounded-2xl border border-border",
         "bg-surface p-5 text-left",
-        "transition-colors duration-200",
-        interactive &&
-          "hover:bg-surface-elevated hover:border-border/80 cursor-pointer",
+        "transition-[transform,background-color,border-color,box-shadow] duration-200 ease-out",
+        interactive && [
+          "cursor-pointer",
+          "hover:-translate-y-0.5",
+          "hover:bg-surface-elevated",
+          "hover:border-accent/40",
+          "hover:shadow-[0_8px_24px_-12px_color-mix(in_srgb,var(--color-accent)_30%,transparent)]",
+        ],
         "focus-within:ring-2 focus-within:ring-accent focus-within:ring-offset-2",
         "focus-within:ring-offset-bg",
         className,
@@ -83,7 +90,7 @@ export function ExperienceCard({
               )}
             >
               <span className="relative z-10">{heading.primary}</span>
-              <span className="sr-only">. Open details</span>
+              <span className="sr-only">. {t("card.open")}</span>
             </button>
           ) : (
             heading.primary
@@ -134,16 +141,23 @@ export function ExperienceCard({
         )}
       </div>
 
-      {/* Impact pull-quote */}
+      {/* Impact pull-quote — rendered as an inline-callout with a leading
+          accent dot rather than a side-stripe border (shared design law:
+          no >1px coloured side borders). */}
       {impact && (
-        <blockquote
+        <p
           className={cn(
-            "mt-auto border-l-2 pl-3 text-sm italic text-text-primary",
-            "border-accent",
+            "mt-auto flex items-start gap-2 rounded-lg",
+            "bg-[color-mix(in_srgb,var(--color-accent)_8%,transparent)]",
+            "px-3 py-2 text-sm italic text-text-primary",
           )}
         >
-          {impact}
-        </blockquote>
+          <span
+            aria-hidden="true"
+            className="mt-[0.45rem] inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
+          />
+          <span>{impact}</span>
+        </p>
       )}
 
       {/* CTA */}
@@ -156,7 +170,7 @@ export function ExperienceCard({
             "group-hover:translate-x-0.5",
           )}
         >
-          View details →
+          {t("grid.viewDetails")}
         </p>
       )}
     </article>

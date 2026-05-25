@@ -2,8 +2,10 @@
 
 import { useMemo } from "react";
 import { StatCard } from "./StatCard";
+import { Reveal } from "@/components/motion/Reveal";
 import { statComputers } from "@/lib/stats/registry";
 import { defaultFilterStrategy } from "@/lib/filters/tag-match";
+import { useTranslations } from "@/i18n/I18nProvider";
 import type { ExperienceEntry } from "@/lib/experience/types";
 import { cn } from "@/lib/utils";
 
@@ -31,6 +33,7 @@ export interface StatsBarProps {
 }
 
 export function StatsBar({ entries, activeSlugs, className }: StatsBarProps) {
+  const t = useTranslations();
   const filtered = useMemo(
     () =>
       entries.filter((e) =>
@@ -47,32 +50,32 @@ export function StatsBar({ entries, activeSlugs, className }: StatsBarProps) {
         // `suffix` present → animate number, append unit after count-up
         // neither          → plain number, no suffix
         const value: number | string = computer.format ? computer.format(raw) : (raw as number | string);
+        const label = computer.labelKey ? t(computer.labelKey) : computer.label;
         return {
           id: computer.id,
-          label: computer.label,
+          label,
           value,
           suffix: computer.suffix,
         };
       }),
-    [filtered],
+    // `t` identity is stable per provider value; safe to omit, but include
+    // it to satisfy the exhaustive-deps rule.
+    [filtered, t],
   );
 
   return (
     <div
-      aria-label="Summary statistics"
+      aria-label={t("stats.region")}
       className={cn(
         // Mobile: 2-column grid; sm+: one row per plan §14
         "grid grid-cols-2 gap-3 sm:grid-cols-4",
         className,
       )}
     >
-      {stats.map(({ id, label, value, suffix }) => (
-        <StatCard
-          key={id}
-          value={value}
-          suffix={suffix}
-          label={label}
-        />
+      {stats.map(({ id, label, value, suffix }, i) => (
+        <Reveal key={id} delay={i * 0.05} amount={0.3}>
+          <StatCard value={value} suffix={suffix} label={label} />
+        </Reveal>
       ))}
     </div>
   );

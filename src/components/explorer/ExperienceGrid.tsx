@@ -1,17 +1,26 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ExperienceCard } from "@/components/experience/ExperienceCard";
 import { downloadCsv, entriesToCsv } from "@/lib/experience/csv";
 import { defaultFilterStrategy } from "@/lib/filters/tag-match";
 import {
   SORT_IDS,
-  SORT_LABELS,
   type SortId,
   sortEntries,
 } from "@/lib/experience/sort";
 import type { ExperienceEntry } from "@/lib/experience/types";
+import { useTranslations } from "@/i18n/I18nProvider";
+import type { MessageKey } from "@/i18n/translator";
 import { cn } from "@/lib/utils";
+
+const SORT_KEYS: Record<SortId, MessageKey> = {
+  recent: "grid.sortRecent",
+  relevant: "grid.sortRelevant",
+};
+
+const EASE_OUT_QUINT: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 /**
  * ExperienceGrid — Explorer Zone 4 (plan §6).
@@ -42,6 +51,7 @@ export function ExperienceGrid({
   featuredFallback,
   className,
 }: ExperienceGridProps) {
+  const t = useTranslations();
   const [sort, setSort] = useState<SortId>("recent");
 
   const filtered = useMemo(
@@ -70,6 +80,24 @@ export function ExperienceGrid({
     downloadCsv(csv, `experience-${stamp}.csv`);
   };
 
+  const reduceMotion = useReducedMotion();
+  // Stagger first paint reveal across the visible cards; filter changes
+  // get a quieter same-position fade via `layout`. Layer A of plan §15.
+  const cardMotion = (index: number) =>
+    reduceMotion
+      ? {}
+      : ({
+          initial: { opacity: 0, y: 8 },
+          animate: { opacity: 1, y: 0 },
+          exit: { opacity: 0, y: -4 },
+          transition: {
+            duration: 0.32,
+            delay: Math.min(index * 0.05, 0.4),
+            ease: EASE_OUT_QUINT,
+          },
+          layout: true,
+        } as const);
+
   return (
     <div className={cn("space-y-5", className)}>
       {/* Secondary filter bar */}
@@ -79,7 +107,7 @@ export function ExperienceGrid({
             htmlFor="grid-sort"
             className="text-xs uppercase tracking-wider text-text-secondary"
           >
-            Sort
+            {t("grid.sortLabel")}
           </label>
           <select
             id="grid-sort"
@@ -96,12 +124,12 @@ export function ExperienceGrid({
           >
             {SORT_IDS.map((id) => (
               <option key={id} value={id}>
-                {SORT_LABELS[id]}
+                {t(SORT_KEYS[id])}
               </option>
             ))}
           </select>
           <span className="text-xs text-text-muted">
-            Showing {sorted.length} of {entries.length}
+            {t("grid.showing", { visible: sorted.length, total: entries.length })}
           </span>
         </div>
 
@@ -120,22 +148,25 @@ export function ExperienceGrid({
           )}
         >
           <span aria-hidden="true">↓</span>
-          Download filtered profile
+          {t("grid.download")}
         </button>
       </div>
 
       {/* Grid or empty state */}
       {!isEmpty && (
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {sorted.map((entry) => (
-            <ExperienceCard
-              key={entry.id}
-              entry={entry}
-              filterTags={activeSlugs as string[]}
-              onSelect={onSelect ? () => onSelect(entry) : undefined}
-            />
-          ))}
-        </div>
+        <motion.div layout className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <AnimatePresence initial={true}>
+            {sorted.map((entry, i) => (
+              <motion.div key={entry.id} {...cardMotion(i)}>
+                <ExperienceCard
+                  entry={entry}
+                  filterTags={activeSlugs as string[]}
+                  onSelect={onSelect ? () => onSelect(entry) : undefined}
+                />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </motion.div>
       )}
 
       {isEmpty && (
@@ -146,15 +177,15 @@ export function ExperienceGrid({
           )}
         >
           <p className="text-sm text-text-primary font-medium">
-            No experiences match these filters.
+            {t("grid.emptyTitle")}
           </p>
           <p className="mt-1 text-sm text-text-secondary">
-            Try removing a tag or broadening your search.
+            {t("grid.emptyHint")}
           </p>
           {showFallback && (
             <div className="mt-8 text-left">
               <p className="mb-3 text-xs uppercase tracking-wider text-text-muted text-center">
-                Featured instead
+                {t("grid.featuredInstead")}
               </p>
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {fallback.map((entry) => (
