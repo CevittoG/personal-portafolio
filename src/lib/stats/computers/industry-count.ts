@@ -4,6 +4,7 @@ import type { StatComputer } from "../types";
 export const industryCountComputer: StatComputer<number> = {
   id: "industry-count",
   label: "Industries",
+  labelKey: "stats.industries",
   compute(entries: ExperienceEntry[]): number {
     const seen = new Set<string>();
     for (const entry of entries) {

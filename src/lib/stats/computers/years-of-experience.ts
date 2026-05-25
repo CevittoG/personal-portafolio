@@ -14,6 +14,7 @@ function monthsBetween(start: string, end: string | null): number {
 export const yearsOfExperienceComputer: StatComputer<number> = {
   id: "years-of-experience",
   label: "Years of relevant experience",
+  labelKey: "stats.yearsOfExperience",
   // suffix keeps the count-up animation while still showing the unit
   suffix: " yrs",
   compute(entries: ExperienceEntry[]): number {

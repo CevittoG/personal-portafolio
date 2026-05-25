@@ -4,6 +4,7 @@ import type { StatComputer } from "../types";
 export const entryCountComputer: StatComputer<number> = {
   id: "entry-count",
   label: "Projects & roles",
+  labelKey: "stats.projectsAndRoles",
   compute(entries: ExperienceEntry[]): number {
     return entries.length;
   },

@@ -1,36 +1,35 @@
 /**
- * Site-wide authored copy and identity.
+ * Site-wide identity + structural config.
  *
- * Lives outside taxonomy.json / experience.json because none of this is
- * derived from experience data — it's the human-written voice on top of the
- * data layer (plan §6 Hero, §13 Copy Tone). One file = one place to update.
- *
- * Keep it concise and reread plan §13 before editing values.
+ * After step 18 (i18n), all authored prose moved into the message catalogues
+ * (`src/i18n/messages/{en,es}.ts`). What stays here are the locale-agnostic
+ * facts: display name, email, availability boolean, optional resume URL.
+ * Prose lives next to its translations; data lives here.
  */
 export interface SiteConfig {
-  /** Display name shown in the Navbar and Hero. */
+  /** Display name shown in the Navbar and Hero (proper noun — same in all locales). */
   name: string;
   /** Short title fragment used as a fallback when no role tag is animating. */
   title: string;
-  /** Hero positioning sentence — first person, plain, no buzzwords. */
-  positioningStatement: string;
   /** Email used by the Footer + Contact page. */
   email: string;
-  /** Availability flag for the Contact page (plan §9). */
+  /** Availability boolean for the Contact page badge (plan §9). The
+   *  human-readable strings come from `t("contact.availability.*")`. */
   availability: {
     open: boolean;
-    note: string;
   };
+  /** Optional full-resume PDF link (plan §9). When null, the download
+   *  affordance is hidden. Drop the PDF into `public/` and set the href.
+   *  Label is i18n-resolved via `t("contact.resumeAction")`. */
+  resume: { href: string } | null;
 }
 
 export const siteConfig: SiteConfig = {
   name: "Sebastián Gutiérrez",
   title: "Software Engineer",
-  positioningStatement:
-    "I build data systems that handle real scale — and I make sure the people who depend on them actually understand what they do.",
   email: "aseba.gutierrezm@gmail.com",
   availability: {
     open: true,
-    note: "Open to remote roles across the Americas and EU time zones.",
   },
+  resume: null,
 };
