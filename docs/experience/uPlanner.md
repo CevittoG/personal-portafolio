@@ -91,6 +91,19 @@ While not the team lead, the role carried significant autonomy — particularly 
 | D2L Brightspace REST API | Primary LMS integration — grades, attendance, courses, curriculum upload |
 | Internal uPlanner APIs | Cross-referenced with external APIs for data aggregation |
 
+### Infrastructure & DevOps Tooling
+uPlanner runs a **multi-tenant database architecture on MySQL**: every client is provisioned with three isolated database instances — **development, QA, and production** — so changes can be built, validated, and promoted along a controlled path before reaching live institutional data. Operating across this matrix of per-client, per-environment databases meant that every pipeline, integration, and tooling change had to be environment-aware and safe to promote, reinforcing the discipline of testing against QA before any production deployment.
+
+The team standardized on the **Atlassian Suite** for the full software delivery lifecycle:
+
+| Tool | Role |
+|---|---|
+| Bamboo | Continuous integration and **automated deployments** — builds and releases were pipelined through Bamboo rather than shipped by hand, keeping promotions across the dev → QA → prod environments repeatable and auditable |
+| JIRA | Ticketing and work tracking — the system of record for tasks, bugs, and client-reported issues |
+| BitBucket | Version control — Git repository hosting for all source, integration scripts, and ETL customizations |
+
+This tooling tied directly into day-to-day data engineering work: changes were tracked as JIRA tickets, version-controlled in BitBucket, and promoted through the multi-environment database layout via Bamboo's automated deployment pipelines.
+
 ---
 
 ## 5. ETL Pipeline Architecture (Pentaho-based)

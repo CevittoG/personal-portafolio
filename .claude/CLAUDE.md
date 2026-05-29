@@ -4,9 +4,20 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ---
 
+## Design Context
+
+Strategic and visual guidance for design work lives in two files at the repo root:
+
+- [PRODUCT.md](../PRODUCT.md) — register (brand), users (recruiters first, hiring managers second), brand personality (considered, plain-spoken, warm), anti-references (LinkedIn-resume voice, try-hard dev brutalist, agency overdesign), and 5 strategic design principles. Read this before any new UI work.
+- [DESIGN.md](../DESIGN.md) — visual system: tokens (machine-readable YAML frontmatter), the "Quiet Workshop" north star, color/typography/elevation/component specs, and named do's and don'ts. The accent is **Lamp Ember** (`#E5642E` dark / `#B23F12` light) — the one warm light in the workshop. `.impeccable/design.json` is the machine-readable sidecar (tonal ramps, motion tokens, full component HTML/CSS snippets).
+
+Future impeccable commands (`/impeccable shape`, `/impeccable polish`, `/impeccable critique`, etc.) load these automatically.
+
+---
+
 ## Project Status
 
-**All 18 plan steps shipped (1–18 done).** Next.js 15.4.11 + TS + Tailwind v4 + Framer Motion 11 app, Docker dev/preview pipeline, fully bilingual (EN/ES), dark + light themed, with a signature Logo Drop Cluster on Hero and site-wide polish (scroll reveals, route fade, micro-interactions). 14 prerendered routes (7 EN at `/...` + 7 ES at `/es/...`).
+**All 18 plan steps shipped (1–18 done).** Next.js 15.4.11 + TS + Tailwind v4 + Framer Motion 11 app, Docker dev/preview pipeline, fully bilingual (EN/ES), dark + light themed, with a signature ambient Logo Cluster on Hero (continuous float + cursor-repel via `useMotionValue` / `useSpring` / `useAnimationFrame`, replacing the original drop-from-above entrance — see plan §6 Zone 1 + Status Log 2026-05-25) and site-wide polish (scroll reveals, route fade, micro-interactions). 14 prerendered routes (7 EN at `/...` + 7 ES at `/es/...`).
 
 **Routing:** `app/(en)/...` (invisible route group, unprefixed — Explorer, Story, Contact, Deep-dive, Playground) and `app/es/...` (Spanish mirror). Each tree has its own `layout.tsx` wrapping in `I18nProvider` + shared `Navbar` + `Footer`. Root `app/layout.tsx` owns `<html>`, theme + lang inline scripts, the `ThemeProvider`, and `template.tsx` (180ms global route fade).
 
@@ -23,6 +34,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 **Navbar:** scroll-aware, includes `ThemeToggle` (sun/moon cross-fade) + `LanguageSwitcher` (writes `NEXT_LOCALE` cookie, preserves query + hash via `switchLocale()`).
 
 **Documented deviations** (see plan Status Log): (i) `/story` rail uses custom Framer Motion `useScroll`/`useSpring` instead of Aceternity TracingBeam (TracingBeam is hard-coded for a left-rail layout that doesn't fit the alternating centre rail); (ii) i18n uses a custom thin layer instead of next-intl (static export blocks next-intl's middleware-based EN-unprefixed routing).
+
+**Discover relevance gate (2026-05-28):** every experience entry carries a required `relevant: boolean`. The Explorer "Discover" tool + stats read `experienceRepository.getRelevant()` — only `relevant: true` entries (professional/technical work) show in the grid and feed the years-of-experience stat; non-relevant entries (formal education, unrelated jobs, personal) stay in data for Story/deep-dive but are hidden from Discover. The portfolio-json-builder skill documents this field. The years stat sums each entry's duration independently (overlaps counted per role) and tolerates `null`/year-only `Period.start`. Accent-filled CTAs use the `--color-on-accent` token (white) rather than `text-text-primary`.
 
 **Deferred (plan §18 Phase 2):** taxonomy `display_name_es`; experience entry translations. Both stay in authored language (English) for v1.
 

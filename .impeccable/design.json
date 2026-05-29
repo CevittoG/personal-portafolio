@@ -1,0 +1,263 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-05-25T00:00:00Z",
+  "title": "Design System: Sebastian Gutierrez Portfolio",
+  "extensions": {
+    "colorMeta": {
+      "bg": {
+        "role": "neutral",
+        "displayName": "Workshop Black",
+        "canonical": "oklch(10% 0.015 280)",
+        "tonalRamp": ["#05050A", "#0A0A0F", "#13131A", "#1C1C26", "#2A2A38", "#44445A", "#6E6E88", "#9999B0"]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Bench Surface",
+        "canonical": "oklch(14% 0.015 280)",
+        "tonalRamp": ["#08080D", "#0E0E14", "#13131A", "#1C1C26", "#2A2A38", "#3F3F50", "#6E6E88", "#9999B0"]
+      },
+      "surface-elevated": {
+        "role": "neutral",
+        "displayName": "Bench Surface Elevated",
+        "canonical": "oklch(18% 0.015 280)",
+        "tonalRamp": ["#0A0A12", "#13131A", "#1C1C26", "#26263A", "#33334A", "#44445A", "#6E6E88", "#9999B0"]
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "Border Slate",
+        "canonical": "oklch(28% 0.015 280)",
+        "tonalRamp": ["#13131A", "#1C1C26", "#2A2A38", "#3F3F50", "#5A5A70", "#7A7A90", "#A0A0B5", "#C8C8D5"]
+      },
+      "text-primary": {
+        "role": "neutral",
+        "displayName": "Text Primary",
+        "canonical": "oklch(96% 0.01 280)",
+        "tonalRamp": ["#26263A", "#44445A", "#6E6E88", "#9999B0", "#BBBBC8", "#D8D8E5", "#E8E8F0", "#F0F0FF"]
+      },
+      "text-secondary": {
+        "role": "neutral",
+        "displayName": "Text Secondary",
+        "canonical": "oklch(63% 0.04 280)",
+        "tonalRamp": ["#2A2A38", "#44445A", "#5A5A75", "#7575A0", "#8888AA", "#A0A0BD", "#BBBBC8", "#D8D8E5"]
+      },
+      "text-muted": {
+        "role": "neutral",
+        "displayName": "Text Muted",
+        "canonical": "oklch(33% 0.04 280)",
+        "tonalRamp": ["#1C1C26", "#2A2A38", "#33334A", "#44445A", "#5A5A75", "#6E6E88", "#8888AA", "#A0A0BD"]
+      },
+      "accent": {
+        "role": "primary",
+        "displayName": "Lamp Ember",
+        "canonical": "oklch(67% 0.18 45)",
+        "tonalRamp": ["#3A1606", "#5E2410", "#8A3618", "#B23F12", "#D04F1F", "#E5642E", "#F07A45", "#F8A382"]
+      },
+      "accent-hover": {
+        "role": "primary",
+        "displayName": "Lamp Ember Hover",
+        "canonical": "oklch(72% 0.17 45)",
+        "tonalRamp": ["#3A1606", "#5E2410", "#8A3618", "#B85530", "#D26935", "#E57A45", "#F07A45", "#F8A382"]
+      },
+      "accent-subtle": {
+        "role": "primary",
+        "displayName": "Lamp Ember Subtle",
+        "canonical": "oklch(67% 0.18 45 / 0.13)",
+        "tonalRamp": ["#3A160611", "#5E241022", "#8A361833", "#B23F1244", "#D04F1F55", "#E5642E66", "#F07A4577", "#F8A38288"]
+      },
+      "tag-roles": {
+        "role": "secondary",
+        "displayName": "Tag · Roles (Rose)",
+        "canonical": "oklch(62% 0.16 5)",
+        "tonalRamp": ["#3D1620", "#5E2030", "#7E2C40", "#9F3850", "#B23F5A", "#CF566E", "#DD7A8C", "#EBA8B5"]
+      },
+      "tag-languages": {
+        "role": "secondary",
+        "displayName": "Tag · Languages (Sky)",
+        "canonical": "oklch(62% 0.13 245)",
+        "tonalRamp": ["#0F2E48", "#173F60", "#1F517C", "#286596", "#2F7EB3", "#56A0CF", "#82BAD9", "#B8D8EA"]
+      },
+      "tag-technologies": {
+        "role": "secondary",
+        "displayName": "Tag · Technologies (Teal)",
+        "canonical": "oklch(72% 0.14 165)",
+        "tonalRamp": ["#0E382A", "#155138", "#1B6948", "#22825C", "#2FA67F", "#56CF9E", "#86E0BB", "#BCEFD7"]
+      },
+      "tag-libraries": {
+        "role": "secondary",
+        "displayName": "Tag · Libraries (Amber)",
+        "canonical": "oklch(72% 0.12 70)",
+        "tonalRamp": ["#3A2810", "#5A3D18", "#7A5220", "#9A6A2D", "#B5803B", "#CF9A56", "#DDB888", "#EBD2B5"]
+      },
+      "tag-domains": {
+        "role": "secondary",
+        "displayName": "Tag · Domains (Iris)",
+        "canonical": "oklch(58% 0.18 300)",
+        "tonalRamp": ["#2A1248", "#3F1A66", "#54237F", "#6B2D9D", "#7F3FB5", "#9E56CF", "#BC85DD", "#D6B5EB"]
+      },
+      "tag-concepts": {
+        "role": "secondary",
+        "displayName": "Tag · Concepts (Persimmon)",
+        "canonical": "oklch(68% 0.14 45)",
+        "tonalRamp": ["#3A1F10", "#5A301A", "#7A4022", "#9A4F2C", "#B55F3F", "#CF7856", "#DD9A82", "#EBC1B0"]
+      },
+      "tag-scale": {
+        "role": "secondary",
+        "displayName": "Tag · Scale (Sap)",
+        "canonical": "oklch(72% 0.18 145)",
+        "tonalRamp": ["#103810", "#185018", "#226822", "#2F852F", "#3FAA3F", "#56CF56", "#88E088", "#BCEEBB"]
+      },
+      "tag-soft-skills": {
+        "role": "secondary",
+        "displayName": "Tag · Soft Skills (Fuchsia)",
+        "canonical": "oklch(62% 0.20 340)",
+        "tonalRamp": ["#3D1238", "#5F1A54", "#7F236F", "#9F2D8B", "#B53F9F", "#CF56B8", "#DD86CB", "#EBB8DC"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero name only. One per site." },
+      "headline": { "displayName": "Headline", "purpose": "Deep-dive page h1 and story-act eyebrows. One per page." },
+      "title": { "displayName": "Title", "purpose": "Card titles, drawer headings, section headings." },
+      "body": { "displayName": "Body", "purpose": "Paragraph copy. Cap at 65–75ch on prose pages." },
+      "body-small": { "displayName": "Body Small", "purpose": "Card summaries, meta rows, button labels, drawer body. The dominant scale." },
+      "label": { "displayName": "Label", "purpose": "Eyebrows, tag-type headers, taxonomy sublabels. Uppercase, tracked +0.25em." }
+    },
+    "shadows": [
+      {
+        "name": "card-hover-glow",
+        "value": "0 8px 24px -12px color-mix(in srgb, var(--color-accent) 30%, transparent)",
+        "purpose": "The single shadow in the system. Appears only on Experience Card hover, paired with a -2px Y translate. The lamp's reflection on the workbench."
+      }
+    ],
+    "motion": [
+      { "name": "duration-fast", "value": "150ms", "purpose": "Color transitions, hover state shifts on buttons, pills, links." },
+      { "name": "duration-base", "value": "200ms", "purpose": "Theme cross-fade on <html>, card hover lift, navbar scroll transition." },
+      { "name": "duration-reveal", "value": "320ms", "purpose": "Scroll-enter reveal primitive (Reveal / RevealStagger)." },
+      { "name": "duration-drawer", "value": "300ms", "purpose": "Drawer slide-in (desktop) and bottom-sheet slide-up (mobile)." },
+      { "name": "ease-out-quint", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Default reveal easing. Starts fast, settles slow — quiet but deliberate." },
+      { "name": "ease-out", "value": "cubic-bezier(0, 0, 0.2, 1)", "purpose": "Color/hover transitions where the eased exit isn't load-bearing." },
+      { "name": "reduced-motion", "value": "0.001ms", "purpose": "Animation + transition duration override under prefers-reduced-motion. The end state renders immediately." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px", "purpose": "Drawer flips from bottom-sheet to right slide-over; navbar shows desktop links." },
+      { "name": "md", "value": "768px", "purpose": "Grid moves to 2 columns; ambient hero typography scales up." },
+      { "name": "lg", "value": "1024px", "purpose": "Grid moves to 3 columns; deep-dive page becomes two-column with sticky sidebar; story timeline becomes alternating centre rail." },
+      { "name": "xl", "value": "1280px", "purpose": "Full max-width layout, drawer at 480px." }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The singular conversion action on a screen. Lamp Ember fill, pill-rounded, anchored — no translate on hover.",
+      "html": "<button class=\"ds-btn-primary\" type=\"button\">Email Sebastian<span aria-hidden=\"true\" class=\"ds-btn-primary__icon\">→</span></button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border: none; border-radius: 9999px; background: var(--color-accent); color: var(--color-text-primary); font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 500; line-height: 1; cursor: pointer; transition: background-color 150ms cubic-bezier(0, 0, 0.2, 1); } .ds-btn-primary:hover { background: var(--color-accent-hover); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-accent); } .ds-btn-primary__icon { display: inline-block; transition: transform 150ms cubic-bezier(0, 0, 0.2, 1); } .ds-btn-primary:hover .ds-btn-primary__icon { transform: translateX(2px); }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "The second CTA when one is needed. Surface fill, border outline, lifts to surface-elevated on hover.",
+      "html": "<button class=\"ds-btn-secondary\" type=\"button\">Read my story</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; padding: 12px 24px; border: 1px solid var(--color-border); border-radius: 9999px; background: var(--color-surface); color: var(--color-text-primary); font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 14px; font-weight: 500; line-height: 1; cursor: pointer; transition: background-color 150ms cubic-bezier(0, 0, 0.2, 1), border-color 150ms cubic-bezier(0, 0, 0.2, 1); } .ds-btn-secondary:hover { background: var(--color-surface-elevated); border-color: var(--color-text-muted); } .ds-btn-secondary:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-accent); }"
+    },
+    {
+      "name": "Tag Pill — Active",
+      "kind": "chip",
+      "refersTo": "tag-pill-active",
+      "description": "Selected/matching tag chip. Color drives from the type via currentColor — the border, text, and color-mix fill stay in sync.",
+      "html": "<span class=\"ds-tag-pill ds-tag-pill--active\" data-tag-type=\"languages\"><span>Python</span></span>",
+      "css": ".ds-tag-pill { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border: 1px solid currentColor; border-radius: 9999px; font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif; font-size: 12px; font-weight: 500; line-height: 1; white-space: nowrap; transition: color 150ms, background-color 150ms, border-color 150ms, transform 150ms; transition-timing-function: cubic-bezier(0, 0, 0.2, 1); } .ds-tag-pill:active { transform: scale(0.97); } .ds-tag-pill[data-tag-type='roles']        { color: var(--color-tag-roles); } .ds-tag-pill[data-tag-type='languages']    { color: var(--color-tag-languages); } .ds-tag-pill[data-tag-type='technologies'] { color: var(--color-tag-technologies); } .ds-tag-pill[data-tag-type='libraries']    { color: var(--color-tag-libraries); } .ds-tag-pill[data-tag-type='domains']      { color: var(--color-tag-domains); } .ds-tag-pill[data-tag-type='concepts']     { color: var(--color-tag-concepts); } .ds-tag-pill[data-tag-type='scale']        { color: var(--color-tag-scale); } .ds-tag-pill[data-tag-type='soft-skills']  { color: var(--color-tag-soft-skills); } .ds-tag-pill--active { background: color-mix(in srgb, currentColor 14%, transparent); }"
+    },
+    {
+      "name": "Tag Pill — Muted",
+      "kind": "chip",
+      "refersTo": "tag-pill-muted",
+      "description": "Tag chip rendered when a filter is active and this slug doesn't match. The 'here's why this entry isn't a primary hit' state.",
+      "html": "<span class=\"ds-tag-pill ds-tag-pill--muted\"><span>Bash</span></span>",
+      "css": ".ds-tag-pill--muted { color: var(--color-text-muted); border-color: var(--color-border); background: transparent; }"
+    },
+    {
+      "name": "Experience Card",
+      "kind": "card",
+      "refersTo": "experience-card",
+      "description": "Explorer's primary container. Flat at rest, lifts on hover with the one accent-tinted shadow in the system. Impact callout uses the leading-dot pattern that replaces the banned side-stripe border.",
+      "html": "<article class=\"ds-card\"><header class=\"ds-card__header\"><h3 class=\"ds-card__title\">Senior Data Engineer · uPlanner</h3><p class=\"ds-card__subtitle\">Education SaaS, LATAM</p></header><div class=\"ds-card__meta\"><span>2022 — Present</span><span aria-hidden=\"true\">·</span><span class=\"ds-card__badge\">Full-time</span></div><p class=\"ds-card__summary\">Owned the data platform serving 30+ universities across LATAM. Built the ingestion layer end-to-end and re-architected the reporting pipeline from 6h batches to 12-minute incremental loads.</p><p class=\"ds-card__impact\"><span aria-hidden=\"true\" class=\"ds-card__impact-dot\"></span><span>Cut reporting latency 30× while halving infra cost.</span></p></article>",
+      "css": ".ds-card { display: flex; flex-direction: column; gap: 16px; height: 100%; padding: 20px; border: 1px solid var(--color-border); border-radius: 20px; background: var(--color-surface); color: var(--color-text-primary); text-align: left; transition: transform 200ms cubic-bezier(0, 0, 0.2, 1), background-color 200ms, border-color 200ms, box-shadow 200ms; cursor: pointer; } .ds-card:hover { transform: translateY(-2px); background: var(--color-surface-elevated); border-color: color-mix(in srgb, var(--color-accent) 40%, transparent); box-shadow: 0 8px 24px -12px color-mix(in srgb, var(--color-accent) 30%, transparent); } .ds-card:focus-within { outline: none; box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-accent); } .ds-card__header { display: flex; flex-direction: column; gap: 4px; } .ds-card__title { margin: 0; font-family: ui-sans-serif, system-ui, sans-serif; font-size: 18px; font-weight: 600; line-height: 1.3; letter-spacing: -0.005em; color: var(--color-text-primary); } .ds-card__subtitle { margin: 0; font-size: 14px; color: var(--color-text-secondary); } .ds-card__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 12px; color: var(--color-text-muted); } .ds-card__badge { display: inline-flex; align-items: center; padding: 2px 8px; border: 1px solid var(--color-border); border-radius: 9999px; color: var(--color-text-secondary); } .ds-card__summary { margin: 0; font-size: 14px; line-height: 1.55; color: var(--color-text-secondary); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; } .ds-card__impact { margin: auto 0 0 0; display: flex; align-items: flex-start; gap: 8px; padding: 8px 12px; border-radius: 12px; background: color-mix(in srgb, var(--color-accent) 8%, transparent); font-size: 14px; font-style: italic; color: var(--color-text-primary); } .ds-card__impact-dot { margin-top: 7px; display: inline-block; width: 6px; height: 6px; flex-shrink: 0; border-radius: 9999px; background: var(--color-accent); }"
+    },
+    {
+      "name": "Search Input (combobox)",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "The Explorer's primary affordance. WAI-ARIA combobox. Focus earns a 2px Lamp Ember ring with offset.",
+      "html": "<label class=\"ds-search\"><svg class=\"ds-search__icon\" viewBox=\"0 0 16 16\" aria-hidden=\"true\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\"><circle cx=\"7\" cy=\"7\" r=\"5\"/><path d=\"M11 11l3 3\" stroke-linecap=\"round\"/></svg><input class=\"ds-search__input\" type=\"text\" role=\"combobox\" aria-expanded=\"false\" aria-autocomplete=\"list\" placeholder=\"Search a skill, tool, or role\" /></label>",
+      "css": ".ds-search { display: inline-flex; align-items: center; gap: 10px; width: 100%; max-width: 480px; padding: 10px 14px; border: 1px solid var(--color-border); border-radius: 12px; background: var(--color-surface); color: var(--color-text-primary); transition: border-color 150ms cubic-bezier(0, 0, 0.2, 1), box-shadow 150ms cubic-bezier(0, 0, 0.2, 1); } .ds-search:focus-within { border-color: var(--color-accent); box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-accent); } .ds-search__icon { width: 16px; height: 16px; color: var(--color-text-muted); flex-shrink: 0; } .ds-search__input { flex: 1; min-width: 0; padding: 0; border: none; background: transparent; color: var(--color-text-primary); font-family: ui-sans-serif, system-ui, sans-serif; font-size: 14px; line-height: 1.4; outline: none; } .ds-search__input::placeholder { color: var(--color-text-muted); }"
+    },
+    {
+      "name": "Navbar",
+      "kind": "nav",
+      "refersTo": "navbar",
+      "description": "Sticky, 64px, transparent at scroll-top. On scroll: surface/80 + backdrop-blur + 1px bottom border. Active route gets Lamp Ember + aria-current.",
+      "html": "<header class=\"ds-navbar\"><nav class=\"ds-navbar__inner\" aria-label=\"Primary\"><a class=\"ds-navbar__brand\" href=\"/\">Sebastian Gutierrez</a><ul class=\"ds-navbar__links\"><li><a class=\"ds-navbar__link ds-navbar__link--active\" href=\"/\" aria-current=\"page\">Explorer</a></li><li><a class=\"ds-navbar__link\" href=\"/story\">Story</a></li><li><a class=\"ds-navbar__link\" href=\"/contact\">Contact</a></li></ul></nav></header>",
+      "css": ".ds-navbar { position: sticky; top: 0; z-index: 40; height: 64px; background: color-mix(in srgb, var(--color-surface) 80%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--color-border); transition: background-color 200ms cubic-bezier(0, 0, 0.2, 1); } .ds-navbar__inner { display: flex; align-items: center; justify-content: space-between; height: 100%; max-width: 1152px; margin: 0 auto; padding: 0 24px; } .ds-navbar__brand { font-family: ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 600; letter-spacing: -0.005em; color: var(--color-text-primary); text-decoration: none; transition: color 150ms cubic-bezier(0, 0, 0.2, 1); } .ds-navbar__brand:hover { color: var(--color-accent); } .ds-navbar__links { display: flex; align-items: center; gap: 4px; list-style: none; margin: 0; padding: 0; } .ds-navbar__link { display: inline-block; padding: 8px 12px; border-radius: 8px; font-family: ui-sans-serif, system-ui, sans-serif; font-size: 14px; font-weight: 500; color: var(--color-text-secondary); text-decoration: none; transition: color 150ms cubic-bezier(0, 0, 0.2, 1); } .ds-navbar__link:hover { color: var(--color-text-primary); } .ds-navbar__link--active { color: var(--color-accent); } .ds-navbar__link:focus-visible { outline: none; box-shadow: 0 0 0 2px var(--color-bg), 0 0 0 4px var(--color-accent); }"
+    },
+    {
+      "name": "Hero Eyebrow Label",
+      "kind": "custom",
+      "refersTo": "label",
+      "description": "The label typography role in situ. Heavy positive tracking + uppercase, used sparingly above the Hero name and at section eyebrows.",
+      "html": "<p class=\"ds-eyebrow\">Hi, I'm</p>",
+      "css": ".ds-eyebrow { margin: 0 0 16px 0; font-family: ui-sans-serif, system-ui, sans-serif; font-size: 12px; font-weight: 500; line-height: 1; letter-spacing: 0.25em; text-transform: uppercase; color: var(--color-text-secondary); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Quiet Workshop",
+    "overview": "The site is a workshop with the lights on at evening. A dark, considered interior where the work is laid out plainly, and one warm lamp — the Ember Sunset accent — marks where the visitor's hand should go next. Nothing performs. Everything is in place. The craft is shown by what's been left out as much as by what's there. The system is restrained in chrome and committed in meaning. Surfaces are flat. Type sets cleanly with weight contrast instead of decoration. Motion is quiet. The eight tag-type colors are the system's single permitted indulgence: a deliberate full palette that exists to encode taxonomy, never to decorate.",
+    "keyCharacteristics": [
+      "Dark surface by default; light theme is a first-class peer, not an afterthought.",
+      "One warm accent (Ember Sunset) on ≤10% of any screen — the lamp in the workshop.",
+      "Tag spectrum (8 hues) carries semantic meaning, never decoration.",
+      "Flat-by-default surfaces with tonal layering (bg → surface → surface-elevated).",
+      "Sans-serif system stack: weight + scale contrast does the hierarchy work.",
+      "Motion: 180–320ms, ease-out-quint, transform + opacity only.",
+      "Bilingual EN/ES with parity in tone, length, and accessibility."
+    ],
+    "rules": [
+      { "name": "The One Lamp Rule", "body": "Lamp Ember is the only accent on the site. It appears on ≤10% of any screen and never as decoration — only on interactive affordances (CTAs, focus rings, link hover, active filter states) and on the single moments where the eye needs to be directed (Hero ambient bloom, impact callout dot). If a screen feels orange-heavy, the lamp is in too many places.", "section": "colors" },
+      { "name": "The Spectrum Is Semantic Rule", "body": "The eight tag-type colors are reserved for tag chips and tag-type labels. They do not appear on buttons, backgrounds, dividers, illustrations, or marketing copy. A coloured shape on this site means 'this belongs to a taxonomy type' — nothing else.", "section": "colors" },
+      { "name": "The Neighbour Hazard", "body": "Persimmon (tag-concepts) is the closest hue to Lamp Ember. Never place a concepts chip directly adjacent to a primary button or accented link: the affordance loses its singularity. Keep at least 24px of clear space, or move the chip into a different cluster.", "section": "colors" },
+      { "name": "The No-Custom-Font Rule", "body": "This site ships zero @font-face declarations. The system stack is the design choice, not a fallback. Anyone proposing a custom face must justify the perf and CLS cost against the principle that craft includes how fast the page loads.", "section": "typography" },
+      { "name": "The Tight Tracking Rule", "body": "Headings get negative tracking (-0.02em to -0.005em, larger sizes get more negative). Labels get heavy positive tracking (+0.25em) and UPPERCASE. Body stays at normal. This three-band tracking system gives the system its quiet confidence — nothing is set 'default'.", "section": "typography" },
+      { "name": "The No Em Dash Rule", "body": "Never use em dashes (—) or -- in any copy. Use commas, colons, semicolons, periods, or parentheses. Already enforced across the codebase; do not re-introduce.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "Surfaces are flat at rest. If a component looks like it needs a shadow to feel separate, the answer is wrong — use a border, tonal lift, or layout spacing instead.", "section": "elevation" },
+      { "name": "The State-Only Shadow Rule", "body": "A shadow on this site means 'you are about to interact with this'. It is a response, not a decoration. No drop shadows on logos, illustrations, headings, modals, or hero elements at rest.", "section": "elevation" },
+      { "name": "The Tonal Lift Rule", "body": "Three tonal steps cover almost every elevation case: page (bg), resting surface (surface), and active/hover surface (surface-elevated). Reach for a shadow only when those three aren't enough; almost never.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep Lamp Ember to ≤10% of any screen. It is the lamp; rarity is the point.",
+      "Do treat the three-step tonal scale (bg → surface → surface-elevated) as the default elevation tool. Reach for a shadow only as a state response.",
+      "Do drive hierarchy through scale + weight (≥1.25 ratio between steps), tracking, and color contrast — never through ornament.",
+      "Do localize every visible string through useTranslations / getTranslator. Both EN and ES are first-class.",
+      "Do honor prefers-reduced-motion. Every motion primitive in this codebase already does; new ones must.",
+      "Do keep focus rings visible at 2px in Lamp Ember with a 2px offset against bg. They are part of the craft, not a debug artifact.",
+      "Do ship the site fast. Static export, 0 client JS on Story/Deep-dive/Contact, system fonts, image decoding deferred. Performance is part of the message.",
+      "Do write copy as a senior engineer would — short sentences, specific verbs, concrete numbers, no hedging. The 'would a human actually say this?' test gates every line."
+    ],
+    "donts": [
+      "Don't use Lamp Ember decoratively. Backgrounds, illustrations, dividers, headings: never. Only on interactive affordances and the singular eye-direction moments.",
+      "Don't use the tag-type colors anywhere outside tag chips and tag-type labels. The spectrum is semantic.",
+      "Don't place a Persimmon (tag-concepts) chip adjacent to a primary button or accented link. They share a hue and the affordance gets lost.",
+      "Don't introduce a custom @font-face without justifying the perf cost against the no-custom-font rule.",
+      "Don't use em dashes (—) or -- in copy. Commas, colons, semicolons, periods, parentheses.",
+      "Don't write LinkedIn-resume voice. 'Highly motivated data engineering professional…' fails the human-test instantly.",
+      "Don't try-hard developer brutalist. No monospace headings, no blinking cursors, no ASCII banners.",
+      "Don't agency-portfolio overdesign. No scroll-jacking, no oversized custom cursors, no decorative WebGL.",
+      "Don't ship a border-left/border-right greater than 1px as a colored stripe on cards or callouts.",
+      "Don't use gradient text (background-clip: text + gradient). Use a single solid color.",
+      "Don't decorate with glassmorphism. The scrolled navbar backdrop-blur-md is the one purposeful exception.",
+      "Don't build the hero-metric template (giant number + small label + supporting stats + gradient accent).",
+      "Don't ship a same-sized icon-and-heading-and-text card grid as the primary content.",
+      "Don't reach for a modal as the first thought. Exhaust inline and progressive alternatives."
+    ]
+  }
+}
