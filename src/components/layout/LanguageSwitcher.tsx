@@ -81,7 +81,7 @@ export function LanguageSwitcher({ className }: LanguageSwitcherProps) {
               "focus-visible:ring-accent focus-visible:ring-offset-2",
               "focus-visible:ring-offset-bg",
               active
-                ? "bg-accent text-text-primary"
+                ? "bg-accent text-on-accent"
                 : "text-text-secondary hover:text-text-primary",
             )}
           >

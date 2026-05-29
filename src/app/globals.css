@@ -19,10 +19,16 @@
   --color-text-secondary:   #8888AA;
   --color-text-muted:       #44445A;
 
-  /* Accent */
-  --color-accent:           #6E56CF;
-  --color-accent-hover:     #8670E0;
-  --color-accent-subtle:    #6E56CF22;
+  /* Accent — Ember Sunset (DESIGN.md §2 "Lamp Ember"). The one warm light
+     in The Quiet Workshop. Single accent across CTAs, focus rings, link
+     hovers, and the card hover-shadow. */
+  --color-accent:           #E5642E;
+  --color-accent-hover:     #F07A45;
+  --color-accent-subtle:    #E5642E22;
+  /* Text/icon color that sits on top of an accent-filled surface (CTAs).
+     White in both themes so the ember button reads the same light-on-warm
+     regardless of theme. */
+  --color-on-accent:        #FFFFFF;
 
   /* Tag-type colors (one per taxonomy type — see plan §3) */
   --color-tag-roles:        #CF566E;
@@ -52,10 +58,11 @@
   --color-text-secondary:   #475569;
   --color-text-muted:       #94A3B8;
 
-  /* Accent — darker violet for AA contrast on light bg */
-  --color-accent:           #5840B8;
-  --color-accent-hover:     #6A52CC;
-  --color-accent-subtle:    #5840B81F;
+  /* Accent — Ember Sunset, darker for AA contrast on the light surface */
+  --color-accent:           #B23F12;
+  --color-accent-hover:     #C9531F;
+  --color-accent-subtle:    #B23F121F;
+  --color-on-accent:        #FFFFFF;
 
   /* Tag-type colors — same hue, dropped saturation + lightness */
   --color-tag-roles:        #B23F5A;
@@ -95,6 +102,7 @@ html * {
   --color-accent:           var(--color-accent);
   --color-accent-hover:     var(--color-accent-hover);
   --color-accent-subtle:    var(--color-accent-subtle);
+  --color-on-accent:        var(--color-on-accent);
   --color-tag-roles:        var(--color-tag-roles);
   --color-tag-languages:    var(--color-tag-languages);
   --color-tag-technologies: var(--color-tag-technologies);

@@ -132,7 +132,7 @@ export function ExperienceDrawer({
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: reduceMotion ? 0 : 0.2 }}
-            className="absolute inset-0 cursor-default bg-black/60"
+            className="absolute inset-0 cursor-default bg-bg/80 backdrop-blur-[2px]"
           />
 
           {/* Panel */}
@@ -389,7 +389,7 @@ function DrawerContent({
           rel="noopener noreferrer"
           className={cn(
             "inline-flex w-full items-center justify-center gap-2 rounded-full",
-            "bg-accent px-5 py-2.5 text-sm font-medium text-text-primary",
+            "bg-accent px-5 py-2.5 text-sm font-medium text-on-accent",
             "hover:bg-accent-hover transition-colors duration-150",
             "focus-visible:outline-none focus-visible:ring-2",
             "focus-visible:ring-accent focus-visible:ring-offset-2",

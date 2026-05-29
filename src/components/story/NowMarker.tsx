@@ -49,7 +49,7 @@ export function NowMarker({
         href={ctaHref}
         className={cn(
           "mt-6 inline-flex items-center justify-center gap-2 rounded-full",
-          "bg-accent px-6 py-3 text-sm font-medium text-text-primary",
+          "bg-accent px-6 py-3 text-sm font-medium text-on-accent",
           "hover:bg-accent-hover transition-colors duration-150",
           "focus-visible:outline-none focus-visible:ring-2",
           "focus-visible:ring-accent focus-visible:ring-offset-2",
