@@ -61,6 +61,8 @@ export const en = {
     noMatch: 'No tags match "{query}".',
     commonStartingPoints: "Common starting points",
     commonSearches: "Common searches",
+    rolesToStartWith: "Start with a role",
+    orBrowseByType: "Or pick a tag",
   },
   filters: {
     region: "Active filters",
@@ -73,6 +75,8 @@ export const en = {
     technologies: "Technologies",
     industries: "Industries",
     projectsAndRoles: "Projects & roles",
+    sentence:
+      "Showing {entries} experiences across {years} years, {technologies} technologies, {industries} industries.",
   },
   grid: {
     sortLabel: "Sort",

@@ -59,6 +59,8 @@ export const es: Messages = {
     noMatch: 'Ninguna etiqueta coincide con "{query}".',
     commonStartingPoints: "Puntos de partida frecuentes",
     commonSearches: "Búsquedas frecuentes",
+    rolesToStartWith: "Empieza por un rol",
+    orBrowseByType: "O elige una etiqueta",
   },
   filters: {
     region: "Filtros activos",
@@ -71,6 +73,8 @@ export const es: Messages = {
     technologies: "Tecnologías",
     industries: "Industrias",
     projectsAndRoles: "Proyectos y roles",
+    sentence:
+      "Mostrando {entries} experiencias a lo largo de {years} años, {technologies} tecnologías, {industries} industrias.",
   },
   grid: {
     sortLabel: "Ordenar",
