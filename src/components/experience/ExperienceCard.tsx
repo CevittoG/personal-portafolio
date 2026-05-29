@@ -7,9 +7,11 @@ import {
   getImpactHighlight,
   getMetaBadge,
 } from "@/lib/experience/format";
+import { visibleTagsByType } from "@/lib/experience/tag-display";
 import { formatTagLabel } from "@/lib/taxonomy/format";
-import { TAG_TYPES, type TagType } from "@/lib/taxonomy/types";
+import type { TagType } from "@/lib/taxonomy/types";
 import { TagPill, type TagPillState } from "@/components/tags/TagPill";
+import { tagColorVar } from "@/components/tags/tag-colors";
 import { useTranslations } from "@/i18n/I18nProvider";
 import { cn } from "@/lib/utils";
 
@@ -52,6 +54,8 @@ export function ExperienceCard({
     if (!hasFilter) return "inactive";
     return filterSet.has(slug) ? "active" : "muted";
   };
+
+  const tagGroups = visibleTagsByType(entry, filterTags ?? []);
 
   const handleClick = onSelect ? () => onSelect(entry) : undefined;
   const interactive = Boolean(handleClick);
@@ -121,24 +125,32 @@ export function ExperienceCard({
 
       {/* Summary */}
       {entry.summary && (
-        <p className="text-sm text-text-secondary line-clamp-2 leading-relaxed">
+        <p className="text-sm text-text-secondary line-clamp-3 leading-relaxed">
           {entry.summary}
         </p>
       )}
 
-      {/* Tag pills (all types flattened, color comes from the type) */}
+      {/* Tag pills — grouped by category, each capped at TAG_DISPLAY_CAP with
+          matches always shown; the rest collapse into a per-category "+N". */}
       <div className="flex flex-wrap gap-1.5">
-        {TAG_TYPES.flatMap((type) =>
-          (entry.tags[type] ?? []).map((slug) => (
+        {tagGroups.flatMap((group) => [
+          ...group.shown.map((slug) => (
             <TagPill
-              key={`${type}:${slug}`}
+              key={`${group.type}:${slug}`}
               slug={slug}
               label={formatTagLabel(slug)}
-              type={type as TagType}
+              type={group.type as TagType}
               state={stateFor(slug)}
             />
           )),
-        )}
+          group.hiddenCount > 0 ? (
+            <OverflowPill
+              key={`${group.type}:overflow`}
+              type={group.type}
+              count={group.hiddenCount}
+            />
+          ) : null,
+        ])}
       </div>
 
       {/* Impact pull-quote — rendered as an inline-callout with a leading
@@ -174,5 +186,25 @@ export function ExperienceCard({
         </p>
       )}
     </article>
+  );
+}
+
+/**
+ * "+N" pill marking tags hidden by the per-category cap. Non-interactive and
+ * tinted with the category color so it reads as "more of this type", matching
+ * the muted-pill weight without overloading TagPill's slug-based states.
+ */
+function OverflowPill({ type, count }: { type: TagType; count: number }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={cn(
+        "inline-flex items-center rounded-full border border-current/50",
+        "px-2.5 py-1 text-xs font-medium leading-none whitespace-nowrap",
+      )}
+      style={{ color: tagColorVar(type) }}
+    >
+      +{count}
+    </span>
   );
 }
