@@ -189,6 +189,8 @@ Top-level structure is an array of entry objects.
 | `media` | object[] | yes | Links/repos. Empty array if none. |
 | `featured` | boolean | yes | Whether to surface prominently. Default `false`. |
 | `relevant` | boolean | yes | Professional/technical experience. `true` → shown in the "Discover" tool and counted in the years-of-experience stat. `false` → kept in data (Story, deep-dive) but hidden from Discover. Default `false`; set `true` for engineering/data/tech jobs, technical projects, and tech teaching/mentoring. |
+| `story_act` | string | no | Which Story-page act this entry belongs to: `"foundation"` (non-technical Act 1 — sports, hospitality, teaching, mentoring) or `"technical"` (Act 3 — engineering roles). **Omit** to keep an entry off the Story timeline (e.g. formal education). Independent of `relevant`: an entry can be `relevant: true` (in Discover) yet `story_act: "foundation"`. |
+| `personal_impact` | string | no | 1–2 sentence reflective statement: the pillar/core of this chapter and how it shaped the person. Shown on the Story timeline *in place of* `summary`. Distinct from `impact` (quantifiable outcomes) and `summary` (factual capsule). |
 
 ### Tags object shape
 
@@ -260,7 +262,9 @@ Media types: `"repo"`, `"url"`, `"demo"`, `"article"`, `"certificate"`.
     { "label": "Company Website", "url": "https://acmecorp.com", "type": "url" }
   ],
   "featured": true,
-  "relevant": true
+  "relevant": true,
+  "story_act": "technical",
+  "personal_impact": "This role turned a capable builder into a data engineer who owns systems end to end — and taught me to spot and fix inefficiencies before anyone asks."
 }
 ```
 
@@ -327,6 +331,9 @@ Media types: `"repo"`, `"url"`, `"demo"`, `"article"`, `"certificate"`.
 }
 ```
 
+> Note: `education` entries omit `story_act` (and usually `personal_impact`) so they
+> stay off the Story timeline — they remain in the data for direct deep-dive links.
+
 **Education-specific fields:**
 
 | Field | Type | Required for education | Notes |
@@ -363,7 +370,9 @@ Media types: `"repo"`, `"url"`, `"demo"`, `"article"`, `"certificate"`.
     "Developed curriculum for intermediate English learners"
   ],
   "media": [],
-  "featured": true
+  "featured": true,
+  "story_act": "foundation",
+  "personal_impact": "Teaching across three cultures taught me that communication is reading your audience and adapting — not just speaking clearly."
 }
 ```
 

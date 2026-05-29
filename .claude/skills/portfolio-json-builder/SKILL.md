@@ -58,6 +58,8 @@ Read the provided markdown file. Extract:
 - **Summary** — Distill a 1–2 sentence overview from the content.
 - **Description** — The full narrative. Preserve detail; this is the deep-dive content for the website.
 - **Impact statements** — Any quantifiable outcomes (metrics, scale, team size, outcomes). Extract as an array of strings.
+- **Personal impact** — A 1–2 sentence reflective line capturing the *pillar/core* of the experience and how it shaped the person's personality/professionalism (not metrics). This is shown on the Story timeline **in place of** the summary. Distinct from `impact` (quantifiable) and `summary` (factual capsule). Optional — write one for any entry that appears on the Story timeline; omit for formal education.
+- **Story act** — Set `story_act` to place the entry on the Story-page timeline: `"foundation"` for non-technical/foundational chapters (sports, hospitality, teaching, mentoring → Act 1) or `"technical"` for engineering roles (→ Act 3). **Omit** the field for formal education or anything that shouldn't appear on the timeline. This is independent of `relevant`: an entry can stay in Discover (`relevant: true`) while sitting in the `"foundation"` act (e.g. a tech-teaching role the user frames as non-technical).
 - **Tags** — Read through the full content and extract all relevant tags, grouped by type. Be thorough — err on the side of adding more tags rather than fewer, since tags drive discoverability.
 - **Media** — Any URLs, repos, or links mentioned.
 - **Featured** — Default to `false` unless the entry seems especially significant.
