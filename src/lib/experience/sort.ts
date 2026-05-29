@@ -35,8 +35,9 @@ export function sortEntries(
 }
 
 function compareByStartDateDesc(a: ExperienceEntry, b: ExperienceEntry): number {
-  // YYYY-MM strings sort lexicographically === chronologically.
-  return b.period.start.localeCompare(a.period.start);
+  // YYYY-MM (or YYYY) strings sort lexicographically === chronologically.
+  // A null start sorts last (treated as the empty string).
+  return (b.period.start ?? "").localeCompare(a.period.start ?? "");
 }
 
 /** Count how many active tags appear anywhere in the entry's tag map. */

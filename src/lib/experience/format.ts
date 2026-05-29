@@ -5,14 +5,18 @@ const MONTH_NAMES = [
   "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
 ];
 
-function parseYM(ym: string): { y: number; m: number } {
+function parseYM(ym: string | null | undefined): { y: number; m: number } {
+  if (!ym) return { y: NaN, m: NaN };
   const [y, m] = ym.split("-").map(Number);
   return { y, m };
 }
 
-function formatYM(ym: string): string {
+function formatYM(ym: string | null | undefined): string {
+  if (!ym) return "";
   const { y, m } = parseYM(ym);
-  if (!y || !m) return ym;
+  if (!y) return ym;
+  // Year-only boundaries (e.g. "2014") have no month — show just the year.
+  if (!m) return `${y}`;
   return `${MONTH_NAMES[m - 1]} ${y}`;
 }
 
@@ -20,17 +24,25 @@ function formatYM(ym: string): string {
 export function formatPeriod(period: Period): string {
   const start = formatYM(period.start);
   const end = period.end ? formatYM(period.end) : "Present";
+  if (!start) return end;
   return `${start} — ${end}`;
 }
 
-/** Duration in whole months, for stat computations / display ("2 yrs 4 mo"). */
+/**
+ * Duration in whole months, for stat computations / display ("2 yrs 4 mo").
+ * Tolerant of missing/coarse boundaries: a null start yields 0; year-only
+ * values default to month 1 (start) / 12 (end) so they still span sensibly.
+ */
 export function durationMonths(period: Period): number {
+  if (!period.start) return 0;
   const { y: sy, m: sm } = parseYM(period.start);
   const now = new Date();
   const { y: ey, m: em } = period.end
     ? parseYM(period.end)
     : { y: now.getUTCFullYear(), m: now.getUTCMonth() + 1 };
-  return Math.max(0, (ey - sy) * 12 + (em - sm));
+  const startMonth = Number.isFinite(sm) ? sm : 1;
+  const endMonth = Number.isFinite(em) ? em : 12;
+  return Math.max(0, (ey - sy) * 12 + (endMonth - startMonth));
 }
 
 /**

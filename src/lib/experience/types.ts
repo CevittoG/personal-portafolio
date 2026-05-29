@@ -3,7 +3,7 @@ import type { TagType } from "@/lib/taxonomy/types";
 export type TagMap = Record<TagType, string[]>;
 
 export interface Period {
-  start: string; // YYYY-MM
+  start: string | null; // YYYY-MM (or YYYY); null = unknown start
   end: string | null; // null = current
 }
 
@@ -23,6 +23,14 @@ interface BaseEntry {
   impact: string[];
   media: Media[];
   featured: boolean;
+  /**
+   * Whether this entry counts as professional/technical experience. Drives
+   * the Explorer "Discover" tool (only relevant entries are shown/filtered)
+   * and the years-of-experience stat. Non-relevant entries (e.g. unrelated
+   * jobs, formal education, personal pursuits) are kept in the data for the
+   * Story timeline and direct deep-dive links but stay out of Discover.
+   */
+  relevant: boolean;
 }
 
 export interface Company {
