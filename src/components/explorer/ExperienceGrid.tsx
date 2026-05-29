@@ -3,7 +3,6 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ExperienceCard } from "@/components/experience/ExperienceCard";
-import { downloadCsv, entriesToCsv } from "@/lib/experience/csv";
 import { defaultFilterStrategy } from "@/lib/filters/tag-match";
 import {
   SORT_IDS,
@@ -25,8 +24,7 @@ const EASE_OUT_QUINT: [number, number, number, number] = [0.22, 1, 0.36, 1];
 /**
  * ExperienceGrid — Explorer Zone 4 (plan §6).
  *
- * Wraps the card grid with the secondary filter bar (sort + count + CSV
- * download) and an explicit empty state with featured-entry fallback.
+ * Wraps the card grid with the secondary filter bar (sort + count) and an explicit empty state with featured-entry fallback.
  *
  * Owns its own UI state (`sort` selection); receives entries and active
  * filter slugs from the page. Filtering is performed inside via the default
@@ -74,12 +72,6 @@ export function ExperienceGrid({
     [featuredFallback],
   );
 
-  const handleDownload = () => {
-    const csv = entriesToCsv(sorted.length > 0 ? sorted : entries);
-    const stamp = new Date().toISOString().slice(0, 10);
-    downloadCsv(csv, `experience-${stamp}.csv`);
-  };
-
   const reduceMotion = useReducedMotion();
   // Stagger first paint reveal across the visible cards; filter changes
   // get a quieter same-position fade via `layout`. Layer A of plan §15.
@@ -114,8 +106,8 @@ export function ExperienceGrid({
             value={sort}
             onChange={(e) => setSort(e.target.value as SortId)}
             className={cn(
-              "cursor-pointer rounded-md border border-border bg-surface",
-              "px-3 py-1.5 text-sm text-text-primary",
+              "cursor-pointer rounded-full border border-border bg-surface",
+              "px-4 py-1.5 text-sm text-text-primary",
               "hover:border-text-muted transition-colors duration-150",
               "focus-visible:outline-none focus-visible:ring-2",
               "focus-visible:ring-accent focus-visible:ring-offset-2",
@@ -132,24 +124,6 @@ export function ExperienceGrid({
             {t("grid.showing", { visible: sorted.length, total: entries.length })}
           </span>
         </div>
-
-        <button
-          type="button"
-          onClick={handleDownload}
-          disabled={entries.length === 0}
-          className={cn(
-            "inline-flex items-center gap-2 rounded-md border border-border",
-            "bg-surface px-3 py-1.5 text-xs font-medium text-text-secondary",
-            "hover:text-text-primary hover:border-text-muted transition-colors duration-150",
-            "focus-visible:outline-none focus-visible:ring-2",
-            "focus-visible:ring-accent focus-visible:ring-offset-2",
-            "focus-visible:ring-offset-bg",
-            "disabled:cursor-not-allowed disabled:opacity-50",
-          )}
-        >
-          <span aria-hidden="true">↓</span>
-          {t("grid.download")}
-        </button>
       </div>
 
       {/* Grid or empty state */}

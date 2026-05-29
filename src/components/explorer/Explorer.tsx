@@ -29,7 +29,10 @@ const ZONE_2_ID = "discover";
 
 export function Explorer() {
   const t = useTranslations();
-  const entries = useMemo(() => experienceRepository.getAll(), []);
+  // Discover operates only on entries flagged as relevant (professional/
+  // technical experience). Non-relevant entries stay available for the Story
+  // timeline and direct deep-dive links, but never surface here or in stats.
+  const entries = useMemo(() => experienceRepository.getRelevant(), []);
   const taxonomy = useMemo(() => taxonomyRepository.getAll(), []);
   const featured = useMemo(() => entries.filter((e) => e.featured), [entries]);
 
@@ -92,8 +95,8 @@ export function Explorer() {
               id="discover-title"
               className="text-3xl sm:text-4xl font-semibold tracking-tight text-text-primary"
             >
-              {t("discover.title")}
-            </h2>
+            {t("discover.title")}
+          </h2>
             <p className="mx-auto max-w-xl text-base text-text-secondary leading-relaxed">
               {t("discover.subtitle")}
             </p>
