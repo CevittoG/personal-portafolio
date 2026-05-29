@@ -142,7 +142,7 @@ export const es: Messages = {
       eyebrow: "Acto 2",
       title: "El giro",
       paragraphs: [
-        "En algún momento la pregunta dejó de ser «qué sigue» y empezó a ser «qué quiero construir durante la próxima década».",
+        "En algún momento la pregunta dejó de ser **«qué sigue»** y empezó a ser **«qué quiero construir durante la próxima década»**.",
         "La respuesta fueron los sistemas. No porque amara el código en abstracto, sino porque había pasado años explicando cosas complejas a personas que no tenían tiempo de profundizar, y el software era la versión más apalancada de ese trabajo que pude encontrar.",
       ],
     },

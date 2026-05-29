@@ -29,7 +29,7 @@ function parseBlocks(input: string): string[] {
     .filter(Boolean);
 }
 
-function renderInline(text: string): ReactElement {
+export function renderInline(text: string): ReactElement {
   const parts: ReactElement[] = [];
   const re = /\*\*([^*]+)\*\*/g;
   let last = 0;

@@ -1,3 +1,4 @@
+import { renderInline } from "@/lib/experience/description";
 import { cn } from "@/lib/utils";
 
 /**
@@ -56,7 +57,7 @@ export function PivotInterlude({
               key={i}
               className="text-base sm:text-lg leading-relaxed text-text-secondary"
             >
-              {p}
+              {renderInline(p)}
             </p>
           ))}
         </div>

@@ -144,7 +144,7 @@ export const en = {
       eyebrow: "Act 2",
       title: "The pivot",
       paragraphs: [
-        "At some point the question stopped being 'what's next' and started being 'what do I want to build for the next decade'.",
+        "At some point the question stopped being **'what's next'** and started being **'what do I want to build for the next decade'**.",
         "The answer was systems. Not because I loved code in the abstract — because I'd spent years explaining complex things to people who didn't have time to care, and software was the most leveraged version of that work I could find.",
       ],
     },
