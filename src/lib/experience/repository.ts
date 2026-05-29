@@ -7,6 +7,9 @@ import type { ExperienceEntry, ExperienceType } from "./types";
  */
 export interface IExperienceRepository {
   getAll(): ExperienceEntry[];
+  /** Entries flagged as professional/technical experience — the set the
+   *  Explorer "Discover" tool and the stats bar operate on. */
+  getRelevant(): ExperienceEntry[];
   getById(id: string): ExperienceEntry | undefined;
   getByType(type: ExperienceType): ExperienceEntry[];
   /** Apply a FilterStrategy (Strategy pattern → OCP). */

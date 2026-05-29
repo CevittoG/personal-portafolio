@@ -12,6 +12,10 @@ class JsonExperienceRepository implements IExperienceRepository {
     return this.entries;
   }
 
+  getRelevant(): ExperienceEntry[] {
+    return this.entries.filter((entry) => entry.relevant);
+  }
+
   getById(id: string): ExperienceEntry | undefined {
     return this.entries.find((entry) => entry.id === id);
   }
