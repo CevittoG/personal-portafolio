@@ -163,7 +163,7 @@
       "display_name": "AWS",
       "type": "technologies",
       "icon": null,
-      "image": "https://icon.icepanel.io/Technology/svg/AWS.svg",
+      "image": "/icons/aws/aws.svg",
       "color": null,
       "related": [
         "ec2",
@@ -178,7 +178,7 @@
       "display_name": "AWS EC2",
       "type": "technologies",
       "icon": null,
-      "image": null,
+      "image": "/icons/aws/ec2.svg",
       "color": null,
       "related": [
         "aws",
@@ -191,7 +191,7 @@
       "display_name": "AWS S3",
       "type": "technologies",
       "icon": null,
-      "image": null,
+      "image": "/icons/aws/s3.svg",
       "color": null,
       "related": [
         "aws"
@@ -202,7 +202,7 @@
       "display_name": "AWS Lambda",
       "type": "technologies",
       "icon": null,
-      "image": null,
+      "image": "/icons/aws/lambda.svg",
       "color": null,
       "related": [
         "aws"
@@ -213,7 +213,7 @@
       "display_name": "AWS RDS",
       "type": "technologies",
       "icon": null,
-      "image": null,
+      "image": "/icons/aws/rds.svg",
       "color": null,
       "related": [
         "aws",
@@ -225,7 +225,7 @@
       "display_name": "AWS IAM",
       "type": "technologies",
       "icon": null,
-      "image": null,
+      "image": "/icons/aws/iam.svg",
       "color": null,
       "related": [
         "aws"
@@ -248,7 +248,7 @@
       "display_name": "Azure Synapse Analytics",
       "type": "technologies",
       "icon": null,
-      "image": null,
+      "image": "/icons/azure/synapse.svg",
       "color": null,
       "related": [
         "azure",
@@ -262,7 +262,7 @@
       "display_name": "Azure Data Lake",
       "type": "technologies",
       "icon": null,
-      "image": null,
+      "image": "/icons/azure/data-lake.svg",
       "color": null,
       "related": [
         "azure",
