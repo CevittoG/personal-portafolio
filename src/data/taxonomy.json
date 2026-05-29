@@ -127,9 +127,32 @@
       "display_name": "CSS",
       "type": "languages",
       "icon": null,
-      "image": "https://cdn.simpleicons.org/css3",
+      "image": "https://cdn.simpleicons.org/css",
       "color": null,
       "related": [
+        "html"
+      ]
+    },
+    "cpp": {
+      "slug": "cpp",
+      "display_name": "C++",
+      "type": "languages",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/cplusplus",
+      "color": null,
+      "related": [
+        "php"
+      ]
+    },
+    "php": {
+      "slug": "php",
+      "display_name": "PHP",
+      "type": "languages",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/php",
+      "color": null,
+      "related": [
+        "cpp",
         "html"
       ]
     }
@@ -140,7 +163,7 @@
       "display_name": "AWS",
       "type": "technologies",
       "icon": null,
-      "image": "https://cdn.simpleicons.org/amazonaws",
+      "image": null,
       "color": null,
       "related": [
         "ec2",
@@ -213,7 +236,7 @@
       "display_name": "Azure",
       "type": "technologies",
       "icon": null,
-      "image": "https://cdn.simpleicons.org/microsoftazure",
+      "image": null,
       "color": null,
       "related": [
         "azure-synapse",
@@ -269,6 +292,44 @@
         "aws-rds"
       ]
     },
+    "bamboo": {
+      "slug": "bamboo",
+      "display_name": "Bamboo",
+      "type": "technologies",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "ci-cd",
+        "bitbucket",
+        "jira"
+      ]
+    },
+    "jira": {
+      "slug": "jira",
+      "display_name": "Jira",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/jira",
+      "color": null,
+      "related": [
+        "bitbucket",
+        "bamboo"
+      ]
+    },
+    "bitbucket": {
+      "slug": "bitbucket",
+      "display_name": "Bitbucket",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/bitbucket",
+      "color": null,
+      "related": [
+        "version-control",
+        "bamboo",
+        "jira"
+      ]
+    },
     "mariadb": {
       "slug": "mariadb",
       "display_name": "MariaDB",
@@ -286,7 +347,7 @@
       "display_name": "SQL Server",
       "type": "technologies",
       "icon": null,
-      "image": "https://cdn.simpleicons.org/microsoftsqlserver",
+      "image": null,
       "color": null,
       "related": [
         "sql"
@@ -413,6 +474,15 @@
       "related": [
         "pdf2image"
       ]
+    },
+    "google-workspace": {
+      "slug": "google-workspace",
+      "display_name": "Google Workspace",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/google",
+      "color": null,
+      "related": []
     }
   },
   "libraries": {
@@ -606,6 +676,15 @@
       "related": [
         "edtech"
       ]
+    },
+    "hospitality": {
+      "slug": "hospitality",
+      "display_name": "Hospitality",
+      "type": "domains",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": []
     }
   },
   "concepts": {
@@ -826,6 +905,18 @@
         "github-actions"
       ]
     },
+    "version-control": {
+      "slug": "version-control",
+      "display_name": "Version Control",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "ci-cd",
+        "bitbucket"
+      ]
+    },
     "rest-apis": {
       "slug": "rest-apis",
       "display_name": "REST APIs",
@@ -920,6 +1011,72 @@
       "color": null,
       "related": [
         "observability"
+      ]
+    },
+    "robotics": {
+      "slug": "robotics",
+      "display_name": "Robotics",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": []
+    },
+    "data-visualization": {
+      "slug": "data-visualization",
+      "display_name": "Data Visualization",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "statistical-analysis",
+        "market-research"
+      ]
+    },
+    "market-research": {
+      "slug": "market-research",
+      "display_name": "Market Research",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "go-to-market",
+        "data-visualization"
+      ]
+    },
+    "go-to-market": {
+      "slug": "go-to-market",
+      "display_name": "Go-to-Market",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "market-research"
+      ]
+    },
+    "statistical-analysis": {
+      "slug": "statistical-analysis",
+      "display_name": "Statistical Analysis",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "data-visualization"
+      ]
+    },
+    "innovation": {
+      "slug": "innovation",
+      "display_name": "Innovation",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "entrepreneurship"
       ]
     }
   },
@@ -1173,6 +1330,112 @@
       "related": [
         "communication",
         "adaptability"
+      ]
+    },
+    "teaching": {
+      "slug": "teaching",
+      "display_name": "Teaching",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "mentorship",
+        "communication",
+        "public-speaking"
+      ]
+    },
+    "public-speaking": {
+      "slug": "public-speaking",
+      "display_name": "Public Speaking",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "communication",
+        "teaching"
+      ]
+    },
+    "critical-thinking": {
+      "slug": "critical-thinking",
+      "display_name": "Critical Thinking",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "decision-making"
+      ]
+    },
+    "empathy": {
+      "slug": "empathy",
+      "display_name": "Empathy",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "communication",
+        "cross-cultural"
+      ]
+    },
+    "discipline": {
+      "slug": "discipline",
+      "display_name": "Discipline",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "work-ethic",
+        "self-motivation"
+      ]
+    },
+    "work-ethic": {
+      "slug": "work-ethic",
+      "display_name": "Work Ethic",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "discipline",
+        "reliability"
+      ]
+    },
+    "teamwork": {
+      "slug": "teamwork",
+      "display_name": "Teamwork",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "cross-functional-collaboration",
+        "communication"
+      ]
+    },
+    "reliability": {
+      "slug": "reliability",
+      "display_name": "Reliability",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "work-ethic"
+      ]
+    },
+    "self-motivation": {
+      "slug": "self-motivation",
+      "display_name": "Self-Motivation",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "discipline"
       ]
     }
   }

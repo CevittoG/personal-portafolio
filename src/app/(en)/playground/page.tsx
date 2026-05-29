@@ -50,6 +50,7 @@ const MOCK_ENTRIES: ExperienceEntry[] = [
     ],
     media: [],
     featured: true,
+    relevant: true,
   },
   {
     id: "demo-aidprof-cofounder-2020",
@@ -74,6 +75,7 @@ const MOCK_ENTRIES: ExperienceEntry[] = [
     impact: ["10+ institutions onboarded in pilot phase"],
     media: [],
     featured: true,
+    relevant: true,
   },
 ];
 
