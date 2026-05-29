@@ -163,7 +163,7 @@
       "display_name": "AWS",
       "type": "technologies",
       "icon": null,
-      "image": null,
+      "image": "https://icon.icepanel.io/Technology/svg/AWS.svg",
       "color": null,
       "related": [
         "ec2",
@@ -236,7 +236,7 @@
       "display_name": "Azure",
       "type": "technologies",
       "icon": null,
-      "image": null,
+      "image": "https://icon.icepanel.io/Technology/svg/Azure.svg",
       "color": null,
       "related": [
         "azure-synapse",
@@ -297,7 +297,7 @@
       "display_name": "Bamboo",
       "type": "technologies",
       "icon": null,
-      "image": null,
+      "image": "https://cdn.simpleicons.org/bamboo",
       "color": null,
       "related": [
         "ci-cd",
@@ -347,7 +347,7 @@
       "display_name": "SQL Server",
       "type": "technologies",
       "icon": null,
-      "image": null,
+      "image": "https://icon.icepanel.io/Technology/svg/Microsoft-SQL-Server.svg",
       "color": null,
       "related": [
         "sql"
@@ -414,7 +414,7 @@
       "display_name": "Gunicorn",
       "type": "technologies",
       "icon": null,
-      "image": null,
+      "image": "https://cdn.simpleicons.org/gunicorn",
       "color": null,
       "related": [
         "nginx",
@@ -564,7 +564,7 @@
       "display_name": "Matplotlib",
       "type": "libraries",
       "icon": null,
-      "image": null,
+      "image": "https://icon.icepanel.io/Technology/svg/Matplotlib.svg",
       "color": null,
       "related": [
         "python",
