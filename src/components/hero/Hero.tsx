@@ -46,16 +46,28 @@ export function Hero({
       className={cn(
         "relative isolate overflow-hidden",
         "px-6 pt-20 pb-24 sm:pt-28 sm:pb-32",
+        // Floor on hero height so the logo cluster (absolute inset-0) has
+        // room to spread around the text. Without this the section
+        // collapses to text height and logos pile on top of the headline.
+        "min-h-[720px] sm:min-h-[760px] lg:min-h-[820px]",
         className,
       )}
     >
-      {/* Ambient visual — soft accent blooms + a top-edge vignette.
-          Step 15 keeps this restrained because the Logo Drop Cluster in
-          step 17 will land in the band below and own the signature
-          motion; a busy Hero ambient would compete with it. */}
+      {/* Ambient visual — soft accent blooms + a top-edge vignette. */}
       <AmbientBackdrop />
 
-      <div className="relative mx-auto max-w-4xl text-center">
+      {/* Logo Cluster — fills the section behind the centered text. Its
+          placement zones (see LogoDropCluster.placementFor) keep logos in the
+          top/bottom strips and side margins, never the central text column, so
+          the cluster reads as a halo around the headline rather than a curtain
+          behind it. */}
+      {logos && logos.length > 0 && (
+        <div aria-hidden="true" className="absolute inset-0">
+          <LogoDropCluster logos={logos} />
+        </div>
+      )}
+
+      <div className="relative z-10 mx-auto max-w-3xl text-center">
         <p className="mb-4 text-xs uppercase tracking-[0.25em] text-text-secondary">
           {t("hero.greeting")}
         </p>
@@ -81,7 +93,7 @@ export function Hero({
             className={cn(
               "inline-flex items-center justify-center rounded-full",
               "px-6 py-3 text-sm font-medium",
-              "bg-accent text-text-primary hover:bg-accent-hover",
+              "bg-accent text-on-accent hover:bg-accent-hover",
               "transition-colors duration-150",
               "focus-visible:outline-none focus-visible:ring-2",
               "focus-visible:ring-accent focus-visible:ring-offset-2",
@@ -111,13 +123,6 @@ export function Hero({
         </div>
       </div>
 
-      {/* Logo Drop Cluster — signature visual (plan §6, step 17). Sits in
-          its own band beneath the CTAs and above Zone 2's search title. */}
-      {logos && logos.length > 0 && (
-        <div className="relative mt-12 sm:mt-16">
-          <LogoDropCluster logos={logos} />
-        </div>
-      )}
     </section>
   );
 }

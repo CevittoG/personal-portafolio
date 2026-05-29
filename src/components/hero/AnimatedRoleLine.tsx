@@ -17,26 +17,27 @@ import { cn } from "@/lib/utils";
  */
 export interface AnimatedRoleLineProps {
   labels: readonly string[];
-  /** ms between transitions. Defaults to 2200. */
+  /** ms between transitions. Defaults to 3000. */
   intervalMs?: number;
   className?: string;
 }
 
 export function AnimatedRoleLine({
   labels,
-  intervalMs = 2800,
+  intervalMs = 3000,
   className,
 }: AnimatedRoleLineProps) {
   const reduceMotion = useReducedMotion();
   const [index, setIndex] = useState(0);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
-    if (reduceMotion || labels.length <= 1) return;
+    if (reduceMotion || labels.length <= 1 || paused) return;
     const id = window.setInterval(() => {
       setIndex((i) => (i + 1) % labels.length);
     }, intervalMs);
     return () => window.clearInterval(id);
-  }, [labels.length, intervalMs, reduceMotion]);
+  }, [labels.length, intervalMs, reduceMotion, paused]);
 
   // Render the static first label when reduced motion or only one option.
   if (reduceMotion || labels.length <= 1) {
@@ -52,6 +53,11 @@ export function AnimatedRoleLine({
       className={cn("relative inline-block align-baseline", className)}
       aria-live="polite"
       aria-atomic="true"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onFocus={() => setPaused(true)}
+      onBlur={() => setPaused(false)}
+      tabIndex={-1}
     >
       {/* Invisible sizer keeps the line height stable across labels */}
       <span className="invisible whitespace-nowrap" aria-hidden="true">
