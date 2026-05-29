@@ -31,6 +31,19 @@ interface BaseEntry {
    * Story timeline and direct deep-dive links but stay out of Discover.
    */
   relevant: boolean;
+  /**
+   * Which Story act this entry belongs to. Absent → not shown on the Story
+   * timeline (e.g. formal education). Independent of `relevant`/Discover:
+   * `"foundation"` is the non-technical Act 1, `"technical"` is the Act 3
+   * engineering career.
+   */
+  story_act?: "foundation" | "technical";
+  /**
+   * 1–2 sentence reflective statement: the pillar of this chapter and how it
+   * shaped the person. Shown on the Story timeline in place of `summary`.
+   * Distinct from `impact` (quantifiable outcomes) and `summary` (factual capsule).
+   */
+  personal_impact?: string;
 }
 
 export interface Company {

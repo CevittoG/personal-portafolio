@@ -189,9 +189,19 @@ function TimelineRow({
             <p className="text-sm text-text-secondary">{heading.secondary}</p>
           )}
 
-          {entry.summary && (
-            <p className="mt-3 text-sm leading-relaxed text-text-secondary">
-              {entry.summary}
+          {(entry.personal_impact ?? entry.summary) && (
+            <p
+              className={cn(
+                "mt-3 flex items-start gap-2 rounded-lg",
+                "bg-[color-mix(in_srgb,var(--color-accent)_8%,transparent)]",
+                "px-3 py-2 text-sm italic leading-relaxed text-text-primary",
+              )}
+            >
+              <span
+                aria-hidden="true"
+                className="mt-[0.45rem] inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
+              />
+              <span>{entry.personal_impact ?? entry.summary}</span>
             </p>
           )}
 

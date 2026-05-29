@@ -2,6 +2,8 @@
   {
     "id": "aidprof-product-owner-2020",
     "relevant": true,
+    "story_act": "technical",
+    "personal_impact": "AidProf compressed years of growth into fourteen months by forcing complete ownership with no safety net. It left me an engineer who thinks in whole systems and products, not just the piece in front of me.",
     "title": "Product Owner",
     "type": "job",
     "company": {
@@ -103,6 +105,8 @@
   {
     "id": "uplanner-data-engineer-2021",
     "relevant": true,
+    "story_act": "technical",
+    "personal_impact": "uPlanner turned a capable builder into a well-rounded data engineer — owning integrations end to end, navigating client relationships, and fixing systemic inefficiencies before anyone asked. By the end I was working well past my title, which is the most honest measure of the growth the role produced.",
     "title": "Data Engineer",
     "type": "job",
     "company": {
@@ -110,7 +114,7 @@
       "url": "https://uplanner.com/en",
       "industry": "edtech"
     },
-    "location": "Remote (Chile)",
+    "location": "Chile (Remote)",
     "employment_type": "full-time",
     "team": "Data Services (3–6 engineers)",
     "period": { "start": "2021-07", "end": "2024-10" },
@@ -231,6 +235,8 @@
   {
     "id": "school-of-tech-instructor-2017",
     "relevant": true,
+    "story_act": "foundation",
+    "personal_impact": "Four years of explaining the same ideas to ten-year-olds, veteran teachers, and corporate adults taught me that communication is reading the room and adapting, not just speaking clearly. It also gave me my first taste of analytical, business-shaped work — and confirmed where I actually wanted to go.",
     "title": "Instructor",
     "type": "job",
     "company": {
@@ -284,6 +290,8 @@
   {
     "id": "silabuz-mentor-2019",
     "relevant": true,
+    "story_act": "foundation",
+    "personal_impact": "A short, focused chapter that reinforced one thing: teaching people how to think is worth more than teaching them what to know.",
     "title": "Mentor",
     "type": "job",
     "company": {
@@ -291,7 +299,7 @@
       "url": null,
       "industry": "edtech"
     },
-    "location": "Remote",
+    "location": "Santiago, Chile",
     "employment_type": "freelance",
     "team": null,
     "period": { "start": "2019", "end": "2020" },
@@ -322,6 +330,8 @@
   {
     "id": "amelia-izquierdo-waiter-2016",
     "relevant": false,
+    "story_act": "foundation",
+    "personal_impact": "Years of invisible, one-shot event work left me with a quiet, unpretentious respect for people: no one is only what they appear to be, and everyone deserves the chance to prove it.",
     "title": "Event Staff & Waiter",
     "type": "job",
     "company": {
@@ -329,7 +339,7 @@
       "url": null,
       "industry": "hospitality"
     },
-    "location": "Chile",
+    "location": "Santiago, Chile",
     "employment_type": "part-time",
     "team": null,
     "period": { "start": "2016", "end": "2019" },
@@ -361,9 +371,11 @@
   {
     "id": "competitive-swimmer",
     "relevant": false,
-    "title": "Competitive Swimmer & Personal Drive",
+    "story_act": "foundation",
+    "personal_impact": "Nine years of 4 a.m. training didn't just build discipline — it installed a default setting: organized, proactive, someone who finishes what they start. That operating system never left.",
+    "title": "Competitive Swimmer",
     "type": "personal",
-    "region": "Chile",
+    "region": "Santiago, Chile",
     "period": { "start": null, "end": "2013" },
     "summary": "Nine years as a competitive swimmer through childhood and high school, training alongside future Olympians on a 4:00 AM–8:30 PM daily schedule. The discipline, structure, and proactivity it installed early became the operating system carried into everything since.",
     "description": "Before university, before teaching, before any of the professional story, there was swimming — nine years of competition from childhood through high school. At peak training the daily schedule ran: 4:00 AM wake and breakfast; bike to the club; 2 hours of swimming; bike to school; full school day; bike back to the club; 1 hour of gym; 2 more hours of swimming; bike home; home by 8:30 PM. Saturdays included, for years — training alongside people who went on to compete at the Olympics.\n\nThe point of the story isn't to impress; it's the most honest explanation of a working style. That schedule, maintained across childhood and adolescence, built more than fitness — it installed a complete operating system: organized, structured, proactive, someone who doesn't leave for tomorrow what can be done today. Those weren't values adopted later; they were installed early, through repetition and physical consequence, and carried into everything after quitting competitive swimming before university.\n\nOutside structured commitments, the university years went into building a social life and being present for people — showing up for friends, family, and whoever needs something done; reliability as a personal trait, not just a professional one. The people closest would describe a good friend — funny, happy, trustworthy, reliable, honest — and would also name the biggest blind spot: being demanding to a fault with oneself, holding personal performance to a standard that can become personal. It's not perfectionism for its own sake; it's caring too much — the same quality that makes for reliability makes things hard when they fall short.\n\nThere was no single moment of conversion into tech; the path assembled itself — a natural aptitude for math and problem-solving from an engineering household, a first university year that made programming click, four years of teaching that proved complexity could be communicated to anyone, a co-ownership role that revealed a pull toward analyzing, building, and solving real problems, and a growing restlessness with pure teaching. The throughline: not someone satisfied operating inside a fixed lane, but someone who wants the full picture — the technical problem, the human need behind it, and the clearest path between the two.",

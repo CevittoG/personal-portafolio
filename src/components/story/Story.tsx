@@ -30,9 +30,11 @@ export function Story({ locale }: StoryProps) {
   const messages = getMessages(locale);
 
   const all = experienceRepository.getAll();
-  const act1Entries = chronological(all.filter((e) => e.type === "personal"));
+  const act1Entries = chronological(
+    all.filter((e) => e.story_act === "foundation"),
+  );
   const act3Entries = chronological(
-    all.filter((e) => e.type === "job" || e.type === "project"),
+    all.filter((e) => e.story_act === "technical"),
   );
 
   return (
