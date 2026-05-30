@@ -71,7 +71,7 @@ export function Navbar() {
       className={cn(
         "sticky top-0 z-40 h-16",
         "transition-colors duration-200 ease-out",
-        scrolled
+        scrolled || mobileOpen
           ? "border-b border-border bg-surface/80 backdrop-blur-md"
           : "bg-transparent",
       )}
@@ -145,7 +145,7 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
-            className="sm:hidden fixed inset-0 top-16 z-30 bg-bg/95 backdrop-blur-sm"
+            className="sm:hidden fixed inset-0 top-16 z-30 bg-bg backdrop-blur-md"
           >
             <motion.ul
               initial={{ y: -8, opacity: 0 }}
