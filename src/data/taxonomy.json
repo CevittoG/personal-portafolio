@@ -155,6 +155,18 @@
         "cpp",
         "html"
       ]
+    },
+    "javascript": {
+      "slug": "javascript",
+      "display_name": "JavaScript",
+      "type": "languages",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/javascript",
+      "color": null,
+      "related": [
+        "html",
+        "css"
+      ]
     }
   },
   "technologies": {
@@ -483,6 +495,18 @@
       "image": "https://cdn.simpleicons.org/google",
       "color": null,
       "related": []
+    },
+    "arduino": {
+      "slug": "arduino",
+      "display_name": "Arduino",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/arduino",
+      "color": null,
+      "related": [
+        "cpp",
+        "robotics"
+      ]
     }
   },
   "libraries": {
@@ -735,7 +759,45 @@
       "related": [
         "scikit-learn",
         "linear-regression",
-        "nlp"
+        "nlp",
+        "data-mining",
+        "linear-algebra-optimization"
+      ]
+    },
+    "data-structures-algorithms": {
+      "slug": "data-structures-algorithms",
+      "display_name": "Data Structures & Algorithms",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "data-modeling"
+      ]
+    },
+    "data-mining": {
+      "slug": "data-mining",
+      "display_name": "Data Mining",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "machine-learning",
+        "statistical-analysis",
+        "etl"
+      ]
+    },
+    "linear-algebra-optimization": {
+      "slug": "linear-algebra-optimization",
+      "display_name": "Linear Algebra & Optimization for Data Science",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "machine-learning",
+        "statistical-analysis"
       ]
     },
     "linear-regression": {

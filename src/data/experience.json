@@ -197,23 +197,30 @@
     "featured": true
   },
   {
-    "id": "universidad-adolfo-ibanez-2020",
+    "id": "universidad-adolfo-ibanez-2021",
     "relevant": false,
-    "title": "Computer Science Engineering (Ingeniería Civil Informática)",
+    "story_act": "foundation",
+    "personal_impact": "UAI's professional-formation pillar — leadership, written and oral expression, critical thinking — turned out to matter more than the engineering curriculum itself. Communication without empathy is just noise; that idea quietly underpinned everything that came after.",
+    "title": "Computer Science Engineering",
     "type": "education",
     "institution": "Universidad Adolfo Ibáñez (UAI)",
+    "location": "Santiago, Chile",
     "credential": "degree",
-    "issuer": "Universidad Adolfo Ibáñez",
-    "period": { "start": "2014", "end": "2020" },
+    "period": { "start": "2016-03", "end": "2021-01" },
     "summary": "Six-year professional Computer Science Engineering degree at UAI in Santiago, Chile — closer to a combined Bachelor's plus pre-graduate curriculum than a standard 4-year program, paired with UAI's signature professional-formation pillar (leadership, written/oral expression, critical thinking).",
-    "description": "Computer Science Engineering (Ingeniería Civil Informática) at Universidad Adolfo Ibáñez, Santiago, Chile, ~2014–2020. The degree is a 5-to-6 year professional program — structurally closer to a combined Bachelor's + pre-graduate curriculum than a standard 4-year CS degree — including academic coursework, pre-graduate level courses (equivalent in content to early Master's coursework), and a 6-month professional internship. Final grade: 5.8/7.0 (≈3.4–3.6 GPA on the US 4.0 scale), with specialization years consistently above 6.0 (≈3.7–3.9 GPA, honors-level by US standards).\n\nThe path in wasn't a straight line: a strong math background and an engineering household led to a first choice of Chemistry Engineering, then enrollment at UAI in a general engineering program. A required first-year specialization choice — sparked by falling in love with programming through C++ and PHP — made Computer Science the obvious direction. The first couple of years were a genuine shock given the jump in rigor from Chilean high school; once footing was found in the specialization years, performance reflected real engagement.\n\nUAI is known in Chile for producing professionals, not just technicians. Alongside the engineering curriculum, the university runs a structured professional-formation pillar; courses completed included Leadership (multiple), Written Expression, Oral Expression (multiple), Critical Reading, and Argumentation and Critical Thinking — unusual for a CS program, and ultimately the most consequential part of the formation. The most valuable takeaway wasn't technical: it was learning to communicate, express ideas, and lead. Leadership changed the most — across a full semester it dismantled the assumption that clear communication is enough, showing that real leadership requires first understanding what the other person is actually going through, and only then connecting their personal objectives to a shared goal. Communication without empathy is just noise — a quiet foundation for everything that followed.",
+    "description": "Computer Science Engineering (Ingeniería Civil Informática) at Universidad Adolfo Ibáñez, Santiago, Chile, ~2016–2021. The degree is a 5-to-6 year professional program — structurally closer to a combined Bachelor's + pre-graduate curriculum than a standard 4-year CS degree — including academic coursework, pre-graduate level courses (equivalent in content to early Master's coursework), and a 6-month professional internship. Final grade: 5.8/7.0 (≈3.4–3.6 GPA on the US 4.0 scale), with specialization years consistently above 6.0 (≈3.7–3.9 GPA, honors-level by US standards).\n\nThe path in wasn't a straight line: a strong math background and an engineering household led to a first choice of Chemistry Engineering, then enrollment at UAI in a general engineering program. A required first-year specialization choice — sparked by falling in love with programming through C++ and PHP — made Computer Science the obvious direction. The first couple of years were a genuine shock given the jump in rigor from Chilean high school; once footing was found in the specialization years, performance reflected real engagement.\n\nUAI is known in Chile for producing professionals, not just technicians. Alongside the engineering curriculum, the university runs a structured professional-formation pillar; courses completed included Leadership (multiple), Written Expression, Oral Expression (multiple), Critical Reading, and Argumentation and Critical Thinking — unusual for a CS program, and ultimately the most consequential part of the formation. The most valuable takeaway wasn't technical: it was learning to communicate, express ideas, and lead. Leadership changed the most — across a full semester it dismantled the assumption that clear communication is enough, showing that real leadership requires first understanding what the other person is actually going through, and only then connecting their personal objectives to a shared goal. Communication without empathy is just noise — a quiet foundation for everything that followed.",
     "tags": {
       "roles": [],
-      "languages": ["cpp", "php"],
-      "technologies": [],
+      "languages": ["cpp", "php", "python"],
+      "technologies": ["arduino"],
       "libraries": [],
       "domains": ["higher-education"],
-      "concepts": [],
+      "concepts": [
+        "data-structures-algorithms",
+        "data-mining",
+        "linear-algebra-optimization",
+        "machine-learning"
+      ],
       "scale": [],
       "soft_skills": [
         "leadership",
@@ -252,8 +259,8 @@
     "description": "School of Tech (schooloftech.cl) is an educational technology company that brings programming, robotics, and innovation courses to schools and institutions. Joined as an instructor and stayed four years, working up to 30 hours/week alongside university studies (including summers), and grew into considerably more than a classroom teacher. The work spanned three layers.\n\n**Teaching kids (ages 10–18).** Taught programming courses covering video games, electronics, and robotics across 7 educational institutions in 2 countries — from 10-year-olds encountering code for the first time to teenagers building their first electronic projects.\n\n**Training teachers.** Became an instructor for technology tools — Google Docs, Google Sheets, Google Classroom, and collaboration platforms — for 750+ teachers across various establishments, often walking into rooms full of professional educators as a university student and helping them transform how they work.\n\n**Entrepreneurship mentorship.** Mentored 5 teams of Starbucks staff developing technological entrepreneurship projects; one team placed second at the regional level.\n\n**Co-ownership chapter.** After several years of consistent, reliable work, leadership offered a co-ownership role in a new internal project — a program teaching teachers how to transform their practice with technology. This was the first step fully outside the classroom and into something closer to business: conducting statistical analysis of teaching competencies across a dataset of 2,000+ teachers, designing data visualizations to communicate market-research findings, building PowerPoint presentations used directly in sales (showing prospective institutional clients how technology adoption improved outcomes in schools already using the methods), and participating in academic design for teacher-training workshops. In hindsight, this was product thinking and go-to-market work — identifying a market need, quantifying it, and packaging it into a compelling pitch — and the first clear signal of the kind of work that felt closest to the career direction worth pursuing.\n\nThe range of audiences was the real education: teaching a 10-year-old robotics, mentoring adults on entrepreneurship, and convincing a room of professional teachers to change how they work each demanded a different register. Over four years and hundreds of classes, that built fluent code-switching between technical depth and accessible simplicity, between authority and humility, between instruction and facilitation.",
     "tags": {
       "roles": [],
-      "languages": [],
-      "technologies": ["google-workspace"],
+      "languages": ["python", "javascript", "html", "css"],
+      "technologies": ["google-workspace", "arduino"],
       "libraries": [],
       "domains": ["edtech"],
       "concepts": [
@@ -302,7 +309,7 @@
     "location": "Santiago, Chile",
     "employment_type": "freelance",
     "team": null,
-    "period": { "start": "2019", "end": "2020" },
+    "period": { "start": "2018-03", "end": "2019-11" },
     "summary": "Event-based mentor (≈10 events) for high-school students working on personal technology projects — focused on shaping how students think: approaching problems as entrepreneurs, applying critical thinking to new technologies, and moving through innovation circles.",
     "description": "Silabuz (no longer in operation as of December 2022) brought in a mentor for a small number of specific events — roughly 10 in total — for high-school students working on personal technology projects, alongside university studies on a freelance, event-based basis. The focus differed from School of Tech: rather than teaching technical skills directly, the role was to shape how students think — how to approach a problem as an entrepreneur rather than just a student, how to apply critical thinking when confronting new technologies, and how to move through innovation circles (brainstorming, discovery, research, validation). Brief and targeted, but it reinforced a lesson already taking shape: teaching methodology and mindset is often more valuable than teaching content.",
     "tags": {
@@ -342,7 +349,7 @@
     "location": "Santiago, Chile",
     "employment_type": "part-time",
     "team": null,
-    "period": { "start": "2016", "end": "2019" },
+    "period": { "start": "2016-08", "end": "2019-06" },
     "summary": "Event-based catering work (0–3 nights/week) for a word-of-mouth private catering company — run simultaneously with engineering studies and teaching. The most unexpectedly formative experience: a lasting, unpretentious respect for people, learned through invisible work done well.",
     "description": "Amelia Izquierdo is a private catering company operating entirely through word-of-mouth referrals. Each shift was an event — a different venue, client, and setup — so no two nights were the same and there was no room for a bad performance; you had one shot. The work covered the full arc of an event, from preparation (dessert tables, kitchen assistance, flowers, table setup) through service (welcoming and attending guests): physical, fast-paced, and entirely people-facing. This ran from 2016 to 2019, several nights a week, simultaneously with studying engineering and teaching kids and teachers at School of Tech — at points all three in parallel.\n\nThe experience least expected to be formative turned out to be exactly that. Event catering is unglamorous, invisible work; no one at the table knows or cares about your background. The lasting takeaway wasn't about hustle or stress, though both were tested — it was quieter: no one is only what they appear to be. Everyone has a story, and everyone deserves the chance to prove themselves regardless of the role they're currently playing. That fundamental, unpretentious respect for people didn't come from a course — it came from showing up, doing invisible work, and paying attention.",
     "tags": {
@@ -376,7 +383,7 @@
     "title": "Competitive Swimmer",
     "type": "personal",
     "region": "Santiago, Chile",
-    "period": { "start": null, "end": "2013" },
+    "period": { "start": "2004", "end": "2013" },
     "summary": "Nine years as a competitive swimmer through childhood and high school, training alongside future Olympians on a 4:00 AM–8:30 PM daily schedule. The discipline, structure, and proactivity it installed early became the operating system carried into everything since.",
     "description": "Before university, before teaching, before any of the professional story, there was swimming — nine years of competition from childhood through high school. At peak training the daily schedule ran: 4:00 AM wake and breakfast; bike to the club; 2 hours of swimming; bike to school; full school day; bike back to the club; 1 hour of gym; 2 more hours of swimming; bike home; home by 8:30 PM. Saturdays included, for years — training alongside people who went on to compete at the Olympics.\n\nThe point of the story isn't to impress; it's the most honest explanation of a working style. That schedule, maintained across childhood and adolescence, built more than fitness — it installed a complete operating system: organized, structured, proactive, someone who doesn't leave for tomorrow what can be done today. Those weren't values adopted later; they were installed early, through repetition and physical consequence, and carried into everything after quitting competitive swimming before university.\n\nOutside structured commitments, the university years went into building a social life and being present for people — showing up for friends, family, and whoever needs something done; reliability as a personal trait, not just a professional one. The people closest would describe a good friend — funny, happy, trustworthy, reliable, honest — and would also name the biggest blind spot: being demanding to a fault with oneself, holding personal performance to a standard that can become personal. It's not perfectionism for its own sake; it's caring too much — the same quality that makes for reliability makes things hard when they fall short.\n\nThere was no single moment of conversion into tech; the path assembled itself — a natural aptitude for math and problem-solving from an engineering household, a first university year that made programming click, four years of teaching that proved complexity could be communicated to anyone, a co-ownership role that revealed a pull toward analyzing, building, and solving real problems, and a growing restlessness with pure teaching. The throughline: not someone satisfied operating inside a fixed lane, but someone who wants the full picture — the technical problem, the human need behind it, and the clearest path between the two.",
     "tags": {
