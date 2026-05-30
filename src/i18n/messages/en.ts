@@ -182,6 +182,12 @@ export const en = {
     primaryAction: "Send me an email",
     resumeAction: "Download full resume (PDF)",
   },
+  notFound: {
+    code: "404",
+    title: "Not found",
+    body: "That page doesn't exist (yet).",
+    back: "← Back to the Explorer",
+  },
 };
 
 export type Messages = typeof en;

@@ -180,4 +180,10 @@ export const es: Messages = {
     primaryAction: "Envíame un correo",
     resumeAction: "Descargar CV completo (PDF)",
   },
+  notFound: {
+    code: "404",
+    title: "No encontrado",
+    body: "Esa página no existe (aún).",
+    back: "← Volver al Explorador",
+  },
 };
