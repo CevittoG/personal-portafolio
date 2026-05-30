@@ -58,7 +58,12 @@ export function Story({ locale }: StoryProps) {
           intro={t("story.actOne.intro")}
         >
           {act1Entries.length > 0 ? (
-            <StoryTimeline entries={act1Entries} highlightTagType="soft_skills" />
+            <StoryTimeline
+              entries={act1Entries}
+              highlightTagType="soft_skills"
+              linkToDeepDive
+              locale={locale}
+            />
           ) : (
             <ActPlaceholder
               title={t("story.actOne.emptyTitle")}
@@ -83,6 +88,7 @@ export function Story({ locale }: StoryProps) {
               entries={act3Entries}
               highlightTagType="concepts"
               linkToDeepDive
+              locale={locale}
             />
           ) : (
             <ActPlaceholder

@@ -18,6 +18,8 @@ import {
 } from "@/lib/experience/format";
 import type { ExperienceEntry } from "@/lib/experience/types";
 import { formatTagLabel } from "@/lib/taxonomy/format";
+import { withLocale } from "@/i18n/path";
+import type { Locale } from "@/i18n/locale";
 import { cn } from "@/lib/utils";
 
 /**
@@ -39,9 +41,11 @@ export interface StoryTimelineProps {
    *  `soft_skills` for Act 1 (the foundation acts emphasize human skills);
    *  the technical career act uses `concepts` to spotlight what was built. */
   highlightTagType?: "soft_skills" | "concepts" | "technologies";
-  /** When true, each entry's heading links to its deep-dive page in a new
-   *  tab (plan §7 Act 3). */
+  /** When true, the whole card links to its deep-dive page in a new tab
+   *  (plan §7 Act 3, extended to Act 1 on 2026-05-29). */
   linkToDeepDive?: boolean;
+  /** Active locale, used to prefix deep-dive hrefs (`/es/experience/…`). */
+  locale?: Locale;
   className?: string;
 }
 
@@ -49,6 +53,7 @@ export function StoryTimeline({
   entries,
   highlightTagType = "soft_skills",
   linkToDeepDive = false,
+  locale = "en",
   className,
 }: StoryTimelineProps) {
   const reduceMotion = useReducedMotion();
@@ -99,6 +104,7 @@ export function StoryTimeline({
           side={i % 2 === 0 ? "left" : "right"}
           highlightTagType={highlightTagType}
           linkToDeepDive={linkToDeepDive}
+          locale={locale}
         />
       ))}
     </ol>
@@ -110,11 +116,13 @@ function TimelineRow({
   side,
   highlightTagType,
   linkToDeepDive,
+  locale,
 }: {
   entry: ExperienceEntry;
   side: "left" | "right";
   highlightTagType: NonNullable<StoryTimelineProps["highlightTagType"]>;
   linkToDeepDive: boolean;
+  locale: Locale;
 }) {
   const heading = getHeadingLine(entry);
   const meta = getDrawerSubMeta(entry);
@@ -152,9 +160,26 @@ function TimelineRow({
         <Reveal>
           <article
             className={cn(
-              "rounded-2xl border border-border bg-surface/40 p-5",
+              "group relative rounded-2xl border border-border bg-surface/40 p-5",
+              linkToDeepDive &&
+                "cursor-pointer transition-colors duration-150 hover:border-accent/40 hover:bg-surface/60",
             )}
           >
+          {linkToDeepDive && (
+            <Link
+              href={withLocale(`/experience/${entry.id}`, locale)}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={heading.primary}
+              className={cn(
+                "absolute inset-0 z-10 rounded-2xl",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                "focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
+              )}
+            >
+              <span className="sr-only">{heading.primary}</span>
+            </Link>
+          )}
           <p className="text-xs uppercase tracking-wider text-text-muted">
             {period}
             {meta && (
@@ -165,25 +190,20 @@ function TimelineRow({
             )}
           </p>
 
-          {linkToDeepDive ? (
-            <h3 className="mt-1 text-lg font-semibold tracking-tight">
-              <Link
-                href={`/experience/${entry.id}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-text-primary hover:text-accent transition-colors duration-150"
-              >
-                {heading.primary}
-                <span aria-hidden="true" className="ml-1 text-text-muted">
-                  ↗
-                </span>
-              </Link>
-            </h3>
-          ) : (
-            <h3 className="mt-1 text-lg font-semibold tracking-tight text-text-primary">
-              {heading.primary}
-            </h3>
-          )}
+          <h3
+            className={cn(
+              "mt-1 text-lg font-semibold tracking-tight text-text-primary",
+              linkToDeepDive &&
+                "transition-colors duration-150 group-hover:text-accent",
+            )}
+          >
+            {heading.primary}
+            {linkToDeepDive && (
+              <span aria-hidden="true" className="ml-1 text-text-muted">
+                ↗
+              </span>
+            )}
+          </h3>
 
           {heading.secondary && (
             <p className="text-sm text-text-secondary">{heading.secondary}</p>
