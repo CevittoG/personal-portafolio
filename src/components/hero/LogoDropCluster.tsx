@@ -378,7 +378,7 @@ function layoutPlacements(logos: readonly LogoItem[]): Placement[] {
     // is atmosphere, not legibility insurance.
     const distNorm = Math.min(1, Math.hypot(best.x - 50, best.y - 50) / 70.7);
     const smooth = distNorm * distNorm * (3 - 2 * distNorm);
-    const opacity = 0.55 + smooth * 0.4; // 0.55–0.95
+    const opacity = 0.28 + smooth * 0.27; // 0.28–0.55
 
     return { x: best.x, y: best.y, rotateBase, floatDuration, floatPhase, opacity };
   });
