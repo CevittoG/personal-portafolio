@@ -25,7 +25,7 @@ Future impeccable commands (`/impeccable shape`, `/impeccable polish`, `/impecca
 
 **Theme (`src/lib/theme/`):** `types.ts`, `storage.ts` (`ThemeStorage` interface + `LocalStorageThemeStorage` — DIP), `inline-script.ts` (FOUC-safe pre-paint resolver), `ThemeProvider.tsx`. Light palette lives under `[data-theme="light"]` in `globals.css` with all 8 tag-type colors retuned.
 
-**SOLID `src/lib/` layer:** `taxonomy` (+ `logos.ts` feeding the cluster), `experience` (+ `sort.ts`, `csv.ts`, description renderer), `filters`, `related`, `stats` (computers now expose optional `labelKey: MessageKey`), `search`, `site`, `hooks`.
+**SOLID `src/lib/` layer:** `taxonomy` (+ `logos.ts` feeding the cluster), `experience` (+ `sort.ts`, `csv.ts`, description renderer), `filters`, `related`, `stats` (computers now expose optional `labelKey: MessageKey`), `search`, `site`, `hooks`, `analytics`.
 
 **Shared page bodies:** `Explorer.tsx` (client), `Story.tsx` / `Contact.tsx` / `DeepDive.tsx` (server, take `locale: Locale` prop). Route files are tiny wrappers — both EN and ES routes call the same component with their locale.
 
@@ -44,6 +44,8 @@ Future impeccable commands (`/impeccable shape`, `/impeccable polish`, `/impecca
 **Mobile nav opacity (2026-05-29):** `Navbar.tsx` keeps the header in its solid-state classes (`bg-surface/80 backdrop-blur-md`) whenever `mobileOpen || scrolled`; the mobile overlay uses fully-opaque `bg-bg backdrop-blur-md` (was `bg-bg/95 backdrop-blur-sm`) so page content no longer bleeds through.
 
 **404 localization (2026-05-29):** `app/not-found.tsx` is a client component that reads `usePathname()` to pick EN vs ES (it sits at the root layout, outside `I18nProvider`). Copy lives under `notFound` in both message catalogues.
+
+**Analytics (2026-06-09):** Umami cloud script injected from `src/app/layout.tsx` via `next/script` (`afterInteractive`), gated by `data-domains="asebagutierrezm.com"` so localhost/preview don't ship beacons. Typed wrapper at `src/lib/analytics/umami.ts` — the `EventMap` is the single source of truth for every custom event (`filter_added`, `filter_removed`, `search_typed`, `experience_opened`, `deep_dive_opened`, `contact_clicked`). Tracking is wired at user-gesture sites (SearchBar/RoleShortcuts/ActiveFilterChips/ExperienceCard/Drawer), never inside `useFilterTags` — the URL-state hook stays analytics-free. `search_typed` is debounced 600ms and skips queries <2 chars. Contact CTAs (`Contact.tsx`, server component) use Umami's declarative `data-umami-event` + `data-umami-event-kind` attributes to avoid converting to a client component. `src/types/global.d.ts` declares `window.umami`.
 
 **Deferred (plan §18 Phase 2):** taxonomy `display_name_es`; experience entry translations. Both stay in authored language (English) for v1.
 
