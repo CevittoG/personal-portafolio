@@ -13,6 +13,7 @@ import type { TagType } from "@/lib/taxonomy/types";
 import { TagPill, type TagPillState } from "@/components/tags/TagPill";
 import { tagColorVar } from "@/components/tags/tag-colors";
 import { useTranslations } from "@/i18n/I18nProvider";
+import { track } from "@/lib/analytics/umami";
 import { cn } from "@/lib/utils";
 
 /**
@@ -57,7 +58,12 @@ export function ExperienceCard({
 
   const tagGroups = visibleTagsByType(entry, filterTags ?? []);
 
-  const handleClick = onSelect ? () => onSelect(entry) : undefined;
+  const handleClick = onSelect
+    ? () => {
+        track("experience_opened", { id: entry.id, type: entry.type });
+        onSelect(entry);
+      }
+    : undefined;
   const interactive = Boolean(handleClick);
 
   return (

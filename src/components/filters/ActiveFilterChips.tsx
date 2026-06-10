@@ -4,6 +4,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { TagPill } from "@/components/tags/TagPill";
 import { tagTypeLabel } from "@/lib/taxonomy/labels";
 import { useTranslations } from "@/i18n/I18nProvider";
+import { track } from "@/lib/analytics/umami";
 import type { TaxonomyEntry } from "@/lib/taxonomy/types";
 import { cn } from "@/lib/utils";
 
@@ -72,7 +73,10 @@ export function ActiveFilterChips({
                 sublabel={tagTypeLabel(tag.type)}
                 type={tag.type}
                 state="removable"
-                onRemove={() => onRemove(slug)}
+                onRemove={() => {
+                  track("filter_removed", { slug, type: tag.type });
+                  onRemove(slug);
+                }}
                 removeAriaLabel={t("filters.removeTag", { label: tag.display_name })}
               />
             </motion.span>

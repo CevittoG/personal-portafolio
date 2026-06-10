@@ -8,6 +8,7 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import { TagPill } from "@/components/tags/TagPill";
+import { track } from "@/lib/analytics/umami";
 import {
   formatPeriod,
   getDescriptionTeaser,
@@ -387,6 +388,7 @@ function DrawerContent({
           href={detailHref}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => track("deep_dive_opened", { id: entry.id })}
           className={cn(
             "inline-flex w-full items-center justify-center gap-2 rounded-full",
             "bg-accent px-5 py-2.5 text-sm font-medium text-on-accent",

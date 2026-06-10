@@ -9,6 +9,7 @@ import {
   type KeyboardEvent,
 } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { track } from "@/lib/analytics/umami";
 import { defaultSearchStrategy } from "@/lib/search/substring";
 import type { SearchStrategy } from "@/lib/search/types";
 import { TAG_TYPES, type TagType, type TaxonomyEntry } from "@/lib/taxonomy/types";
@@ -97,6 +98,16 @@ export function SearchBar({
       .filter((g) => g.items.length > 0);
   }, [options]);
 
+  /* ── Telemetry: debounced search_typed event ────────────────────── */
+  useEffect(() => {
+    const q = query.trim().toLowerCase();
+    if (q.length < 2) return;
+    const id = window.setTimeout(() => {
+      track("search_typed", { query: q });
+    }, 600);
+    return () => window.clearTimeout(id);
+  }, [query]);
+
   /* ── Close on outside click ─────────────────────────────────────── */
   useEffect(() => {
     if (!open) return;
@@ -114,8 +125,13 @@ export function SearchBar({
 
   /* ── Handlers ───────────────────────────────────────────────────── */
 
-  function commit(slug: string) {
-    onSelect(slug);
+  function commit(entry: TaxonomyEntry) {
+    track("filter_added", {
+      slug: entry.slug,
+      type: entry.type,
+      source: "search",
+    });
+    onSelect(entry.slug);
     setQuery("");
     setActiveIndex(-1);
     // Keep dropdown open so the user can chain selections.
@@ -133,7 +149,7 @@ export function SearchBar({
     } else if (e.key === "Enter") {
       if (open && activeIndex >= 0 && activeIndex < options.length) {
         e.preventDefault();
-        commit(options[activeIndex].slug);
+        commit(options[activeIndex]);
       }
     } else if (e.key === "Escape") {
       setOpen(false);
@@ -240,7 +256,7 @@ export function SearchBar({
                           // mousedown (not click) so it fires before the
                           // outside-click handler that closes the dropdown
                           e.preventDefault();
-                          commit(entry.slug);
+                          commit(entry);
                         }}
                         className={cn(
                           "cursor-pointer rounded-full border px-2.5 py-1 text-xs",

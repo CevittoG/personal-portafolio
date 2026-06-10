@@ -2,6 +2,7 @@
 
 import { TagPill } from "@/components/tags/TagPill";
 import { useTranslations } from "@/i18n/I18nProvider";
+import { track } from "@/lib/analytics/umami";
 import type { TaxonomyEntry } from "@/lib/taxonomy/types";
 import { cn } from "@/lib/utils";
 
@@ -52,7 +53,18 @@ export function RoleShortcuts({
             label={role.display_name}
             type={role.type}
             state={isActive ? "active" : "inactive"}
-            onClick={isActive ? undefined : () => onSelect(role.slug)}
+            onClick={
+              isActive
+                ? undefined
+                : () => {
+                    track("filter_added", {
+                      slug: role.slug,
+                      type: role.type,
+                      source: "shortcut",
+                    });
+                    onSelect(role.slug);
+                  }
+            }
           />
         );
       })}

@@ -49,6 +49,8 @@ export function Contact({ locale }: ContactProps) {
         <section aria-label={t("contact.eyebrow")} className="space-y-3">
           <a
             href={`mailto:${email}`}
+            data-umami-event="contact_clicked"
+            data-umami-event-kind="email"
             className={cn(
               "inline-flex w-full items-center justify-center gap-2 rounded-full",
               "bg-accent px-6 py-3 text-sm font-medium text-on-accent",
@@ -73,6 +75,8 @@ export function Contact({ locale }: ContactProps) {
             <a
               href={resume.href}
               download
+              data-umami-event="contact_clicked"
+              data-umami-event-kind="resume"
               className={cn(
                 "mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full",
                 "border border-border bg-surface px-6 py-3 text-sm font-medium",
