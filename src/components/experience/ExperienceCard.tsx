@@ -73,7 +73,7 @@ export function ExperienceCard({
         "bg-surface p-5 text-left",
         "transition-[transform,background-color,border-color,box-shadow] duration-200 ease-out",
         interactive && [
-          "cursor-pointer",
+          "relative cursor-pointer",
           "hover:-translate-y-0.5",
           "hover:bg-surface-elevated",
           "hover:border-accent/40",
@@ -96,7 +96,6 @@ export function ExperienceCard({
               className={cn(
                 "text-left bg-transparent p-0 m-0 cursor-pointer",
                 "outline-none after:absolute after:inset-0 after:rounded-2xl",
-                "relative",
               )}
             >
               <span className="relative z-10">{heading.primary}</span>
