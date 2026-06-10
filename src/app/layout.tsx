@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { ThemeProvider } from "@/lib/theme/ThemeProvider";
 import { themeInitScript } from "@/lib/theme/inline-script";
 import { DEFAULT_LOCALE } from "@/i18n/locale";
@@ -54,6 +55,15 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen flex flex-col">
         <ThemeProvider>{children}</ThemeProvider>
+        {/* Umami analytics — cloud-hosted, fire-and-forget. `data-domains`
+            limits beacons to the production host so localhost + preview
+            never pollute the dashboard. */}
+        <Script
+          src="https://cloud.umami.is/script.js"
+          data-website-id="21a1d96a-fb3d-4830-aa40-80673c2d8439"
+          data-domains="asebagutierrezm.com"
+          strategy="afterInteractive"
+        />
       </body>
     </html>
   );
