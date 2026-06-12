@@ -83,6 +83,31 @@
         "backend",
         "full-stack"
       ]
+    },
+    "ai-engineer": {
+      "slug": "ai-engineer",
+      "display_name": "AI Engineer",
+      "type": "roles",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "ml-engineer",
+        "backend"
+      ]
+    },
+    "software-architect": {
+      "slug": "software-architect",
+      "display_name": "Software Architect",
+      "type": "roles",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "full-stack",
+        "backend",
+        "devops"
+      ]
     }
   },
   "languages": {
@@ -166,6 +191,29 @@
       "related": [
         "html",
         "css"
+      ]
+    },
+    "typescript": {
+      "slug": "typescript",
+      "display_name": "TypeScript",
+      "type": "languages",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/typescript",
+      "color": null,
+      "related": [
+        "javascript",
+        "react"
+      ]
+    },
+    "bash": {
+      "slug": "bash",
+      "display_name": "Bash",
+      "type": "languages",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/gnubash",
+      "color": null,
+      "related": [
+        "python"
       ]
     }
   },
@@ -507,6 +555,205 @@
         "cpp",
         "robotics"
       ]
+    },
+    "kubernetes": {
+      "slug": "kubernetes",
+      "display_name": "Kubernetes",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/kubernetes",
+      "color": null,
+      "related": [
+        "docker",
+        "kustomize",
+        "autoscaling",
+        "gitops"
+      ]
+    },
+    "docker": {
+      "slug": "docker",
+      "display_name": "Docker",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/docker",
+      "color": null,
+      "related": [
+        "kubernetes",
+        "ci-cd"
+      ]
+    },
+    "postgresql": {
+      "slug": "postgresql",
+      "display_name": "PostgreSQL",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/postgresql",
+      "color": null,
+      "related": [
+        "sql",
+        "relational-databases",
+        "database-partitioning"
+      ]
+    },
+    "snowflake": {
+      "slug": "snowflake",
+      "display_name": "Snowflake",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/snowflake",
+      "color": null,
+      "related": [
+        "sql",
+        "data-warehousing",
+        "trino"
+      ]
+    },
+    "trino": {
+      "slug": "trino",
+      "display_name": "Trino",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/trino",
+      "color": null,
+      "related": [
+        "sql",
+        "data-warehousing",
+        "snowflake"
+      ]
+    },
+    "redis": {
+      "slug": "redis",
+      "display_name": "Redis",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/redis",
+      "color": null,
+      "related": [
+        "caching",
+        "distributed-locking",
+        "nosql"
+      ]
+    },
+    "neo4j": {
+      "slug": "neo4j",
+      "display_name": "Neo4j",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/neo4j",
+      "color": null,
+      "related": [
+        "knowledge-graphs",
+        "nosql"
+      ]
+    },
+    "airflow": {
+      "slug": "airflow",
+      "display_name": "Apache Airflow",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/apacheairflow",
+      "color": null,
+      "related": [
+        "workflow-orchestration",
+        "python",
+        "mlops"
+      ]
+    },
+    "ray": {
+      "slug": "ray",
+      "display_name": "Ray",
+      "type": "technologies",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "mlops",
+        "deep-learning",
+        "python"
+      ]
+    },
+    "kustomize": {
+      "slug": "kustomize",
+      "display_name": "Kustomize",
+      "type": "technologies",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "kubernetes",
+        "gitops"
+      ]
+    },
+    "splunk": {
+      "slug": "splunk",
+      "display_name": "Splunk",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/splunk",
+      "color": null,
+      "related": [
+        "observability"
+      ]
+    },
+    "prometheus": {
+      "slug": "prometheus",
+      "display_name": "Prometheus",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/prometheus",
+      "color": null,
+      "related": [
+        "observability",
+        "kubernetes"
+      ]
+    },
+    "sentry": {
+      "slug": "sentry",
+      "display_name": "Sentry",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/sentry",
+      "color": null,
+      "related": [
+        "observability",
+        "error-logging"
+      ]
+    },
+    "vite": {
+      "slug": "vite",
+      "display_name": "Vite",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/vite",
+      "color": null,
+      "related": [
+        "react",
+        "typescript"
+      ]
+    },
+    "grpc": {
+      "slug": "grpc",
+      "display_name": "gRPC",
+      "type": "technologies",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "rest-apis",
+        "microservices"
+      ]
+    },
+    "parquet": {
+      "slug": "parquet",
+      "display_name": "Apache Parquet",
+      "type": "technologies",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/apacheparquet",
+      "color": null,
+      "related": [
+        "spark",
+        "data-warehousing"
+      ]
     }
   },
   "libraries": {
@@ -653,6 +900,252 @@
         "spark",
         "azure-synapse"
       ]
+    },
+    "fastapi": {
+      "slug": "fastapi",
+      "display_name": "FastAPI",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/fastapi",
+      "color": null,
+      "related": [
+        "python",
+        "pydantic",
+        "rest-apis"
+      ]
+    },
+    "django-ninja": {
+      "slug": "django-ninja",
+      "display_name": "Django Ninja",
+      "type": "libraries",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "django",
+        "rest-apis",
+        "pydantic"
+      ]
+    },
+    "sqlalchemy": {
+      "slug": "sqlalchemy",
+      "display_name": "SQLAlchemy",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/sqlalchemy",
+      "color": null,
+      "related": [
+        "python",
+        "alembic",
+        "relational-databases"
+      ]
+    },
+    "alembic": {
+      "slug": "alembic",
+      "display_name": "Alembic",
+      "type": "libraries",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "sqlalchemy",
+        "database-migrations"
+      ]
+    },
+    "pydantic": {
+      "slug": "pydantic",
+      "display_name": "Pydantic",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/pydantic",
+      "color": null,
+      "related": [
+        "python",
+        "fastapi",
+        "data-validation"
+      ]
+    },
+    "boto3": {
+      "slug": "boto3",
+      "display_name": "Boto3",
+      "type": "libraries",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "python",
+        "s3",
+        "aws"
+      ]
+    },
+    "tensorflow": {
+      "slug": "tensorflow",
+      "display_name": "TensorFlow",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/tensorflow",
+      "color": null,
+      "related": [
+        "keras",
+        "deep-learning",
+        "python"
+      ]
+    },
+    "keras": {
+      "slug": "keras",
+      "display_name": "Keras",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/keras",
+      "color": null,
+      "related": [
+        "tensorflow",
+        "deep-learning"
+      ]
+    },
+    "pytorch": {
+      "slug": "pytorch",
+      "display_name": "PyTorch",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/pytorch",
+      "color": null,
+      "related": [
+        "deep-learning",
+        "python"
+      ]
+    },
+    "claude-sdk": {
+      "slug": "claude-sdk",
+      "display_name": "Anthropic Claude SDK",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/anthropic",
+      "color": null,
+      "related": [
+        "llms",
+        "ai-agents",
+        "python"
+      ]
+    },
+    "react": {
+      "slug": "react",
+      "display_name": "React",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/react",
+      "color": null,
+      "related": [
+        "typescript",
+        "javascript",
+        "react-router"
+      ]
+    },
+    "ant-design": {
+      "slug": "ant-design",
+      "display_name": "Ant Design",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/antdesign",
+      "color": null,
+      "related": [
+        "react",
+        "typescript"
+      ]
+    },
+    "react-query": {
+      "slug": "react-query",
+      "display_name": "TanStack Query",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/reactquery",
+      "color": null,
+      "related": [
+        "react",
+        "zustand"
+      ]
+    },
+    "zustand": {
+      "slug": "zustand",
+      "display_name": "Zustand",
+      "type": "libraries",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "react",
+        "react-query"
+      ]
+    },
+    "echarts": {
+      "slug": "echarts",
+      "display_name": "Apache ECharts",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/apacheecharts",
+      "color": null,
+      "related": [
+        "data-visualization",
+        "react"
+      ]
+    },
+    "plotly": {
+      "slug": "plotly",
+      "display_name": "Plotly.js",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/plotly",
+      "color": null,
+      "related": [
+        "data-visualization",
+        "react"
+      ]
+    },
+    "framer-motion": {
+      "slug": "framer-motion",
+      "display_name": "Framer Motion",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/framer",
+      "color": null,
+      "related": [
+        "react"
+      ]
+    },
+    "tailwind": {
+      "slug": "tailwind",
+      "display_name": "Tailwind CSS",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/tailwindcss",
+      "color": null,
+      "related": [
+        "css",
+        "react"
+      ]
+    },
+    "react-router": {
+      "slug": "react-router",
+      "display_name": "React Router",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/reactrouter",
+      "color": null,
+      "related": [
+        "react"
+      ]
+    },
+    "pytest": {
+      "slug": "pytest",
+      "display_name": "pytest",
+      "type": "libraries",
+      "icon": null,
+      "image": "https://cdn.simpleicons.org/pytest",
+      "color": null,
+      "related": [
+        "python",
+        "automated-testing"
+      ]
     }
   },
   "domains": {
@@ -709,6 +1202,40 @@
       "image": null,
       "color": null,
       "related": []
+    },
+    "data-infrastructure": {
+      "slug": "data-infrastructure",
+      "display_name": "Data Infrastructure",
+      "type": "domains",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "analytics",
+        "developer-tools"
+      ]
+    },
+    "analytics": {
+      "slug": "analytics",
+      "display_name": "Analytics",
+      "type": "domains",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "data-infrastructure"
+      ]
+    },
+    "developer-tools": {
+      "slug": "developer-tools",
+      "display_name": "Developer Tools",
+      "type": "domains",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "data-infrastructure"
+      ]
     }
   },
   "concepts": {
@@ -1140,6 +1667,455 @@
       "related": [
         "entrepreneurship"
       ]
+    },
+    "distributed-systems": {
+      "slug": "distributed-systems",
+      "display_name": "Distributed Systems",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "distributed-locking",
+        "microservices",
+        "caching"
+      ]
+    },
+    "distributed-locking": {
+      "slug": "distributed-locking",
+      "display_name": "Distributed Locking",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "distributed-systems",
+        "caching",
+        "redis"
+      ]
+    },
+    "caching": {
+      "slug": "caching",
+      "display_name": "Caching",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "redis",
+        "performance-optimization"
+      ]
+    },
+    "connection-pooling": {
+      "slug": "connection-pooling",
+      "display_name": "Connection Pooling",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "performance-optimization",
+        "relational-databases"
+      ]
+    },
+    "database-partitioning": {
+      "slug": "database-partitioning",
+      "display_name": "Database Partitioning",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "postgresql",
+        "performance-optimization",
+        "data-modeling"
+      ]
+    },
+    "database-migrations": {
+      "slug": "database-migrations",
+      "display_name": "Database Migrations",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "alembic",
+        "zero-downtime-deployment",
+        "sqlalchemy"
+      ]
+    },
+    "zero-downtime-deployment": {
+      "slug": "zero-downtime-deployment",
+      "display_name": "Zero-Downtime Deployment",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "database-migrations",
+        "ci-cd"
+      ]
+    },
+    "autoscaling": {
+      "slug": "autoscaling",
+      "display_name": "Autoscaling",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "kubernetes",
+        "cloud-infrastructure"
+      ]
+    },
+    "gitops": {
+      "slug": "gitops",
+      "display_name": "GitOps",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "kubernetes",
+        "kustomize",
+        "ci-cd"
+      ]
+    },
+    "microservices": {
+      "slug": "microservices",
+      "display_name": "Microservices",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "rest-apis",
+        "distributed-systems",
+        "backend"
+      ]
+    },
+    "data-warehousing": {
+      "slug": "data-warehousing",
+      "display_name": "Data Warehousing",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "snowflake",
+        "trino",
+        "etl"
+      ]
+    },
+    "cdc": {
+      "slug": "cdc",
+      "display_name": "Change Data Capture (CDC)",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "snowflake",
+        "data-pipelines",
+        "etl"
+      ]
+    },
+    "workflow-orchestration": {
+      "slug": "workflow-orchestration",
+      "display_name": "Workflow Orchestration",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "airflow",
+        "data-pipelines",
+        "mlops"
+      ]
+    },
+    "state-machines": {
+      "slug": "state-machines",
+      "display_name": "State Machines",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "distributed-systems",
+        "data-pipelines"
+      ]
+    },
+    "incident-response": {
+      "slug": "incident-response",
+      "display_name": "Incident Response",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "root-cause-analysis",
+        "observability"
+      ]
+    },
+    "root-cause-analysis": {
+      "slug": "root-cause-analysis",
+      "display_name": "Root-Cause Analysis",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "incident-response",
+        "critical-thinking"
+      ]
+    },
+    "performance-optimization": {
+      "slug": "performance-optimization",
+      "display_name": "Performance Optimization",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "caching",
+        "connection-pooling",
+        "database-partitioning"
+      ]
+    },
+    "security-hardening": {
+      "slug": "security-hardening",
+      "display_name": "Security Hardening",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "authentication",
+        "secrets-management",
+        "rbac"
+      ]
+    },
+    "rate-limiting": {
+      "slug": "rate-limiting",
+      "display_name": "Rate Limiting",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "rest-apis",
+        "caching"
+      ]
+    },
+    "automated-testing": {
+      "slug": "automated-testing",
+      "display_name": "Automated Testing",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "ci-cd",
+        "type-safety"
+      ]
+    },
+    "type-safety": {
+      "slug": "type-safety",
+      "display_name": "Type Safety",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "automated-testing",
+        "pydantic"
+      ]
+    },
+    "authentication": {
+      "slug": "authentication",
+      "display_name": "Authentication",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "oidc",
+        "jwt",
+        "rbac"
+      ]
+    },
+    "rbac": {
+      "slug": "rbac",
+      "display_name": "RBAC",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "authentication",
+        "security-hardening"
+      ]
+    },
+    "oidc": {
+      "slug": "oidc",
+      "display_name": "OIDC",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "authentication",
+        "jwt"
+      ]
+    },
+    "jwt": {
+      "slug": "jwt",
+      "display_name": "JWT",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "authentication",
+        "oidc"
+      ]
+    },
+    "secrets-management": {
+      "slug": "secrets-management",
+      "display_name": "Secrets Management",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "security-hardening",
+        "cloud-infrastructure"
+      ]
+    },
+    "deep-learning": {
+      "slug": "deep-learning",
+      "display_name": "Deep Learning",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "machine-learning",
+        "tensorflow",
+        "pytorch"
+      ]
+    },
+    "anomaly-detection": {
+      "slug": "anomaly-detection",
+      "display_name": "Anomaly Detection",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "machine-learning",
+        "time-series",
+        "deep-learning"
+      ]
+    },
+    "llms": {
+      "slug": "llms",
+      "display_name": "LLMs",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "rag",
+        "ai-agents",
+        "nlp"
+      ]
+    },
+    "rag": {
+      "slug": "rag",
+      "display_name": "RAG",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "llms",
+        "knowledge-graphs",
+        "embeddings"
+      ]
+    },
+    "knowledge-graphs": {
+      "slug": "knowledge-graphs",
+      "display_name": "Knowledge Graphs",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "neo4j",
+        "rag"
+      ]
+    },
+    "ai-agents": {
+      "slug": "ai-agents",
+      "display_name": "AI Agents",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "llms",
+        "claude-sdk"
+      ]
+    },
+    "embeddings": {
+      "slug": "embeddings",
+      "display_name": "Embeddings",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "nlp",
+        "rag"
+      ]
+    },
+    "explainable-ai": {
+      "slug": "explainable-ai",
+      "display_name": "Explainable AI",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "machine-learning",
+        "anomaly-detection"
+      ]
+    },
+    "mlops": {
+      "slug": "mlops",
+      "display_name": "MLOps",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "workflow-orchestration",
+        "airflow",
+        "ray"
+      ]
+    },
+    "time-series": {
+      "slug": "time-series",
+      "display_name": "Time-Series Analysis",
+      "type": "concepts",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "anomaly-detection",
+        "statistical-analysis"
+      ]
     }
   },
   "scale": {
@@ -1240,6 +2216,30 @@
       "image": null,
       "color": null,
       "related": []
+    },
+    "enterprise-scale": {
+      "slug": "enterprise-scale",
+      "display_name": "Enterprise Scale",
+      "type": "scale",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "high-volume-data",
+        "production-system"
+      ]
+    },
+    "high-volume-data": {
+      "slug": "high-volume-data",
+      "display_name": "High-Volume Data",
+      "type": "scale",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "enterprise-scale",
+        "distributed-systems"
+      ]
     }
   },
   "soft_skills": {
@@ -1498,6 +2498,31 @@
       "color": null,
       "related": [
         "discipline"
+      ]
+    },
+    "ownership": {
+      "slug": "ownership",
+      "display_name": "Ownership",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "technical-leadership",
+        "reliability",
+        "decision-making"
+      ]
+    },
+    "problem-solving": {
+      "slug": "problem-solving",
+      "display_name": "Problem Solving",
+      "type": "soft_skills",
+      "icon": null,
+      "image": null,
+      "color": null,
+      "related": [
+        "critical-thinking",
+        "decision-making"
       ]
     }
   }
