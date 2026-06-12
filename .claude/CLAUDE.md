@@ -205,6 +205,7 @@ Follow this sequence to avoid rework:
 - `docs/portfolio-website-plan.md` — Full plan: all architectural decisions, component specs, copy tone, responsive strategy. The authoritative source.
 - `docs/experience/uPlanner.md` — uPlanner role documentation (for `experience.json` content)
 - `docs/experience/AidProf.md` — AidProf co-founder role documentation (for `experience.json` content)
+- `docs/experience/Apple.md` — Apple Software Project Engineer role documentation (for `experience.json` content)
 
 ---
 
