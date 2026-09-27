@@ -229,9 +229,9 @@ taxonomy.json + experience.json
 ### Navbar (global)
 
 - **Left:** Name / logo — links to `/`
-- **Right:** `Explorer` · `My Story` · `Contact` · **Theme toggle** (sun/moon icon, see §17) · **Language switcher** (`EN` / `ES`, see §18)
+- **Right:** `Explorer` · `My Story` · `Contact` · GitHub/LinkedIn icons (lg+) · **Résumé** pill to `/contact#resume` (md+) · **Language switcher** (`EN` / `ES`, see §18) · **Theme toggle** (sun/moon icon, see §17) *(contact reach added 2026-09-27; see Status Log)*
 - **Scroll behavior:** On scroll past Hero, navbar gets `backdrop-blur` + slight background fill. No hard border. Smooth transition via Framer Motion.
-- **Mobile:** Hamburger icon → full-screen overlay menu with large nav links.
+- **Mobile:** Hamburger icon → full-screen overlay menu with large nav links, then "Email me / Request résumé" and labeled GitHub/LinkedIn links.
 - **Active state:** Current route link gets accent color treatment.
 
 ### Footer (global, minimal)
@@ -257,7 +257,8 @@ The heart of the site. Four distinct zones stacked vertically.
 - Name displayed large, typographic, dominant
 - Below it: one fixed target role (`hero.role`, "Senior Data Platform Engineer"), not a rotation. The earlier cycling role line pulled 9 roles from tags and diluted positioning.
 - Proof line: current role · computed years in engineering (`{years}+`) · location
-- Quiet "Hiring? Request my résumé" link to `/contact#resume`
+- Quiet "Hiring? Request my résumé" link to `/contact#resume`, with labeled GitHub/LinkedIn links under it
+- **Sticky mobile contact pill** (below `sm`, `/` only): "Email me | Request résumé" pinned to the bottom once the hero leaves the viewport (IntersectionObserver); hidden while the bottom sheet is open
 
 **Positioning statement**
 - One sharp sentence. Conversational-bold tone.
@@ -527,6 +528,10 @@ See Section 12 for full logic. Displays top 3 entries by weighted tag overlap sc
 - Controlled by a single boolean in a config file (not in `experience.json`)
 - Visual treatment: green for open, muted for not looking
 
+**At a glance** *(added 2026-09-27)*
+- Definition list with what an ATS/recruiter screen checks: target role, computed years (`{years}+`), core stack (`CORE_STACK` in `src/lib/site/profile.ts`), location, work authorization, degree
+- There is no public résumé, so the site must carry these facts itself
+
 **What you're looking for**
 - 2–3 sentences: role type, preferred environment (remote/hybrid), location/timezone constraints
 - Sets expectations, saves everyone's time
@@ -631,6 +636,7 @@ Triggered by clicking any Experience Card. Slides in from the right. Grid stays 
 - Top 3 impact statements
 - First paragraph of `description` (teaser — enough to qualify, not the full content)
 - `Dig deeper ↗` button → opens `/experience/[id]` in **new tab**
+- "Email me / Request résumé" pair under it (also in the deep-dive sidebar, below Impact)
 - `← Close` or `×` to dismiss
 
 **Width:** ~480px on desktop, full-width on mobile (bottom sheet behavior on mobile).
@@ -858,9 +864,12 @@ The site is bilingual. **English is the default.** Spanish is a first-class alte
 - `src/components/layout/LanguageSwitcher.tsx` — the navbar control
 - Messages keyed by feature, not by page (`hero.cta.explore`, `search.placeholder`, `stats.years`) so reuse stays clean
 
-**SEO:**
-- `<link rel="alternate" hreflang="en" />` and `hreflang="es"` in `<head>` of every page
-- `hreflang="x-default"` points to the English version
+**SEO:** *(reworked 2026-09-27; see Status Log)*
+- Every route builds its metadata with `buildMetadata()` / `staticPageMetadata()` / `experienceMetadata()` in `src/lib/site/metadata.ts`: per-page canonical, `hreflang` en/es/x-default computed from the path (x-default = English), Open Graph + Twitter fields. The root layout sets `metadataBase` only and no alternates, so no page inherits another's.
+- Titles are `Page | Name` (no em dashes); the home title carries keywords ("Senior Data Platform Engineer (Python, Snowflake, Kubernetes)").
+- `sitemap.xml` (every route in both locales, with alternates) and `robots.txt`, both `force-static`.
+- Share images are real PNGs from a force-static route handler, `/og/<locale>-<page>.png` and `/og/<locale>-experience-<id>.png`, not the `opengraph-image` convention (which exports extensionless files under static export).
+- JSON-LD `Person` in the root layout, with `alternateName` "Sebastian Gutierrez".
 
 **Content workflow:**
 - All Spanish copy is reviewed by a fluent speaker (the site owner) before merge — no auto-translation in production
@@ -871,6 +880,8 @@ The site is bilingual. **English is the default.** Spanish is a first-class alte
 ---
 
 ## Status Log
+
+- **2026-09-27** — **Expert-review Phase 2: conversion and SEO** (branch `phase-2-conversion-seo`). (1) **Metadata**: one helper (`src/lib/site/metadata.ts`) sets `metadataBase`, per-page canonical, correct hreflang (EN pages used to inherit the root's `/`↔`/es` alternates) and OG/Twitter fields; keyword titles without em dashes; home description computes years. (2) **`sitemap.ts`, `robots.ts`**, JSON-LD `Person` (`src/lib/site/structured-data.ts`). (3) **Share images**: branded 1200×630 cards from `src/lib/site/og-image.tsx`, served as `.png` files by `app/og/[image]/route.tsx`; deviation from the `opengraph-image.tsx` convention because static export writes those without an extension. Hex values for the cards live in `src/lib/site/brand-tokens.ts` (documented exception in DESIGN.md). (4) **Contact reach**: navbar GitHub/LinkedIn + Résumé pill, mobile menu contact actions, hero profile links, "Email me / Request résumé" in the drawer footer and deep-dive sidebar, and a sticky mobile pill after the hero. Shared hook-free `ContactLinks.tsx` + one mailto builder (`src/lib/site/contact.ts`). (5) **Analytics**: `contact_clicked` is now `{ kind: email | resume_request | linkedin | github, source }`; `umamiAttributes()` emits the typed events as `data-umami-event-*` so server-rendered links need no client JS. (6) **At a glance** on Contact (role, years, core stack, location, work authorization, degree). (7) Site identity (`url`, `alternateName`, profile links) moved into `siteConfig`; `CORE_STACK` + `getEngineeringYears()` in `src/lib/site/profile.ts`. (8) Fix: the mobile menu overlay collapsed to 0px tall because the header's `backdrop-filter` is its containing block; it now has an explicit viewport height. Verified: type-check ✅, lint ✅, build ✅ (sitemap 22 URLs, `/og/*.png` 1200×630), exported heads checked, screenshots of `/`, `/story`, `/contact`, `/es` at 390px and 1440px.
 
 - **2026-09-27** — **Expert-review Phase 1: trust and positioning fixes.** A four-lens review (frontend, recruiter, solutions engineer, full-stack) found trust breakers and diluted positioning; this lands the fixes. (1) **Apple entry rewritten NDA-conservative** (owner is a contractor through a vendor): removed security-finding and incident specifics, internal topology, absolute internal volumes, tenant/instance/user counts, team size and remote-team location, the leadership quote, and the `claude-sdk` tag (vendor relationship); kept ratios (~250x, ~90% fewer connections, ~30x, ~95%) and engineering judgement; first person, results-first `impact[0]`. (2) **`/playground` deleted**: it shipped mock uPlanner/AidProf cards with invented metrics. (3) **Years stat fixed**: `years-of-experience.ts` now counts only `story_act: "technical"` entries and merges overlapping periods (new `monthRange()` in `src/lib/experience/format.ts`); shows ~5.7 instead of ~12. Label is now "Years in engineering". **Industries stat removed** (it counted domain tags); Stats Bar is one row of three. (4) **Hero**: the 9-role `AnimatedRoleLine` (deleted) is replaced by a fixed target role ("Senior Data Platform Engineer"), a proof line with computed years, the availability pill (extracted to shared `src/components/contact/AvailabilityBadge.tsx`), and a "Hiring? Request my résumé" link; this also removed the "I work as a AI Engineer" bug. `siteConfig.title` removed. (5) **Contact**: work authorization (U.S. permanent resident, no sponsorship needed), data-platform "looking for" copy, and a `#resume` request section with a pre-filled `mailto:` (EN/ES). **No public résumé by design**: `siteConfig.resume` and the download button were removed; analytics kind is now `resume_request`. (6) **Route fade moved to CSS** (`template.tsx` is now a server component; `.route-fade` keyframe in `globals.css` under `prefers-reduced-motion: no-preference`), so static HTML no longer ships `opacity:0` before hydration. (7) **Contrast**: `--color-text-muted` #44445A→#7A7A95 (dark, 4.75:1) and #94A3B8→#64748B (light, 4.57:1); dark-mode `--color-on-accent` white→#0A0A0F (5.8:1 on ember, was 3.4:1); DESIGN.md synced. (8) **Data consistency**: uPlanner 43% claim aligned to the source doc, contradictory HQ removed, UAI program length aligned to "5-to-6 year". Verified: type-check ✅, lint ✅, build ✅, exported HTML checked, screenshots at 390px and 1440px.
 - **2026-06-12** — **Apple role added to the data layer** via the portfolio-json-builder skill from `docs/experience/Apple.md`. New experience entry `apple-software-project-engineer-2024` (`type: "job"`, `relevant: true`, `story_act: "technical"`, `featured: true`, current — `period.end: null`), prepended as the first/most-recent entry. It is the most tag-dense entry in the dataset, reflecting a five-system internal operational-analytics platform (Shared SDK, K8s blob-ingestion, FastAPI gateway, Django+React analytics/ML platform, distributed ML/AI triage). Taxonomy grew by ~73 new tags across all 8 types: **roles** (`ai-engineer`, `software-architect`), **languages** (`typescript`, `bash`), **technologies** (`kubernetes`, `docker`, `postgresql`, `snowflake`, `trino`, `redis`, `neo4j`, `airflow`, `ray`, `kustomize`, `splunk`, `prometheus`, `sentry`, `vite`, `grpc`, `parquet`), **libraries** (`fastapi`, `django-ninja`, `sqlalchemy`, `alembic`, `pydantic`, `boto3`, `tensorflow`, `keras`, `pytorch`, `claude-sdk`, `react`, `ant-design`, `react-query`, `zustand`, `echarts`, `plotly`, `framer-motion`, `tailwind`, `react-router`, `pytest`), **domains** (`data-infrastructure`, `analytics`, `developer-tools`), **concepts** (~36, incl. `distributed-systems`, `database-partitioning`, `zero-downtime-deployment`, `microservices`, `data-warehousing`, `cdc`, `incident-response`, `root-cause-analysis`, `performance-optimization`, `security-hardening`, `rbac`/`oidc`/`jwt`/`authentication`/`secrets-management`, `deep-learning`/`anomaly-detection`/`llms`/`rag`/`knowledge-graphs`/`ai-agents`/`mlops`/`time-series`/`explainable-ai`/`embeddings`), **scale** (`enterprise-scale`, `high-volume-data`), **soft_skills** (`ownership`, `problem-solving`). New library logos use the Simple Icons CDN where one exists (`ray`/`kustomize`/`grpc`/`alembic`/`django-ninja`/`zustand`/`boto3` left `null`). Validated: both JSONs parse, all entry tags resolve to taxonomy, all `related` refs resolve, no duplicate IDs, entry conforms to the `JobEntry` type. (`location` set to `"Austin, Texas"` and `employment_type` to `"contract"` per the user — Apple.md didn't state either.)
