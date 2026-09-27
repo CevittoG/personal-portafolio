@@ -187,6 +187,19 @@ export const en = {
       "Based in Austin, TX (Central Time). Open to remote roles across the Americas and EU time zones.",
     workAuthorization:
       "U.S. permanent resident (green card holder). Authorized to work for any U.S. employer, with no visa sponsorship needed now or in the future.",
+    glance: {
+      title: "At a glance",
+      role: "Target role",
+      experience: "Experience",
+      experienceValue: "{years}+ years in engineering",
+      stack: "Core stack",
+      location: "Location",
+      locationValue: "Austin, TX (Central Time)",
+      authorization: "Work authorization",
+      education: "Education",
+      educationValue:
+        "Computer Science Engineering, Universidad Adolfo Ibáñez (Chile), 2021",
+    },
     lookingForTitle: "What I'm looking for",
     lookingForBody:
       "Senior data platform or data engineering roles, with backend work welcome, ideally somewhere the people problem matters as much as the technical one. Comfortable as the first engineer on a team or the calm one on a big one.",

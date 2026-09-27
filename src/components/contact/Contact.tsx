@@ -4,6 +4,7 @@ import type { Locale } from "@/i18n/locale";
 import { cn } from "@/lib/utils";
 import { umamiAttributes } from "@/lib/analytics/umami";
 import { emailHref, resumeRequestHref } from "@/lib/site/contact";
+import { AtAGlance } from "./AtAGlance";
 import { AvailabilityBadge } from "./AvailabilityBadge";
 import { DocumentIcon, MailIcon } from "./ContactLinks";
 
@@ -14,10 +15,11 @@ import { DocumentIcon, MailIcon } from "./ContactLinks";
  * rendered, zero client JS. `locale` is a prop because Server Components
  * can't read the React I18nProvider context.
  *
- *   1. Availability badge, location and work authorization
- *   2. "What you're looking for" paragraph
- *   3. Email link (primary, mailto — no friction)
- *   4. Résumé request (`#resume`). There is deliberately no public résumé
+ *   1. Availability badge and remote/time-zone note
+ *   2. At a glance: role, years, stack, location, work authorization, degree
+ *   3. "What you're looking for" paragraph
+ *   4. Email link (primary, mailto — no friction)
+ *   5. Résumé request (`#resume`). There is deliberately no public résumé
  *      file: it is tailored per role, and asking for it opens a
  *      conversation. The mailto pre-fills the details needed to tailor it.
  */
@@ -40,11 +42,12 @@ export function Contact({ locale }: ContactProps) {
           <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-text-primary">
             {t("contact.title")}
           </h1>
-          <div className="space-y-1.5 text-sm text-text-secondary">
-            <p>{t("contact.availabilityNote")}</p>
-            <p>{t("contact.workAuthorization")}</p>
-          </div>
+          <p className="text-sm text-text-secondary">
+            {t("contact.availabilityNote")}
+          </p>
         </header>
+
+        <AtAGlance locale={locale} />
 
         <section
           aria-label={t("contact.lookingForTitle")}
