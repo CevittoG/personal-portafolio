@@ -175,7 +175,7 @@ export const en = {
       closed: "Not currently looking",
     },
     availabilityNote:
-      "Based in Austin, TX (Central Time). Open to remote roles across the Americas and EU time zones. I work in English and Spanish.",
+      "Based in Austin, TX (Central Time). Open to remote roles across the Americas and EU time zones.",
     workAuthorization:
       "U.S. permanent resident (green card holder). Authorized to work for any U.S. employer, with no visa sponsorship needed now or in the future.",
     lookingForTitle: "What I'm looking for",

@@ -173,7 +173,7 @@ export const es: Messages = {
       closed: "Actualmente no estoy buscando",
     },
     availabilityNote:
-      "Con base en Austin, TX (hora central). Abierto a roles remotos en zonas horarias de las Américas y la UE. Trabajo en inglés y español.",
+      "Con base en Austin, TX (hora central). Abierto a roles remotos en zonas horarias de las Américas y la UE.",
     workAuthorization:
       "Residente permanente en EE. UU. (green card). Autorizado para trabajar con cualquier empleador en EE. UU., sin necesidad de patrocinio de visa, ni ahora ni en el futuro.",
     lookingForTitle: "Qué estoy buscando",
