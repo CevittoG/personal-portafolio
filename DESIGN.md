@@ -186,6 +186,8 @@ Eight hues, one per taxonomy type, rotated around the wheel so adjacent types re
 
 **The Neighbour Hazard.** Persimmon (`tag-concepts`) is the closest hue to Lamp Ember. Never place a concepts chip directly adjacent to a primary button or accented link: the affordance loses its singularity. Keep at least 24px of clear space, or move the chip into a different cluster.
 
+**The Share-Card Exception.** Hex values live only in `src/app/globals.css`, with one exception: `src/lib/site/brand-tokens.ts` mirrors the dark `:root` tokens for the generated share images (`/og/*.png`), because `next/og` renders outside the DOM and can't resolve CSS custom properties. Only `src/lib/site/og-image.tsx` may import it. Change a dark token, change it there too.
+
 ## 3. Typography
 
 **Display / Body / Label Font:** `ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif` — a single system-stack sans across the entire interface.

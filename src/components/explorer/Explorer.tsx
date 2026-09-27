@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { StickyContactPill } from "@/components/contact/StickyContactPill";
 import { Hero } from "@/components/hero/Hero";
 import { SearchBar } from "@/components/search/SearchBar";
 import { RoleShortcuts } from "@/components/search/RoleShortcuts";
@@ -27,6 +28,7 @@ import { useTranslations } from "@/i18n/I18nProvider";
  * duplicating the assembly logic.
  */
 const ZONE_2_ID = "discover";
+const HERO_ID = "hero";
 
 export function Explorer() {
   const t = useTranslations();
@@ -81,6 +83,7 @@ export function Explorer() {
             : t("contact.availability.closed"),
         }}
         exploreTargetId={ZONE_2_ID}
+        id={HERO_ID}
         logos={logos}
       />
 
@@ -137,6 +140,7 @@ export function Explorer() {
       </section>
 
       <ExperienceDrawer entry={selected} onClose={handleClose} />
+      <StickyContactPill watchId={HERO_ID} suppressed={selected !== null} />
     </>
   );
 }

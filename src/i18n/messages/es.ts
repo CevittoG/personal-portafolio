@@ -10,9 +10,10 @@ import type { Messages } from "./en";
  */
 export const es: Messages = {
   meta: {
-    title: "Sebastián Gutiérrez — Portafolio",
+    title:
+      "{name} | Ingeniero Senior de Plataformas de Datos (Python, Snowflake, Kubernetes)",
     description:
-      "Portafolio interactivo. Busca por habilidad, herramienta o rol para descubrir las experiencias que coinciden con lo que estás buscando.",
+      "Ingeniero senior de plataformas de datos en Austin, TX. {years}+ años construyendo pipelines de ingesta, APIs y plataformas de datos con Python, Snowflake y Kubernetes.",
   },
   nav: {
     explorer: "Explorar",
@@ -47,6 +48,13 @@ export const es: Messages = {
     logos: {
       regionLabel: "Tecnologías con las que trabajo",
     },
+  },
+  contactCta: {
+    title: "¿Buscas a alguien para un rol de datos?",
+    email: "Escríbeme",
+    resume: "Pedir mi CV",
+    navResume: "CV",
+    sticky: "Opciones de contacto",
   },
   discover: {
     eyebrow: "Descubre",
@@ -98,6 +106,7 @@ export const es: Messages = {
     digDeeper: "Profundizar",
   },
   experience: {
+    metaTitle: "{title} | {name}",
     duration: {
       year: "{n} año",
       years: "{n} años",
@@ -122,7 +131,7 @@ export const es: Messages = {
     backToExplorer: "← Volver a Explorar",
   },
   story: {
-    metaTitle: "Mi historia — {name}",
+    metaTitle: "Mi historia | {name}",
     metaDescription:
       "Una narrativa en tres actos: antes de la tecnología, el giro y la carrera técnica.",
     eyebrow: "Mi historia",
@@ -163,9 +172,9 @@ export const es: Messages = {
     },
   },
   contact: {
-    metaTitle: "Contacto — {name}",
+    metaTitle: "Contacto | {name}",
     metaDescription:
-      "Ponte en contacto: disponibilidad, qué busco y la forma más rápida de llegar a mí.",
+      "Disponibilidad, autorización de trabajo, qué busco y la forma más rápida de contactarme o pedir mi CV.",
     eyebrow: "Contacto",
     title: "Hablemos",
     availability: {
@@ -176,6 +185,19 @@ export const es: Messages = {
       "Con base en Austin, TX (hora central). Abierto a roles remotos en zonas horarias de las Américas y la UE.",
     workAuthorization:
       "Residente permanente en EE. UU. (green card). Autorizado para trabajar con cualquier empleador en EE. UU., sin necesidad de patrocinio de visa, ni ahora ni en el futuro.",
+    glance: {
+      title: "En resumen",
+      role: "Rol buscado",
+      experience: "Experiencia",
+      experienceValue: "{years}+ años en ingeniería",
+      stack: "Stack principal",
+      location: "Ubicación",
+      locationValue: "Austin, TX (hora central)",
+      authorization: "Autorización de trabajo",
+      education: "Educación",
+      educationValue:
+        "Ingeniería Civil Informática, Universidad Adolfo Ibáñez (Chile), 2021",
+    },
     lookingForTitle: "Qué estoy buscando",
     lookingForBody:
       "Roles senior de plataformas de datos o ingeniería de datos, con trabajo de backend bienvenido; idealmente en un sitio donde el problema humano importe tanto como el técnico. Cómodo como primer ingeniero de un equipo o como el ingeniero tranquilo de uno grande.",

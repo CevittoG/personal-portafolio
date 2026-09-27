@@ -11,8 +11,17 @@
 export interface SiteConfig {
   /** Display name shown in the Navbar and Hero (proper noun — same in all locales). */
   name: string;
+  /** Name without diacritics: what most ATS and search queries type. */
+  alternateName: string;
+  /** Canonical production origin (no trailing slash). */
+  url: string;
   /** Email used by the Footer + Contact page. */
   email: string;
+  /** Public profiles. Rendered by the Navbar, Hero and Footer. */
+  links: {
+    github: string;
+    linkedin: string;
+  };
   /** Availability boolean for the Contact page badge (plan §9). The
    *  human-readable strings come from `t("contact.availability.*")`. */
   availability: {
@@ -22,7 +31,13 @@ export interface SiteConfig {
 
 export const siteConfig: SiteConfig = {
   name: "Sebastián Gutiérrez",
+  alternateName: "Sebastian Gutierrez",
+  url: "https://asebagutierrezm.com",
   email: "aseba.gutierrezm@gmail.com",
+  links: {
+    github: "https://github.com/CevittoG",
+    linkedin: "https://www.linkedin.com/in/asebagutierrezm/",
+  },
   availability: {
     open: true,
   },

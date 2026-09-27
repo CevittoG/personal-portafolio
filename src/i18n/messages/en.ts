@@ -12,9 +12,10 @@
  */
 export const en = {
   meta: {
-    title: "Sebastian Gutierrez — Portfolio",
+    title:
+      "{name} | Senior Data Platform Engineer (Python, Snowflake, Kubernetes)",
     description:
-      "Interactive portfolio. Search by skill, tool, or role to discover the experiences that match what you're looking for.",
+      "Senior data platform engineer in Austin, TX. {years}+ years building ingestion pipelines, APIs and data platforms in Python, Snowflake and Kubernetes.",
   },
   nav: {
     explorer: "Explorer",
@@ -49,6 +50,13 @@ export const en = {
     logos: {
       regionLabel: "Technologies I work with",
     },
+  },
+  contactCta: {
+    title: "Hiring for a data role?",
+    email: "Email me",
+    resume: "Request résumé",
+    navResume: "Résumé",
+    sticky: "Contact options",
   },
   discover: {
     eyebrow: "Discover",
@@ -100,6 +108,7 @@ export const en = {
     digDeeper: "Dig deeper",
   },
   experience: {
+    metaTitle: "{title} | {name}",
     duration: {
       year: "{n} yr",
       years: "{n} yrs",
@@ -124,9 +133,9 @@ export const en = {
     backToExplorer: "← Back to Explorer",
   },
   story: {
-    metaTitle: "My Story — {name}",
+    metaTitle: "My Story | {name}",
     metaDescription:
-      "A three-act narrative — before tech, the pivot, and the technical career.",
+      "My path in three acts: before tech, the pivot, and the engineering career.",
     eyebrow: "My Story",
     title: "The path that got me here",
     intro:
@@ -165,9 +174,9 @@ export const en = {
     },
   },
   contact: {
-    metaTitle: "Contact — {name}",
+    metaTitle: "Contact | {name}",
     metaDescription:
-      "Get in touch — availability, what I'm looking for, and the fastest way to reach me.",
+      "Availability, work authorization, what I'm looking for, and the fastest way to reach me or request my résumé.",
     eyebrow: "Contact",
     title: "Let's talk",
     availability: {
@@ -178,6 +187,19 @@ export const en = {
       "Based in Austin, TX (Central Time). Open to remote roles across the Americas and EU time zones.",
     workAuthorization:
       "U.S. permanent resident (green card holder). Authorized to work for any U.S. employer, with no visa sponsorship needed now or in the future.",
+    glance: {
+      title: "At a glance",
+      role: "Target role",
+      experience: "Experience",
+      experienceValue: "{years}+ years in engineering",
+      stack: "Core stack",
+      location: "Location",
+      locationValue: "Austin, TX (Central Time)",
+      authorization: "Work authorization",
+      education: "Education",
+      educationValue:
+        "Computer Science Engineering, Universidad Adolfo Ibáñez (Chile), 2021",
+    },
     lookingForTitle: "What I'm looking for",
     lookingForBody:
       "Senior data platform or data engineering roles, with backend work welcome, ideally somewhere the people problem matters as much as the technical one. Comfortable as the first engineer on a team or the calm one on a big one.",

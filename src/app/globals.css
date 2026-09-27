@@ -136,6 +136,11 @@ body {
   }
 }
 
+/* `light:` variant, keyed off the attribute the pre-paint theme script sets.
+   Use it for anything that must look right on first paint regardless of
+   React state (e.g. the ThemeToggle icon). */
+@custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
+
 @keyframes route-fade {
   from {
     opacity: 0;

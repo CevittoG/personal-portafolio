@@ -1,21 +1,8 @@
 import type { Metadata } from "next";
+import { staticPageMetadata } from "@/lib/site/metadata";
 import { Explorer } from "@/components/explorer/Explorer";
-import { getMessages } from "@/i18n/server";
 
-const messages = getMessages("es");
-
-export const metadata: Metadata = {
-  title: messages.meta.title,
-  description: messages.meta.description,
-  alternates: {
-    canonical: "/es",
-    languages: {
-      en: "/",
-      es: "/es",
-      "x-default": "/",
-    },
-  },
-};
+export const metadata: Metadata = staticPageMetadata("home", "es");
 
 export default function ExplorerPage() {
   return <Explorer />;

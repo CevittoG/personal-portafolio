@@ -9,6 +9,18 @@
  * `data-domains` filters the current host. Never throws.
  */
 
+/** Where a contact link was clicked. One value per placement. */
+export type ContactSource =
+  | "navbar"
+  | "mobile_menu"
+  | "hero"
+  | "drawer"
+  | "deep_dive"
+  | "sticky"
+  | "contact";
+
+export type ContactKind = "email" | "resume_request" | "linkedin" | "github";
+
 export type EventMap = {
   filter_added: {
     slug: string;
@@ -19,7 +31,7 @@ export type EventMap = {
   search_typed: { query: string };
   experience_opened: { id: string; type: string };
   deep_dive_opened: { id: string };
-  contact_clicked: { kind: "email" | "resume_request" };
+  contact_clicked: { kind: ContactKind; source: ContactSource };
 };
 
 export function track<K extends keyof EventMap>(name: K, data: EventMap[K]): void {
@@ -29,4 +41,20 @@ export function track<K extends keyof EventMap>(name: K, data: EventMap[K]): voi
   } catch {
     // Analytics must never break the UI.
   }
+}
+
+/**
+ * The same typed events as `data-umami-event-*` attributes, for links that
+ * render on the server (or in components shared by server and client
+ * trees). Umami's script picks them up on click, so no client JS is needed.
+ */
+export function umamiAttributes<K extends keyof EventMap>(
+  name: K,
+  data: EventMap[K],
+): Record<string, string> {
+  const attrs: Record<string, string> = { "data-umami-event": name };
+  for (const [key, value] of Object.entries(data)) {
+    attrs[`data-umami-event-${key}`] = String(value);
+  }
+  return attrs;
 }

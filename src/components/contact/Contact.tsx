@@ -2,7 +2,11 @@ import { siteConfig } from "@/lib/site/config";
 import { getTranslator } from "@/i18n/server";
 import type { Locale } from "@/i18n/locale";
 import { cn } from "@/lib/utils";
+import { umamiAttributes } from "@/lib/analytics/umami";
+import { emailHref, resumeRequestHref } from "@/lib/site/contact";
+import { AtAGlance } from "./AtAGlance";
 import { AvailabilityBadge } from "./AvailabilityBadge";
+import { DocumentIcon, MailIcon } from "./ContactLinks";
 
 /**
  * Contact — shared page body (plan §9, §18).
@@ -11,10 +15,11 @@ import { AvailabilityBadge } from "./AvailabilityBadge";
  * rendered, zero client JS. `locale` is a prop because Server Components
  * can't read the React I18nProvider context.
  *
- *   1. Availability badge, location and work authorization
- *   2. "What you're looking for" paragraph
- *   3. Email link (primary, mailto — no friction)
- *   4. Résumé request (`#resume`). There is deliberately no public résumé
+ *   1. Availability badge and remote/time-zone note
+ *   2. At a glance: role, years, stack, location, work authorization, degree
+ *   3. "What you're looking for" paragraph
+ *   4. Email link (primary, mailto — no friction)
+ *   5. Résumé request (`#resume`). There is deliberately no public résumé
  *      file: it is tailored per role, and asking for it opens a
  *      conversation. The mailto pre-fills the details needed to tailor it.
  */
@@ -25,9 +30,6 @@ export interface ContactProps {
 export function Contact({ locale }: ContactProps) {
   const t = getTranslator(locale);
   const { availability, email } = siteConfig;
-  const resumeHref = `mailto:${email}?subject=${encodeURIComponent(
-    t("contact.resume.emailSubject"),
-  )}&body=${encodeURIComponent(t("contact.resume.emailBody"))}`;
   const availabilityLabel = availability.open
     ? t("contact.availability.open")
     : t("contact.availability.closed");
@@ -40,11 +42,12 @@ export function Contact({ locale }: ContactProps) {
           <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-text-primary">
             {t("contact.title")}
           </h1>
-          <div className="space-y-1.5 text-sm text-text-secondary">
-            <p>{t("contact.availabilityNote")}</p>
-            <p>{t("contact.workAuthorization")}</p>
-          </div>
+          <p className="text-sm text-text-secondary">
+            {t("contact.availabilityNote")}
+          </p>
         </header>
+
+        <AtAGlance locale={locale} />
 
         <section
           aria-label={t("contact.lookingForTitle")}
@@ -57,9 +60,11 @@ export function Contact({ locale }: ContactProps) {
 
         <section aria-label={t("contact.eyebrow")} className="space-y-3">
           <a
-            href={`mailto:${email}`}
-            data-umami-event="contact_clicked"
-            data-umami-event-kind="email"
+            href={emailHref()}
+            {...umamiAttributes("contact_clicked", {
+              kind: "email",
+              source: "contact",
+            })}
             className={cn(
               "inline-flex w-full items-center justify-center gap-2 rounded-full",
               "bg-accent px-6 py-3 text-sm font-medium text-on-accent",
@@ -94,9 +99,11 @@ export function Contact({ locale }: ContactProps) {
             {t("contact.resume.body")}
           </p>
           <a
-            href={resumeHref}
-            data-umami-event="contact_clicked"
-            data-umami-event-kind="resume_request"
+            href={resumeRequestHref(locale)}
+            {...umamiAttributes("contact_clicked", {
+              kind: "resume_request",
+              source: "contact",
+            })}
             className={cn(
               "inline-flex w-full items-center justify-center gap-2 rounded-full",
               "border border-border bg-surface px-6 py-3 text-sm font-medium",
@@ -113,37 +120,5 @@ export function Contact({ locale }: ContactProps) {
         </section>
       </div>
     </main>
-  );
-}
-
-/* ── Page-local visual atoms ─────────────────────────────────────────── */
-
-function MailIcon() {
-  return (
-    <svg viewBox="0 0 16 16" aria-hidden="true" className="h-4 w-4">
-      <path
-        d="M2 4h12v8H2zM2 4l6 5 6-5"
-        stroke="currentColor"
-        strokeWidth="1.4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-      />
-    </svg>
-  );
-}
-
-function DocumentIcon() {
-  return (
-    <svg viewBox="0 0 16 16" aria-hidden="true" className="h-4 w-4">
-      <path
-        d="M4 2h5l3 3v9H4zM9 2v3h3M6 8h4M6 11h4"
-        stroke="currentColor"
-        strokeWidth="1.4"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        fill="none"
-      />
-    </svg>
   );
 }

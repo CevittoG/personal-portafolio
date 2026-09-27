@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { TagPill } from "@/components/tags/TagPill";
 import { RelatedExperience } from "@/components/experience/RelatedExperience";
+import { ContactActions } from "@/components/contact/ContactLinks";
 import { renderDescription } from "@/lib/experience/description";
 import {
   durationMonths,
@@ -79,6 +80,7 @@ export function DeepDive({ locale, id }: DeepDiveProps) {
             period={period}
             durationLabel={durationLabel}
             tagBuckets={tagBuckets}
+            locale={locale}
             t={t}
           />
           <MainContent
@@ -105,6 +107,7 @@ interface SidebarProps {
   period: string;
   durationLabel: string | null;
   tagBuckets: { type: TagType; slugs: string[] }[];
+  locale: Locale;
   t: ServerTranslator;
 }
 
@@ -116,6 +119,7 @@ function Sidebar({
   period,
   durationLabel,
   tagBuckets,
+  locale,
   t,
 }: SidebarProps) {
   const identityLabel =
@@ -188,6 +192,19 @@ function Sidebar({
           </ul>
         </section>
       )}
+
+      <section
+        aria-labelledby="deep-dive-contact"
+        className="space-y-3 rounded-2xl border border-border bg-surface/40 p-4"
+      >
+        <p
+          id="deep-dive-contact"
+          className="text-sm font-medium text-text-primary"
+        >
+          {t("contactCta.title")}
+        </p>
+        <ContactActions locale={locale} source="deep_dive" />
+      </section>
 
       {tagBuckets.length > 0 && (
         <section className="space-y-3">
