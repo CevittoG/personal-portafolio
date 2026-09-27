@@ -8,6 +8,7 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import { TagPill } from "@/components/tags/TagPill";
+import { renderInline } from "@/lib/experience/description";
 import { ContactActions } from "@/components/contact/ContactLinks";
 import { track } from "@/lib/analytics/umami";
 import {
@@ -154,8 +155,10 @@ export function ExperienceDrawer({
             className={cn(
               "absolute bg-surface text-text-primary shadow-2xl",
               "flex flex-col overflow-hidden",
-              // Desktop: right slide-over (~480px)
-              "sm:right-0 sm:top-0 sm:h-full sm:w-[min(480px,90vw)]",
+              // Desktop: right slide-over (~480px). `sm:left-auto` cancels
+              // the mobile `inset-x-0`; with both edges set and a fixed
+              // width, the panel would dock to the left.
+              "sm:left-auto sm:right-0 sm:top-0 sm:h-full sm:w-[min(480px,90vw)]",
               "sm:border-l sm:border-border",
               // Mobile: bottom sheet 90vh with grab handle
               "inset-x-0 bottom-0 max-h-[90vh] rounded-t-2xl",
@@ -323,13 +326,15 @@ function DrawerContent({
           </motion.p>
         )}
 
-        {/* Description teaser */}
+        {/* Description teaser: first paragraph of `description`, which may
+            carry inline **bold** run-in headings (same renderer as the
+            deep dive). */}
         {teaser && teaser !== entry.summary && (
           <motion.p
             variants={reduceMotion ? undefined : BODY_ITEM}
             className="text-sm leading-relaxed text-text-secondary"
           >
-            {teaser}
+            {renderInline(teaser)}
           </motion.p>
         )}
 

@@ -41,6 +41,8 @@ Future impeccable commands (`/impeccable shape`, `/impeccable polish`, `/impecca
 
 **Story card click target (2026-05-29):** `StoryTimeline` uses a stretched-link pattern — the whole `<article>` is the click target via an absolute-inset `<Link>` overlay with `sr-only` heading + focus ring on the full card. `linkToDeepDive` is now enabled on **both** Act 1 and Act 3 (was Act 3 only); deep-dive opens in a new tab.
 
+**Drawer (2026-09-27):** the description teaser renders through `renderInline` (inline `**bold**`), and the desktop panel needs `sm:left-auto` alongside the mobile `inset-x-0` or it docks left.
+
 **Mobile nav opacity (2026-05-29):** `Navbar.tsx` keeps the header in its solid-state classes (`bg-surface/80 backdrop-blur-md`) whenever `mobileOpen || scrolled`; the mobile overlay uses fully-opaque `bg-bg backdrop-blur-md` (was `bg-bg/95 backdrop-blur-sm`) so page content no longer bleeds through.
 
 **404 localization (2026-05-29):** `app/not-found.tsx` is a client component that reads `usePathname()` to pick EN vs ES (it sits at the root layout, outside `I18nProvider`). Copy lives under `notFound` in both message catalogues.

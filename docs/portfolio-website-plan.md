@@ -634,7 +634,7 @@ Triggered by clicking any Experience Card. Slides in from the right. Grid stays 
 - Summary
 - Full tag cloud (all tags, grouped by type with Tag Pill component)
 - Top 3 impact statements
-- First paragraph of `description` (teaser — enough to qualify, not the full content)
+- First paragraph of `description` (teaser — enough to qualify, not the full content), rendered through `renderInline` so `**bold**` run-in headings show as bold, not asterisks
 - `Dig deeper ↗` button → opens `/experience/[id]` in **new tab**
 - "Email me / Request résumé" pair under it (also in the deep-dive sidebar, below Impact)
 - `← Close` or `×` to dismiss
@@ -881,6 +881,8 @@ The site is bilingual. **English is the default.** Spanish is a first-class alte
 ---
 
 ## Status Log
+
+- **2026-09-27** — **Drawer fixes.** (1) The description teaser rendered raw `**What I own.**` on the Apple entry; it now goes through `renderInline` from `src/lib/experience/description.tsx`, the same renderer as the deep dive. The Experience Card was checked: it renders `summary` and `impact[0]`, neither of which carries markdown in the data, so it is unchanged. (2) On desktop the "right slide-over" docked to the **left**: the mobile `inset-x-0` set `left: 0`, which `sm:right-0` did not cancel, and with a fixed width the left edge wins. Added `sm:left-auto`. Verified at 1440px (panel flush right, 960–1440) and 390px (bottom sheet unchanged, bold teaser); type-check ✅, lint ✅, build ✅.
 
 - **2026-09-27** — **ThemeToggle hydration fix.** `ThemeProvider` read `<html data-theme>` in its `useState` initializer, so whenever the pre-paint script resolved "light" (stored preference or OS setting) the first client render disagreed with the static HTML (`aria-pressed`, label, icon) and React regenerated the navbar; the Framer Motion icon swap could also land faint on mobile. Now the provider starts from `DEFAULT_THEME` and syncs after mount, and `ThemeToggle` renders both icons with the visible one chosen in CSS via a new `light:` custom variant keyed off `[data-theme="light"]` (CSS cross-fade replaces `AnimatePresence`; reduced motion switches instantly). Verified in fresh tabs: stored dark, stored light, and OS-light with nothing stored all load with zero console errors and the correct icon/`aria-pressed`; toggling persists and cross-fades; mobile icon crisp at 375px. Type-check ✅, lint ✅, build ✅.
 
