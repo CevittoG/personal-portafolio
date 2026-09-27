@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { AvailabilityBadge } from "@/components/contact/AvailabilityBadge";
+import { SocialLinks } from "@/components/contact/ContactLinks";
+import { umamiAttributes } from "@/lib/analytics/umami";
 import { LogoDropCluster, type LogoItem } from "./LogoDropCluster";
 import { useLocale, useTranslations } from "@/i18n/I18nProvider";
 import { withLocale } from "@/i18n/path";
@@ -29,6 +31,8 @@ export interface HeroProps {
   availability: { open: boolean; label: string };
   /** ID of the scroll target for the primary CTA (Zone 2 anchor). */
   exploreTargetId: string;
+  /** DOM id of the section, observed by the sticky mobile contact pill. */
+  id?: string;
   /** Logos for the drop cluster band (step 17). Empty list = no cluster. */
   logos?: readonly LogoItem[];
   className?: string;
@@ -41,6 +45,7 @@ export function Hero({
   proofLine,
   availability,
   exploreTargetId,
+  id,
   logos,
   className,
 }: HeroProps) {
@@ -48,6 +53,7 @@ export function Hero({
   const locale = useLocale();
   return (
     <section
+      id={id}
       aria-label={t("hero.greeting")}
       className={cn(
         "relative isolate overflow-hidden",
@@ -136,6 +142,10 @@ export function Hero({
           {t("hero.resumePrompt")}{" "}
           <Link
             href={`${withLocale("/contact", locale)}#resume`}
+            {...umamiAttributes("contact_clicked", {
+              kind: "resume_request",
+              source: "hero",
+            })}
             className={cn(
               "font-medium text-text-primary underline decoration-accent",
               "underline-offset-4 hover:text-accent transition-colors duration-150",
@@ -147,6 +157,11 @@ export function Hero({
             {t("hero.resumeLink")}
           </Link>
         </p>
+        <SocialLinks
+          source="hero"
+          showLabels
+          className="mt-3 justify-center gap-2"
+        />
       </div>
 
     </section>

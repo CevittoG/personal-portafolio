@@ -51,6 +51,13 @@ export const en = {
       regionLabel: "Technologies I work with",
     },
   },
+  contactCta: {
+    title: "Hiring for a data role?",
+    email: "Email me",
+    resume: "Request résumé",
+    navResume: "Résumé",
+    sticky: "Contact options",
+  },
   discover: {
     eyebrow: "Discover",
     title: "What are you looking for?",

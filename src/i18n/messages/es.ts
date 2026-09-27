@@ -49,6 +49,13 @@ export const es: Messages = {
       regionLabel: "Tecnologías con las que trabajo",
     },
   },
+  contactCta: {
+    title: "¿Buscas a alguien para un rol de datos?",
+    email: "Escríbeme",
+    resume: "Pedir mi CV",
+    navResume: "CV",
+    sticky: "Opciones de contacto",
+  },
   discover: {
     eyebrow: "Descubre",
     title: "¿Qué estás buscando?",

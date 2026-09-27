@@ -7,6 +7,8 @@ import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS } from "./nav-items";
 import { OWNER_NAME } from "./social-links";
+import { ContactActions, SocialLinks } from "@/components/contact/ContactLinks";
+import { umamiAttributes } from "@/lib/analytics/umami";
 import { ThemeToggle } from "./ThemeToggle";
 import { LanguageSwitcher } from "./LanguageSwitcher";
 import { useLocale, useTranslations } from "@/i18n/I18nProvider";
@@ -23,6 +25,8 @@ const SCROLL_THRESHOLD_PX = 16;
  * - Mobile breakpoint: hamburger toggles a full-screen overlay with large
  *   nav links (Framer Motion fade + scale).
  * - Theme toggle + language switcher live to the right of the nav links.
+ * - Contact reach: GitHub/LinkedIn icons (lg+) and a résumé-request pill
+ *   (md+) on desktop; email, résumé and profiles in the mobile overlay.
  *
  * Nav `href` is the EN path; `withLocale()` prefixes the active locale so
  * `/story` becomes `/es/story` when ES is active. Owner name and all labels
@@ -106,6 +110,23 @@ export function Navbar() {
             ))}
           </ul>
           <span className="mx-2 h-5 w-px bg-border" aria-hidden="true" />
+          <SocialLinks source="navbar" className="hidden lg:flex" />
+          <Link
+            href={`${withLocale("/contact", locale)}#resume`}
+            {...umamiAttributes("contact_clicked", {
+              kind: "resume_request",
+              source: "navbar",
+            })}
+            className={cn(
+              "hidden md:inline-flex items-center rounded-full ml-1 mr-2",
+              "border border-accent px-3.5 py-1.5 text-sm font-medium text-accent",
+              "hover:bg-accent hover:text-on-accent transition-colors duration-150",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+              "focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
+            )}
+          >
+            {t("contactCta.navResume")}
+          </Link>
           <LanguageSwitcher />
           <ThemeToggle className="ml-1" />
         </div>
@@ -145,7 +166,11 @@ export function Navbar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.18, ease: "easeOut" }}
-            className="sm:hidden fixed inset-0 top-16 z-30 bg-bg backdrop-blur-md"
+            // Explicit height: the header's backdrop-filter makes it the
+            // containing block for this fixed overlay, so `inset-0` would
+            // collapse it to the header's box. The header is sticky at
+            // top-0, so top-16 + (100dvh - 4rem) covers the viewport.
+            className="sm:hidden fixed inset-x-0 top-16 z-30 h-[calc(100dvh-4rem)] overflow-y-auto bg-bg"
           >
             <motion.ul
               initial={{ y: -8, opacity: 0 }}
@@ -178,6 +203,16 @@ export function Navbar() {
                   </li>
                 );
               })}
+              <li className="pt-6">
+                <ContactActions locale={locale} source="mobile_menu" />
+              </li>
+              <li>
+                <SocialLinks
+                  source="mobile_menu"
+                  showLabels
+                  className="justify-center gap-4"
+                />
+              </li>
             </motion.ul>
           </motion.div>
         )}

@@ -8,6 +8,7 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import { TagPill } from "@/components/tags/TagPill";
+import { ContactActions } from "@/components/contact/ContactLinks";
 import { track } from "@/lib/analytics/umami";
 import {
   formatPeriod,
@@ -213,6 +214,7 @@ function DrawerContent({
   isDesktop,
 }: DrawerContentProps) {
   const t = useTranslations();
+  const locale = useLocale();
   const heading = getHeadingLine(entry);
   const subMeta = getDrawerSubMeta(entry);
   const badge = getMetaBadge(entry);
@@ -382,8 +384,9 @@ function DrawerContent({
         )}
       </motion.div>
 
-      {/* Footer — Dig deeper opens in new tab (plan §11) */}
-      <footer className="border-t border-border px-6 py-4">
+      {/* Footer: Dig deeper opens in new tab (plan §11), then the two
+          direct contact actions. */}
+      <footer className="space-y-2 border-t border-border px-6 py-4">
         <a
           href={detailHref}
           target="_blank"
@@ -401,6 +404,7 @@ function DrawerContent({
           {t("drawer.digDeeper")}
           <span aria-hidden="true">↗</span>
         </a>
+        <ContactActions locale={locale} source="drawer" layout="row" />
       </footer>
     </>
   );
