@@ -1,6 +1,5 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useTheme } from "@/lib/theme/ThemeProvider";
 import { useTranslations } from "@/i18n/I18nProvider";
 import { cn } from "@/lib/utils";
@@ -13,17 +12,27 @@ import { cn } from "@/lib/utils";
  * light). `aria-pressed` reflects "light is active"; the visually hidden
  * label spells out the action so screen-reader users hear the verb.
  *
- * The icon swap uses Framer Motion `AnimatePresence` to cross-fade so the
- * transition reads as one continuous gesture rather than a hard cut.
+ * Both icons are always rendered and the visible one is chosen in CSS off
+ * `<html data-theme>` (the `light:` variant), which the inline script sets
+ * before first paint. So the icon is right from the first frame and the
+ * server HTML never depends on client-only state (no hydration mismatch).
+ * Theme state only drives the label, and it syncs right after mount.
+ * The swap is a CSS cross-fade with a small rotate; reduced motion keeps
+ * only an instant switch.
  */
 export interface ThemeToggleProps {
   className?: string;
 }
 
+const ICON = cn(
+  "absolute inset-0 grid place-items-center",
+  "transition-[opacity,transform] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]",
+  "motion-reduce:transition-none",
+);
+
 export function ThemeToggle({ className }: ThemeToggleProps) {
   const { theme, toggle } = useTheme();
   const t = useTranslations();
-  const reduceMotion = useReducedMotion();
   const isLight = theme === "light";
   const label = t(isLight ? "nav.themeToDark" : "nav.themeToLight");
 
@@ -46,31 +55,26 @@ export function ThemeToggle({ className }: ThemeToggleProps) {
       )}
     >
       <span className="sr-only">{label}</span>
-      <AnimatePresence initial={false} mode="wait">
-        {isLight ? (
-          <motion.span
-            key="sun"
-            initial={reduceMotion ? false : { opacity: 0, rotate: -45, scale: 0.6 }}
-            animate={{ opacity: 1, rotate: 0, scale: 1 }}
-            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, rotate: 45, scale: 0.6 }}
-            transition={{ duration: reduceMotion ? 0 : 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-0 grid place-items-center"
-          >
-            <SunIcon />
-          </motion.span>
-        ) : (
-          <motion.span
-            key="moon"
-            initial={reduceMotion ? false : { opacity: 0, rotate: 45, scale: 0.6 }}
-            animate={{ opacity: 1, rotate: 0, scale: 1 }}
-            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, rotate: -45, scale: 0.6 }}
-            transition={{ duration: reduceMotion ? 0 : 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="absolute inset-0 grid place-items-center"
-          >
-            <MoonIcon />
-          </motion.span>
+      <span
+        aria-hidden="true"
+        className={cn(
+          ICON,
+          "opacity-0 rotate-45 scale-60",
+          "light:opacity-100 light:rotate-0 light:scale-100",
         )}
-      </AnimatePresence>
+      >
+        <SunIcon />
+      </span>
+      <span
+        aria-hidden="true"
+        className={cn(
+          ICON,
+          "opacity-100 rotate-0 scale-100",
+          "light:opacity-0 light:-rotate-45 light:scale-60",
+        )}
+      >
+        <MoonIcon />
+      </span>
     </button>
   );
 }

@@ -18,8 +18,10 @@ import { DEFAULT_THEME, type Theme } from "./types";
  * The blocking inline script (see `inline-script.ts`) has already set
  * `data-theme` on `<html>` before React paints, so this provider's job is
  * narrow:
- *   1. Hydrate state from the DOM attribute (single source of truth, no
- *      mismatch with the pre-paint resolution).
+ *   1. Sync state from the DOM attribute after mount. The first render
+ *      always uses {@link DEFAULT_THEME}, same as the server, so hydration
+ *      matches; anything that must look right on first paint styles itself
+ *      off `[data-theme]` in CSS (the `light:` variant), not off this state.
  *   2. Expose `theme` + `setTheme` + `toggle` to consumers.
  *   3. Persist changes via the injected {@link ThemeStorage} (DIP).
  *   4. Reflect changes back to `<html data-theme>` so CSS picks them up.
@@ -44,17 +46,15 @@ export function ThemeProvider({
   children,
   storage = defaultThemeStorage,
 }: ThemeProviderProps) {
-  // Initialize from the DOM attribute that the inline script already set.
-  // Falls back to DEFAULT_THEME during SSR where `document` is undefined.
-  const [theme, setThemeState] = useState<Theme>(() => readDomTheme() ?? DEFAULT_THEME);
+  // Start from the server's value: reading the DOM here would make the
+  // first client render differ from the static HTML whenever the inline
+  // script resolved "light" (stored preference or OS setting).
+  const [theme, setThemeState] = useState<Theme>(DEFAULT_THEME);
 
-  // After mount: re-sync once in case the inline script and the SSR markup
-  // disagreed (e.g. user has a stored preference that differs from default).
+  // After mount: adopt what the inline script resolved before paint.
   useEffect(() => {
     const fromDom = readDomTheme();
-    if (fromDom && fromDom !== theme) setThemeState(fromDom);
-    // Intentionally one-shot on mount.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    if (fromDom) setThemeState(fromDom);
   }, []);
 
   const applyTheme = useCallback(

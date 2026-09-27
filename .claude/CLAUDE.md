@@ -23,7 +23,7 @@ Future impeccable commands (`/impeccable shape`, `/impeccable polish`, `/impecca
 
 **i18n (`src/i18n/`):** custom thin layer (not `next-intl` — static export blocks middleware-based EN-unprefixed routing). `locale.ts`, `messages/{en,es,index}.ts` (typed catalogues, parity via `Messages = typeof en`), `translator.ts` (dot-notation + `{name}` interpolation + typed `MessageKey<T>`), `I18nProvider.tsx` (`useTranslations` / `useLocale` / `useMessages`), `server.ts` (`getTranslator(locale)` for RSCs), `path.ts` (`withLocale` / `switchLocale`), `inline-script.ts` (pre-paint `<html lang>` patch).
 
-**Theme (`src/lib/theme/`):** `types.ts`, `storage.ts` (`ThemeStorage` interface + `LocalStorageThemeStorage` — DIP), `inline-script.ts` (FOUC-safe pre-paint resolver), `ThemeProvider.tsx`. Light palette lives under `[data-theme="light"]` in `globals.css` with all 8 tag-type colors retuned.
+**Theme (`src/lib/theme/`):** `types.ts`, `storage.ts` (`ThemeStorage` interface + `LocalStorageThemeStorage` — DIP), `inline-script.ts` (FOUC-safe pre-paint resolver), `ThemeProvider.tsx` (first render uses `DEFAULT_THEME` to match the server, then syncs from `<html data-theme>` after mount). Anything that must be right on first paint (e.g. the ThemeToggle icon) styles off `[data-theme]` with the `light:` custom variant in `globals.css`, never off React theme state — that was the 2026-09-27 hydration-mismatch fix. Light palette lives under `[data-theme="light"]` in `globals.css` with all 8 tag-type colors retuned.
 
 **SOLID `src/lib/` layer:** `taxonomy` (+ `logos.ts` feeding the cluster), `experience` (+ `sort.ts`, `csv.ts`, description renderer), `filters`, `related`, `stats` (computers now expose optional `labelKey: MessageKey`), `search`, `site`, `hooks`, `analytics`.
 
