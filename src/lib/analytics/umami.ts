@@ -19,7 +19,7 @@ export type EventMap = {
   search_typed: { query: string };
   experience_opened: { id: string; type: string };
   deep_dive_opened: { id: string };
-  contact_clicked: { kind: "email" | "resume" };
+  contact_clicked: { kind: "email" | "resume_request" };
 };
 
 export function track<K extends keyof EventMap>(name: K, data: EventMap[K]): void {

@@ -1,6 +1,5 @@
 import type { StatComputer } from "./types";
 import { entryCountComputer } from "./computers/entry-count";
-import { industryCountComputer } from "./computers/industry-count";
 import { technologyCountComputer } from "./computers/technology-count";
 import { yearsOfExperienceComputer } from "./computers/years-of-experience";
 
@@ -11,6 +10,5 @@ import { yearsOfExperienceComputer } from "./computers/years-of-experience";
 export const statComputers: StatComputer[] = [
   yearsOfExperienceComputer,
   technologyCountComputer,
-  industryCountComputer,
   entryCountComputer,
 ];

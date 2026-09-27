@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 /**
  * StatsBar — plan §6 Zone 3.
  *
- * Renders a horizontal row of StatCards (2×N grid on mobile) derived from
+ * Renders a single row of StatCards derived from
  * the currently filtered entries. Stats are computed client-side on every
  * filter change — no server needed.
  *
@@ -67,8 +67,8 @@ export function StatsBar({ entries, activeSlugs, className }: StatsBarProps) {
     <div
       aria-label={t("stats.region")}
       className={cn(
-        // Mobile: 2-column grid; sm+: one row per plan §14
-        "grid grid-cols-2 gap-3 sm:grid-cols-4",
+        // One row of three at every width (plan §14)
+        "grid grid-cols-3 gap-2 sm:gap-3",
         className,
       )}
     >

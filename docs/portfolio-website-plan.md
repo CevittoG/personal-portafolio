@@ -252,11 +252,12 @@ The heart of the site. Four distinct zones stacked vertically.
 
 **Components:**
 
-**Name + animated role line**
+**Name + fixed target role + proof line** *(changed 2026-09-27; see Status Log)*
+- Availability pill above the name ("Open to opportunities")
 - Name displayed large, typographic, dominant
-- Below it: a line that cycles through role tags with a typewriter or fade animation
-- Example: `Data Engineer` → `Backend Developer` → `AI Engineer` → loops
-- Tags sourced from `roles` in taxonomy — only roles present in at least one experience entry
+- Below it: one fixed target role (`hero.role`, "Senior Data Platform Engineer"), not a rotation. The earlier cycling role line pulled 9 roles from tags and diluted positioning.
+- Proof line: current role · computed years in engineering (`{years}+`) · location
+- Quiet "Hiring? Request my résumé" link to `/contact#resume`
 
 **Positioning statement**
 - One sharp sentence. Conversational-bold tone.
@@ -352,13 +353,12 @@ A signature moment that translates "the stack I work with" into something alive 
 **Example stats when `Data Engineer + Python` is active:**
 - `4 yrs` — *Relevant experience*
 - `12` — *Technologies used*
-- `3` — *Industries*
 - `15M+` — *Rows processed daily* (from scale tags / impact fields)
 - `6` — *Projects & roles*
 
 **Data computation:**
 - Filter `experience.json` by entries containing all active tag slugs
-- Aggregate: count unique technologies, count unique industries/domains, sum years from period fields, surface highest scale tag, count entries
+- Aggregate: count unique technologies, years in engineering (only `story_act: "technical"` entries, overlapping periods merged so concurrent roles count once), count entries. The Industries stat was removed 2026-09-27 (it counted domain tags, not industries).
 - Computed at runtime (client-side) on filter change — no server needed
 
 ---
@@ -537,9 +537,10 @@ See Section 12 for full logic. Displays top 3 entries by weighted tag overlap sc
 - Optional: Calendly embed or link for scheduling
 - One method is enough — don't add every platform
 
-**Download resume**
-- Full PDF resume download — the traditional format for people who need it
-- Clearly labeled as "full resume" to distinguish from the filtered CSV export on Page 1
+**Request résumé** *(changed 2026-09-27; see Status Log)*
+- No public résumé file, by the owner's decision: the résumé is tailored per role, and asking for it opens a conversation
+- `#resume` section with a "Request my résumé" `mailto:` whose subject and body are pre-filled (role, company, job link, location)
+- Work authorization stated on the page so recruiters can screen without the file
 
 ---
 
@@ -716,7 +717,7 @@ For each other entry in `experience.json` (excluding the current entry):
 
 **Hero on mobile:**
 - CTA buttons stack vertically
-- Animated role line still present but font size reduced
+- Fixed role line and proof line stay, at a reduced font size
 
 ---
 
@@ -871,6 +872,7 @@ The site is bilingual. **English is the default.** Spanish is a first-class alte
 
 ## Status Log
 
+- **2026-09-27** — **Expert-review Phase 1: trust and positioning fixes.** A four-lens review (frontend, recruiter, solutions engineer, full-stack) found trust breakers and diluted positioning; this lands the fixes. (1) **Apple entry rewritten NDA-conservative** (owner is a contractor through a vendor): removed security-finding and incident specifics, internal topology, absolute internal volumes, tenant/instance/user counts, team size and remote-team location, the leadership quote, and the `claude-sdk` tag (vendor relationship); kept ratios (~250x, ~90% fewer connections, ~30x, ~95%) and engineering judgement; first person, results-first `impact[0]`. (2) **`/playground` deleted**: it shipped mock uPlanner/AidProf cards with invented metrics. (3) **Years stat fixed**: `years-of-experience.ts` now counts only `story_act: "technical"` entries and merges overlapping periods (new `monthRange()` in `src/lib/experience/format.ts`); shows ~5.7 instead of ~12. Label is now "Years in engineering". **Industries stat removed** (it counted domain tags); Stats Bar is one row of three. (4) **Hero**: the 9-role `AnimatedRoleLine` (deleted) is replaced by a fixed target role ("Senior Data Platform Engineer"), a proof line with computed years, the availability pill (extracted to shared `src/components/contact/AvailabilityBadge.tsx`), and a "Hiring? Request my résumé" link; this also removed the "I work as a AI Engineer" bug. `siteConfig.title` removed. (5) **Contact**: work authorization (U.S. permanent resident, no sponsorship needed), languages, data-platform "looking for" copy, and a `#resume` request section with a pre-filled `mailto:` (EN/ES). **No public résumé by design**: `siteConfig.resume` and the download button were removed; analytics kind is now `resume_request`. (6) **Route fade moved to CSS** (`template.tsx` is now a server component; `.route-fade` keyframe in `globals.css` under `prefers-reduced-motion: no-preference`), so static HTML no longer ships `opacity:0` before hydration. (7) **Contrast**: `--color-text-muted` #44445A→#7A7A95 (dark, 4.75:1) and #94A3B8→#64748B (light, 4.57:1); dark-mode `--color-on-accent` white→#0A0A0F (5.8:1 on ember, was 3.4:1); DESIGN.md synced. (8) **Data consistency**: uPlanner 43% claim aligned to the source doc, contradictory HQ removed, UAI program length aligned to "5-to-6 year". Verified: type-check ✅, lint ✅, build ✅, exported HTML checked, screenshots at 390px and 1440px.
 - **2026-06-12** — **Apple role added to the data layer** via the portfolio-json-builder skill from `docs/experience/Apple.md`. New experience entry `apple-software-project-engineer-2024` (`type: "job"`, `relevant: true`, `story_act: "technical"`, `featured: true`, current — `period.end: null`), prepended as the first/most-recent entry. It is the most tag-dense entry in the dataset, reflecting a five-system internal operational-analytics platform (Shared SDK, K8s blob-ingestion, FastAPI gateway, Django+React analytics/ML platform, distributed ML/AI triage). Taxonomy grew by ~73 new tags across all 8 types: **roles** (`ai-engineer`, `software-architect`), **languages** (`typescript`, `bash`), **technologies** (`kubernetes`, `docker`, `postgresql`, `snowflake`, `trino`, `redis`, `neo4j`, `airflow`, `ray`, `kustomize`, `splunk`, `prometheus`, `sentry`, `vite`, `grpc`, `parquet`), **libraries** (`fastapi`, `django-ninja`, `sqlalchemy`, `alembic`, `pydantic`, `boto3`, `tensorflow`, `keras`, `pytorch`, `claude-sdk`, `react`, `ant-design`, `react-query`, `zustand`, `echarts`, `plotly`, `framer-motion`, `tailwind`, `react-router`, `pytest`), **domains** (`data-infrastructure`, `analytics`, `developer-tools`), **concepts** (~36, incl. `distributed-systems`, `database-partitioning`, `zero-downtime-deployment`, `microservices`, `data-warehousing`, `cdc`, `incident-response`, `root-cause-analysis`, `performance-optimization`, `security-hardening`, `rbac`/`oidc`/`jwt`/`authentication`/`secrets-management`, `deep-learning`/`anomaly-detection`/`llms`/`rag`/`knowledge-graphs`/`ai-agents`/`mlops`/`time-series`/`explainable-ai`/`embeddings`), **scale** (`enterprise-scale`, `high-volume-data`), **soft_skills** (`ownership`, `problem-solving`). New library logos use the Simple Icons CDN where one exists (`ray`/`kustomize`/`grpc`/`alembic`/`django-ninja`/`zustand`/`boto3` left `null`). Validated: both JSONs parse, all entry tags resolve to taxonomy, all `related` refs resolve, no duplicate IDs, entry conforms to the `JobEntry` type. (`location` set to `"Austin, Texas"` and `employment_type` to `"contract"` per the user — Apple.md didn't state either.)
 - **2026-06-09** — **Umami analytics + custom Explorer events** wired site-wide. (1) Umami cloud script injected in `src/app/layout.tsx` via `next/script` (`afterInteractive`), gated by `data-domains="asebagutierrezm.com"` so localhost + Docker preview never pollute the dashboard. (2) New typed wrapper at `src/lib/analytics/umami.ts` exports `track<K extends keyof EventMap>(name, data)` — single `EventMap` is the source of truth for every custom event; no-op safe in SSR/blocked. `src/types/global.d.ts` declares `window.umami`. (3) Five custom events instrumented at the user-gesture sites (NOT inside `useFilterTags` — keeping the URL-state layer analytics-free, SRP-correct): `filter_added { slug, type, source: "search" | "shortcut" | "card" | "drawer" }` fires from `SearchBar.commit()` (changed signature to take the full `TaxonomyEntry`) and `RoleShortcuts` pill onClick; `filter_removed { slug, type }` fires from `ActiveFilterChips`; `search_typed { query }` is debounced 600ms inside `SearchBar` (skipped when `query.trim().length < 2`) — captures intent that doesn't resolve to a tag, surfacing taxonomy gaps; `experience_opened { id, type }` fires from `ExperienceCard.handleClick`; `deep_dive_opened { id }` fires from the Drawer's "Dig deeper" anchor onClick. (4) Contact CTAs stay server-rendered — `mailto:` and resume-download `<a>` tags use Umami's declarative `data-umami-event="contact_clicked"` + `data-umami-event-kind="email" | "resume"` attributes so `Contact.tsx` doesn't need to become a client component. (5) Single-query dashboard payoff: *Top values of `filter_added.slug`* directly answers "which skills/experience matter most" regardless of whether the tag was typed, picked from a shortcut, or chosen from the dropdown.
 - **2026-05-29** — Polish pass — six fixes shipped together. (1) **Story Act 1 now includes the UAI degree** — `universidad-adolfo-ibanez-2020` gained `story_act: "foundation"` + a reflective `personal_impact` line; `relevant: false` preserved so it stays out of Discover + years stat. (2) **Story cards are whole-clickable on both Act 1 and Act 3** — `StoryTimeline.TimelineRow` rewritten to use a stretched-link pattern (relative `<article>`, absolute-inset `<Link>` overlay with `sr-only` heading + focus ring on the full card, `group-hover:text-accent` on the title). `Story.tsx` enables `linkToDeepDive` on the Act 1 timeline too. New-tab behavior preserved (`target="_blank"`). (3) **Mobile nav opacity fix** — `Navbar.tsx` now keeps the header in its solid-state classes (`bg-surface/80 backdrop-blur-md`) whenever `mobileOpen` is true (not only when scrolled), and the mobile overlay flipped from `bg-bg/95 backdrop-blur-sm` to fully-opaque `bg-bg backdrop-blur-md` so the page content no longer bleeds through. (4) **404 page localized** — `app/not-found.tsx` converted to a client component that reads `usePathname()` to pick `/es` vs `/` (lives outside `I18nProvider` since it's at the root layout). New `notFound` section in both `en.ts` + `es.ts` catalogues. (5) **Documented Discover relevance sort** — `sort.ts` "relevant" mode = tag-overlap count vs active filters, tie-broken by start date desc; with no filters active it collapses to data order (intentional). No code change. (6) **Out of scope per user**: tag/taxonomy display names and tag-type singular labels (Role, Language, Technology, …) are intentionally English-only and were left untouched; only descriptive UI strings were re-audited.
