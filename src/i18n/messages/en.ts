@@ -12,9 +12,10 @@
  */
 export const en = {
   meta: {
-    title: "Sebastian Gutierrez — Portfolio",
+    title:
+      "{name} | Senior Data Platform Engineer (Python, Snowflake, Kubernetes)",
     description:
-      "Interactive portfolio. Search by skill, tool, or role to discover the experiences that match what you're looking for.",
+      "Senior data platform engineer in Austin, TX. {years}+ years building ingestion pipelines, APIs and data platforms in Python, Snowflake and Kubernetes.",
   },
   nav: {
     explorer: "Explorer",
@@ -100,6 +101,7 @@ export const en = {
     digDeeper: "Dig deeper",
   },
   experience: {
+    metaTitle: "{title} | {name}",
     duration: {
       year: "{n} yr",
       years: "{n} yrs",
@@ -124,9 +126,9 @@ export const en = {
     backToExplorer: "← Back to Explorer",
   },
   story: {
-    metaTitle: "My Story — {name}",
+    metaTitle: "My Story | {name}",
     metaDescription:
-      "A three-act narrative — before tech, the pivot, and the technical career.",
+      "My path in three acts: before tech, the pivot, and the engineering career.",
     eyebrow: "My Story",
     title: "The path that got me here",
     intro:
@@ -165,9 +167,9 @@ export const en = {
     },
   },
   contact: {
-    metaTitle: "Contact — {name}",
+    metaTitle: "Contact | {name}",
     metaDescription:
-      "Get in touch — availability, what I'm looking for, and the fastest way to reach me.",
+      "Availability, work authorization, what I'm looking for, and the fastest way to reach me or request my résumé.",
     eyebrow: "Contact",
     title: "Let's talk",
     availability: {

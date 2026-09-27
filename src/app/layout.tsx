@@ -4,24 +4,22 @@ import { ThemeProvider } from "@/lib/theme/ThemeProvider";
 import { themeInitScript } from "@/lib/theme/inline-script";
 import { DEFAULT_LOCALE } from "@/i18n/locale";
 import { langInitScript } from "@/i18n/inline-script";
-import { getMessages } from "@/i18n/server";
+import { siteConfig } from "@/lib/site/config";
+import { staticPageMetadata } from "@/lib/site/metadata";
+import { jsonLdScript, personJsonLd } from "@/lib/site/structured-data";
 import "./globals.css";
 
-// Root-level metadata uses the default locale — per-locale routes override
-// title/description in their own metadata. hreflang alternates live here so
-// every page emits them in <head>.
-const messages = getMessages(DEFAULT_LOCALE);
+// Root metadata: `metadataBase` resolves every relative canonical, hreflang
+// and og:image URL. Title/description fall back to the EN home copy (only
+// the 404 page relies on them). Canonical + hreflang are deliberately NOT
+// set here: each route sets its own via `buildMetadata()`, so no page
+// inherits the home page's alternates.
+const { title, description } = staticPageMetadata("home", DEFAULT_LOCALE);
 
 export const metadata: Metadata = {
-  title: messages.meta.title,
-  description: messages.meta.description,
-  alternates: {
-    languages: {
-      en: "/",
-      es: "/es",
-      "x-default": "/",
-    },
-  },
+  metadataBase: new URL(siteConfig.url),
+  title,
+  description,
 };
 
 /**
@@ -52,6 +50,10 @@ export default function RootLayout({
             FOUC (theme) and incorrect lang attribute (i18n). */}
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
         <script dangerouslySetInnerHTML={{ __html: langInitScript }} />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: jsonLdScript(personJsonLd()) }}
+        />
       </head>
       <body className="min-h-screen flex flex-col">
         <ThemeProvider>{children}</ThemeProvider>

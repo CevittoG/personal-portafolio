@@ -10,9 +10,10 @@ import type { Messages } from "./en";
  */
 export const es: Messages = {
   meta: {
-    title: "Sebastián Gutiérrez — Portafolio",
+    title:
+      "{name} | Ingeniero Senior de Plataformas de Datos (Python, Snowflake, Kubernetes)",
     description:
-      "Portafolio interactivo. Busca por habilidad, herramienta o rol para descubrir las experiencias que coinciden con lo que estás buscando.",
+      "Ingeniero senior de plataformas de datos en Austin, TX. {years}+ años construyendo pipelines de ingesta, APIs y plataformas de datos con Python, Snowflake y Kubernetes.",
   },
   nav: {
     explorer: "Explorar",
@@ -98,6 +99,7 @@ export const es: Messages = {
     digDeeper: "Profundizar",
   },
   experience: {
+    metaTitle: "{title} | {name}",
     duration: {
       year: "{n} año",
       years: "{n} años",
@@ -122,7 +124,7 @@ export const es: Messages = {
     backToExplorer: "← Volver a Explorar",
   },
   story: {
-    metaTitle: "Mi historia — {name}",
+    metaTitle: "Mi historia | {name}",
     metaDescription:
       "Una narrativa en tres actos: antes de la tecnología, el giro y la carrera técnica.",
     eyebrow: "Mi historia",
@@ -163,9 +165,9 @@ export const es: Messages = {
     },
   },
   contact: {
-    metaTitle: "Contacto — {name}",
+    metaTitle: "Contacto | {name}",
     metaDescription:
-      "Ponte en contacto: disponibilidad, qué busco y la forma más rápida de llegar a mí.",
+      "Disponibilidad, autorización de trabajo, qué busco y la forma más rápida de contactarme o pedir mi CV.",
     eyebrow: "Contacto",
     title: "Hablemos",
     availability: {

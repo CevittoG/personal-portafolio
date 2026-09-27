@@ -77,6 +77,14 @@ export function getHeadingLine(entry: ExperienceEntry): HeadingLine {
   }
 }
 
+/** "Role · Company" (or just the role): page titles and share images. */
+export function experienceTitle(entry: ExperienceEntry): string {
+  const heading = getHeadingLine(entry);
+  return heading.secondary
+    ? `${heading.primary} · ${heading.secondary}`
+    : heading.primary;
+}
+
 /** Small badge label shown next to the period (e.g., "Full-time", "Ongoing"). */
 export function getMetaBadge(entry: ExperienceEntry): string | null {
   switch (entry.type) {

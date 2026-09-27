@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { DeepDive } from "@/components/experience/DeepDive";
 import { experienceRepository } from "@/lib/experience/json-repository";
-import { getHeadingLine } from "@/lib/experience/format";
+import { experienceMetadata } from "@/lib/site/metadata";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -13,24 +13,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { id } = await params;
-  const entry = experienceRepository.getById(id);
-  if (!entry) return { title: "Not found" };
-  const heading = getHeadingLine(entry);
-  const title = heading.secondary
-    ? `${heading.primary} · ${heading.secondary}`
-    : heading.primary;
-  return {
-    title: `${title} — Sebastián Gutiérrez`,
-    description: entry.summary,
-    alternates: {
-      canonical: `/es/experience/${id}`,
-      languages: {
-        en: `/experience/${id}`,
-        es: `/es/experience/${id}`,
-        "x-default": `/experience/${id}`,
-      },
-    },
-  };
+  return experienceMetadata(id, "es");
 }
 
 export default async function ExperienceDetailPage({ params }: PageProps) {

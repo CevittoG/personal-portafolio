@@ -6,6 +6,7 @@
  * stays oblivious to which links exist (OCP).
  */
 import type { MessageKey } from "@/i18n/translator";
+import { siteConfig } from "@/lib/site/config";
 
 export interface SocialLink {
   label: string;
@@ -29,22 +30,22 @@ const ICON_MAIL =
 export const SOCIAL_LINKS: readonly SocialLink[] = [
   {
     label: "GitHub",
-    href: "https://github.com/CevittoG",
+    href: siteConfig.links.github,
     labelKey: "footer.github",
     iconPath: ICON_GITHUB,
   },
   {
     label: "LinkedIn",
-    href: "https://www.linkedin.com/in/asebagutierrezm/",
+    href: siteConfig.links.linkedin,
     labelKey: "footer.linkedin",
     iconPath: ICON_LINKEDIN,
   },
   {
     label: "Email",
-    href: "mailto:aseba.gutierrezm@gmail.com",
+    href: `mailto:${siteConfig.email}`,
     labelKey: "footer.email",
     iconPath: ICON_MAIL,
   },
 ];
 
-export const OWNER_NAME = "Sebastian Gutierrez";
+export const OWNER_NAME = siteConfig.alternateName;
