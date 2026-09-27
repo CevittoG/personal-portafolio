@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { AnimatedRoleLine } from "./AnimatedRoleLine";
+import { AvailabilityBadge } from "@/components/contact/AvailabilityBadge";
 import { LogoDropCluster, type LogoItem } from "./LogoDropCluster";
 import { useLocale, useTranslations } from "@/i18n/I18nProvider";
 import { withLocale } from "@/i18n/path";
@@ -10,19 +10,23 @@ import { cn } from "@/lib/utils";
 /**
  * Hero — Explorer Zone 1 (plan §6).
  *
- * First impression in under 5 seconds. Name, animated role line, one sharp
- * positioning sentence, two CTAs that intentionally split the audience
- * (technical recruiter vs culture-curious hiring manager), and a
- * Logo Drop Cluster sitting beneath the CTAs (step 17).
+ * First impression in under 5 seconds: availability, name, one fixed target
+ * role, a proof line (current role, years, location), one positioning
+ * sentence, two CTAs that split the audience (technical recruiter vs
+ * culture-curious hiring manager), a quiet résumé-request link, and the
+ * Logo Drop Cluster behind it all (step 17).
  *
- * Owns no data: name + statement come from `siteConfig`, role labels and
- * the logo list come from the caller. SRP — only renders.
+ * Owns no data: every string comes from the caller. SRP — only renders.
  */
 export interface HeroProps {
   name: string;
   positioningStatement: string;
-  /** Labels for the cycling role line (Hero animates these). */
-  roleLabels: readonly string[];
+  /** The one target role, shown under the name. */
+  role: string;
+  /** Current role · years · location. */
+  proofLine: string;
+  /** Availability pill above the name (plan §9). */
+  availability: { open: boolean; label: string };
   /** ID of the scroll target for the primary CTA (Zone 2 anchor). */
   exploreTargetId: string;
   /** Logos for the drop cluster band (step 17). Empty list = no cluster. */
@@ -33,7 +37,9 @@ export interface HeroProps {
 export function Hero({
   name,
   positioningStatement,
-  roleLabels,
+  role,
+  proofLine,
+  availability,
   exploreTargetId,
   logos,
   className,
@@ -68,6 +74,11 @@ export function Hero({
       )}
 
       <div className="relative z-10 mx-auto max-w-3xl text-center">
+        <AvailabilityBadge
+          open={availability.open}
+          label={availability.label}
+          className="mb-6"
+        />
         <p className="mb-4 text-xs uppercase tracking-[0.25em] text-text-secondary">
           {t("hero.greeting")}
         </p>
@@ -75,12 +86,11 @@ export function Hero({
           {name}
         </h1>
 
-        <p className="mt-6 text-xl sm:text-2xl text-text-secondary leading-snug">
-          <span className="mr-2">{t("hero.introVerb")}</span>
-          <AnimatedRoleLine
-            labels={roleLabels}
-            className="font-medium text-accent"
-          />
+        <p className="mt-6 text-xl sm:text-2xl font-medium text-accent leading-snug">
+          {role}
+        </p>
+        <p className="mt-3 text-sm sm:text-base text-text-secondary">
+          {proofLine}
         </p>
 
         <p className="mt-8 mx-auto max-w-2xl text-base sm:text-lg leading-relaxed text-text-secondary">
@@ -121,6 +131,22 @@ export function Hero({
             {t("hero.cta.story")}
           </Link>
         </div>
+
+        <p className="mt-6 text-sm text-text-secondary">
+          {t("hero.resumePrompt")}{" "}
+          <Link
+            href={`${withLocale("/contact", locale)}#resume`}
+            className={cn(
+              "font-medium text-text-primary underline decoration-accent",
+              "underline-offset-4 hover:text-accent transition-colors duration-150",
+              "focus-visible:outline-none focus-visible:ring-2",
+              "focus-visible:ring-accent focus-visible:ring-offset-2",
+              "focus-visible:ring-offset-bg rounded-sm",
+            )}
+          >
+            {t("hero.resumeLink")}
+          </Link>
+        </p>
       </div>
 
     </section>

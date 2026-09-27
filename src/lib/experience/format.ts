@@ -34,15 +34,25 @@ export function formatPeriod(period: Period): string {
  * values default to month 1 (start) / 12 (end) so they still span sensibly.
  */
 export function durationMonths(period: Period): number {
-  if (!period.start) return 0;
+  const range = monthRange(period);
+  return range ? range[1] - range[0] : 0;
+}
+
+/**
+ * Period as an absolute `[start, end)` month index (`year * 12 + month`),
+ * with the same coarse-boundary defaults as `durationMonths`. Returns null
+ * for a null start. Used to merge overlapping periods.
+ */
+export function monthRange(period: Period): [number, number] | null {
+  if (!period.start) return null;
   const { y: sy, m: sm } = parseYM(period.start);
   const now = new Date();
   const { y: ey, m: em } = period.end
     ? parseYM(period.end)
     : { y: now.getUTCFullYear(), m: now.getUTCMonth() + 1 };
-  const startMonth = Number.isFinite(sm) ? sm : 1;
-  const endMonth = Number.isFinite(em) ? em : 12;
-  return Math.max(0, (ey - sy) * 12 + (endMonth - startMonth));
+  const start = sy * 12 + (Number.isFinite(sm) ? sm : 1);
+  const end = ey * 12 + (Number.isFinite(em) ? em : 12);
+  return [start, Math.max(start, end)];
 }
 
 /**

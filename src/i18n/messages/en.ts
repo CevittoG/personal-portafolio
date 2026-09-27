@@ -36,9 +36,12 @@ export const en = {
   },
   hero: {
     greeting: "Hi, I'm",
-    introVerb: "I work as a",
+    role: "Senior Data Platform Engineer",
+    proofLine: "Contract engineer at Apple · {years}+ years building data systems · Austin, TX",
     positioningStatement:
-      "I build data systems that handle real scale, and I make sure the people who depend on them actually understand what they do.",
+      "I build data platforms that hold up at scale, and I make sure the people who depend on them understand what they do.",
+    resumePrompt: "Hiring?",
+    resumeLink: "Request my résumé",
     cta: {
       explore: "Explore my experience",
       story: "Read my story",
@@ -71,12 +74,9 @@ export const en = {
   },
   stats: {
     region: "Summary statistics",
-    yearsOfExperience: "Years of experience",
+    yearsOfExperience: "Years in engineering",
     technologies: "Technologies",
-    industries: "Industries",
     projectsAndRoles: "Projects & roles",
-    sentence:
-      "Showing {entries} experiences across {years} years, {technologies} technologies, {industries} industries.",
   },
   grid: {
     sortLabel: "Sort",
@@ -175,12 +175,21 @@ export const en = {
       closed: "Not currently looking",
     },
     availabilityNote:
-      "Based in Austin TX, open to remote roles across the Americas and EU time zones.",
+      "Based in Austin, TX (Central Time). Open to remote roles across the Americas and EU time zones.",
+    workAuthorization:
+      "U.S. permanent resident (green card holder). Authorized to work for any U.S. employer, with no visa sponsorship needed now or in the future.",
     lookingForTitle: "What I'm looking for",
     lookingForBody:
-      "Senior data, platform, or backend engineering, ideally somewhere the people problem matters as much as the technical one. Comfortable as the first engineer on a team or the calm one on a big one.",
+      "Senior data platform or data engineering roles, with backend work welcome, ideally somewhere the people problem matters as much as the technical one. Comfortable as the first engineer on a team or the calm one on a big one.",
     primaryAction: "Send me an email",
-    resumeAction: "Download full resume (PDF)",
+    resume: {
+      title: "Want my résumé?",
+      body: "I tailor my résumé to each role, so I send it on request. Tell me about the position and I'll reply with a version that fits it.",
+      action: "Request my résumé",
+      emailSubject: "Résumé request: [role] at [company]",
+      emailBody:
+        "Hi Sebastián,\n\nI'd like to see your résumé for this role:\n\nRole:\nCompany:\nJob posting link:\nLocation or remote:\n\nAnything else I should know:\n\nThanks,\n",
+    },
   },
   notFound: {
     code: "404",

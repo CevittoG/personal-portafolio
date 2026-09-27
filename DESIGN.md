@@ -8,7 +8,7 @@ colors:
   border: "#2A2A38"
   text-primary: "#F0F0FF"
   text-secondary: "#8888AA"
-  text-muted: "#44445A"
+  text-muted: "#7A7A95"
   accent: "#E5642E"
   accent-hover: "#F07A45"
   accent-subtle: "#E5642E22"
@@ -75,7 +75,7 @@ spacing:
 components:
   button-primary:
     backgroundColor: "{colors.accent}"
-    textColor: "{colors.text-primary}"
+    textColor: "{colors.bg}"
     typography: "{typography.body-small}"
     rounded: "{rounded.pill}"
     padding: "12px 24px"
@@ -163,7 +163,8 @@ A dark, faintly blue-tinted interior with one warm lamp and a controlled spectru
 - **Border Slate** (`#2A2A38` dark / `#E2E2EC` light): subtle dividers and outlines. Used heavily as a quiet line, never as decoration.
 - **Text Primary** (`#F0F0FF` dark / `#0F172A` light): slightly-cool body and heading color. Easier on eyes than pure white.
 - **Text Secondary** (`#8888AA` dark / `#475569` light): muted labels, sub-headings, metadata.
-- **Text Muted** (`#44445A` dark / `#94A3B8` light): placeholders, disabled controls, period text on cards.
+- **Text Muted** (`#7A7A95` dark / `#64748B` light): placeholders, disabled controls, period text on cards. Raised 2026-09-27 to meet AA (4.5:1) for small text; the previous `#44445A` / `#94A3B8` were 2.1:1 / 2.5:1.
+- **On Accent** (`#0A0A0F` dark / `#FFFFFF` light): text and icons on ember-filled CTAs. Dark ink in dark mode because white on `#E5642E` is only 3.4:1.
 
 ### Tag Spectrum (semantic, full palette)
 Eight hues, one per taxonomy type, rotated around the wheel so adjacent types remain distinguishable. Tag colors are NEVER used for non-taxonomy purposes — they encode meaning, and using them decoratively dilutes that contract.

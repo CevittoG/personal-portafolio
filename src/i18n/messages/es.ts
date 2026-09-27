@@ -34,9 +34,12 @@ export const es: Messages = {
   },
   hero: {
     greeting: "Hola, soy",
-    introVerb: "Trabajo como",
+    role: "Ingeniero Senior de Plataformas de Datos",
+    proofLine: "Ingeniero contratista en Apple · {years}+ años construyendo sistemas de datos · Austin, TX",
     positioningStatement:
-      "Construyo sistemas de datos que aguantan escala real, y me aseguro de que la gente que depende de ellos entienda de verdad qué hacen.",
+      "Construyo plataformas de datos que aguantan a escala, y me aseguro de que la gente que depende de ellas entienda qué hacen.",
+    resumePrompt: "¿Estás contratando?",
+    resumeLink: "Pide mi CV",
     cta: {
       explore: "Explorar mi experiencia",
       story: "Leer mi historia",
@@ -69,12 +72,9 @@ export const es: Messages = {
   },
   stats: {
     region: "Estadísticas",
-    yearsOfExperience: "Años de experiencia",
+    yearsOfExperience: "Años en ingeniería",
     technologies: "Tecnologías",
-    industries: "Industrias",
     projectsAndRoles: "Proyectos y roles",
-    sentence:
-      "Mostrando {entries} experiencias a lo largo de {years} años, {technologies} tecnologías, {industries} industrias.",
   },
   grid: {
     sortLabel: "Ordenar",
@@ -173,12 +173,21 @@ export const es: Messages = {
       closed: "Actualmente no estoy buscando",
     },
     availabilityNote:
-      "Con base en Austin TX, abierto a roles remotos en zonas horarias de las Américas y la UE.",
+      "Con base en Austin, TX (hora central). Abierto a roles remotos en zonas horarias de las Américas y la UE.",
+    workAuthorization:
+      "Residente permanente en EE. UU. (green card). Autorizado para trabajar con cualquier empleador en EE. UU., sin necesidad de patrocinio de visa, ni ahora ni en el futuro.",
     lookingForTitle: "Qué estoy buscando",
     lookingForBody:
-      "Ingeniería senior de datos, plataforma o backend; idealmente en un sitio donde el problema humano importe tanto como el técnico. Cómodo como primer ingeniero de un equipo o como el ingeniero tranquilo de uno grande.",
+      "Roles senior de plataformas de datos o ingeniería de datos, con trabajo de backend bienvenido; idealmente en un sitio donde el problema humano importe tanto como el técnico. Cómodo como primer ingeniero de un equipo o como el ingeniero tranquilo de uno grande.",
     primaryAction: "Envíame un correo",
-    resumeAction: "Descargar CV completo (PDF)",
+    resume: {
+      title: "¿Quieres mi CV?",
+      body: "Adapto mi CV a cada rol, así que lo envío a pedido. Cuéntame sobre el puesto y te respondo con una versión hecha para él.",
+      action: "Pedir mi CV",
+      emailSubject: "Solicitud de CV: [rol] en [empresa]",
+      emailBody:
+        "Hola Sebastián,\n\nMe gustaría ver tu CV para este puesto:\n\nRol:\nEmpresa:\nEnlace a la oferta:\nUbicación o remoto:\n\nAlgo más que debería saber:\n\nGracias,\n",
+    },
   },
   notFound: {
     code: "404",

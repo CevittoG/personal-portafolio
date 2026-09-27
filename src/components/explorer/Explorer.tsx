@@ -12,6 +12,7 @@ import { experienceRepository } from "@/lib/experience/json-repository";
 import type { ExperienceEntry } from "@/lib/experience/types";
 import { useFilterTags } from "@/lib/filters/use-filter-tags";
 import { siteConfig } from "@/lib/site/config";
+import { yearsOfExperienceComputer } from "@/lib/stats/computers/years-of-experience";
 import { taxonomyRepository } from "@/lib/taxonomy/json-repository";
 import { logoSourcesFromTaxonomy } from "@/lib/taxonomy/logos";
 import { topTagsByUsage } from "@/lib/taxonomy/top-tags";
@@ -36,16 +37,11 @@ export function Explorer() {
   const taxonomy = useMemo(() => taxonomyRepository.getAll(), []);
   const featured = useMemo(() => entries.filter((e) => e.featured), [entries]);
 
-  const usedRoles = useMemo(() => collectUsedRoles(entries), [entries]);
-  const roleLabels = useMemo(
-    () =>
-      usedRoles.length > 0
-        ? usedRoles.map(
-            (slug) =>
-              taxonomyRepository.getBySlug(slug)?.display_name ?? slug,
-          )
-        : [siteConfig.title],
-    [usedRoles],
+  // Whole years only, so the proof line reads "5+ years" and never
+  // overstates what the entry dates show.
+  const engineeringYears = useMemo(
+    () => Math.floor(yearsOfExperienceComputer.compute(entries)),
+    [entries],
   );
   const shortcutRoles = useMemo(
     () =>
@@ -76,7 +72,14 @@ export function Explorer() {
       <Hero
         name={siteConfig.name}
         positioningStatement={t("hero.positioningStatement")}
-        roleLabels={roleLabels}
+        role={t("hero.role")}
+        proofLine={t("hero.proofLine", { years: engineeringYears })}
+        availability={{
+          open: siteConfig.availability.open,
+          label: siteConfig.availability.open
+            ? t("contact.availability.open")
+            : t("contact.availability.closed"),
+        }}
         exploreTargetId={ZONE_2_ID}
         logos={logos}
       />
@@ -136,14 +139,6 @@ export function Explorer() {
       <ExperienceDrawer entry={selected} onClose={handleClose} />
     </>
   );
-}
-
-function collectUsedRoles(entries: readonly ExperienceEntry[]): string[] {
-  const seen = new Set<string>();
-  for (const entry of entries) {
-    for (const slug of entry.tags.roles ?? []) seen.add(slug);
-  }
-  return Array.from(seen);
 }
 
 function roleUsageCount(entries: readonly ExperienceEntry[], slug: string): number {
