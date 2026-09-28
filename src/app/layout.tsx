@@ -43,9 +43,6 @@ export default function RootLayout({
   return (
     <html lang={DEFAULT_LOCALE} data-theme="dark" suppressHydrationWarning>
       <head>
-        {/* Preconnect to the Simple Icons CDN (Logo Drop Cluster source) */}
-        <link rel="preconnect" href="https://cdn.simpleicons.org" crossOrigin="anonymous" />
-        <link rel="dns-prefetch" href="https://cdn.simpleicons.org" />
         {/* Blocking inline scripts — must run before first paint to prevent
             FOUC (theme) and incorrect lang attribute (i18n). */}
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />

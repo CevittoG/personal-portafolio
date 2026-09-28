@@ -45,9 +45,7 @@ export const es: Messages = {
       explore: "Explorar mi experiencia",
       story: "Leer mi historia",
     },
-    logos: {
-      regionLabel: "Tecnologías con las que trabajo",
-    },
+    coreStack: "Stack principal",
   },
   contactCta: {
     title: "¿Buscas a alguien para un rol de datos?",
@@ -56,11 +54,17 @@ export const es: Messages = {
     navResume: "CV",
     sticky: "Opciones de contacto",
   },
+  featured: {
+    eyebrow: "Trabajo destacado",
+    title: "Tres roles, primero los resultados",
+    details: "Detalles",
+    fullWriteup: "Detalle completo",
+  },
   discover: {
-    eyebrow: "Descubre",
-    title: "¿Qué estás buscando?",
+    eyebrow: "Filtra por habilidad",
+    title: "¿Buscas una habilidad específica?",
     subtitle:
-      "Busca por habilidad, herramienta o rol. Las tarjetas y estadísticas se ajustan a lo que selecciones.",
+      "Busca una herramienta o un rol, o parte desde una de estas. La lista se reduce a la experiencia que coincide.",
   },
   career: {
     title: "Mi carrera de un vistazo",
@@ -71,6 +75,14 @@ export const es: Messages = {
       data: "Ingeniería de datos",
       platform: "Plataforma de datos",
     },
+  },
+  storyTeaser: {
+    eyebrow: "Mi historia",
+    title: "De las salas de clase a las plataformas de datos",
+    cta: "Leer mi historia",
+  },
+  landingContact: {
+    more: "Todos los datos de contacto",
   },
   search: {
     placeholder: "Busca por habilidad, herramienta o rol…",
@@ -90,10 +102,7 @@ export const es: Messages = {
     removeTag: "Quitar {label}",
   },
   stats: {
-    region: "Estadísticas",
     yearsOfExperience: "Años en ingeniería",
-    technologies: "Tecnologías",
-    projectsAndRoles: "Proyectos y roles",
   },
   grid: {
     sortLabel: "Ordenar",

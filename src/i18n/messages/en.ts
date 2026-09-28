@@ -47,9 +47,7 @@ export const en = {
       explore: "Explore my experience",
       story: "Read my story",
     },
-    logos: {
-      regionLabel: "Technologies I work with",
-    },
+    coreStack: "Core stack",
   },
   contactCta: {
     title: "Hiring for a data role?",
@@ -58,11 +56,17 @@ export const en = {
     navResume: "Résumé",
     sticky: "Contact options",
   },
+  featured: {
+    eyebrow: "Selected work",
+    title: "Three roles, results first",
+    details: "Details",
+    fullWriteup: "Full write-up",
+  },
   discover: {
-    eyebrow: "Discover",
-    title: "What are you looking for?",
+    eyebrow: "Filter by skill",
+    title: "Looking for a specific skill?",
     subtitle:
-      "Search by skill, tool, or role. The cards and stats reshape to match what you pick.",
+      "Search a tool or role, or start from one of these. The list narrows to the experience that matches.",
   },
   career: {
     title: "Career at a glance",
@@ -73,6 +77,14 @@ export const en = {
       data: "Data engineering",
       platform: "Data platform",
     },
+  },
+  storyTeaser: {
+    eyebrow: "My story",
+    title: "From classrooms to data platforms",
+    cta: "Read my story",
+  },
+  landingContact: {
+    more: "All contact details",
   },
   search: {
     placeholder: "Search by skill, tool, or role…",
@@ -92,10 +104,7 @@ export const en = {
     removeTag: "Remove {label}",
   },
   stats: {
-    region: "Summary statistics",
     yearsOfExperience: "Years in engineering",
-    technologies: "Technologies",
-    projectsAndRoles: "Projects & roles",
   },
   grid: {
     sortLabel: "Sort",

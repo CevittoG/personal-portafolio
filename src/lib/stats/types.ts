@@ -2,14 +2,11 @@ import type { ExperienceEntry } from "@/lib/experience/types";
 import type { MessageKey } from "@/i18n/translator";
 
 /**
- * StatComputer — single-responsibility unit that turns a list of (filtered)
- * entries into one display value. Each concrete stat is a sibling file in
- * computers/. The Stats Bar consumes a registered list.
- *
- * `label` is the EN fallback / dev-readable name. `labelKey` is the i18n
- * key resolved through `useTranslations()` at render time — when set, the
- * Stats Bar prefers it over `label`. Existing computers keep working with
- * just `label`; new computers should provide both.
+ * StatComputer — single-responsibility unit that turns a list of entries
+ * into one value. The Stats Bar and its count-up were removed in Phase 4
+ * (the landing now leads with featured-role results); the remaining
+ * computer, years in engineering, feeds the hero proof line, metadata and
+ * the Contact "At a glance" block through `getEngineeringYears()`.
  */
 export interface StatComputer<T = number | string> {
   readonly id: string;

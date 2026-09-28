@@ -13,21 +13,26 @@ import { DocumentIcon, MailIcon } from "./ContactLinks";
  * conversion actions stay one tap away on a long scroll.
  *
  * `suppressed` hides it while something else owns the bottom of the screen
- * (the experience bottom sheet). Fades with CSS only; `motion-reduce`
+ * (the experience bottom sheet); `hideWhenVisibleId` hides it while that
+ * element is on screen (the landing's own Contact block, which offers the
+ * same two actions). Fades with CSS only; `motion-reduce`
  * drops the slide.
  */
 export interface StickyContactPillProps {
   watchId: string;
   suppressed?: boolean;
+  hideWhenVisibleId?: string;
 }
 
 export function StickyContactPill({
   watchId,
   suppressed = false,
+  hideWhenVisibleId,
 }: StickyContactPillProps) {
   const t = useTranslations();
   const locale = useLocale();
   const [pastHero, setPastHero] = useState(false);
+  const [duplicateInView, setDuplicateInView] = useState(false);
 
   useEffect(() => {
     const target = document.getElementById(watchId);
@@ -39,7 +44,18 @@ export function StickyContactPill({
     return () => observer.disconnect();
   }, [watchId]);
 
-  const visible = pastHero && !suppressed;
+  useEffect(() => {
+    if (!hideWhenVisibleId) return;
+    const target = document.getElementById(hideWhenVisibleId);
+    if (!target) return;
+    const observer = new IntersectionObserver(([entry]) =>
+      setDuplicateInView(entry.isIntersecting),
+    );
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [hideWhenVisibleId]);
+
+  const visible = pastHero && !suppressed && !duplicateInView;
   const segment = cn(
     "inline-flex min-h-11 items-center gap-2 px-4 text-sm font-medium",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset",

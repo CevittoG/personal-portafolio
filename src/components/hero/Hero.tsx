@@ -4,7 +4,7 @@ import Link from "next/link";
 import { AvailabilityBadge } from "@/components/contact/AvailabilityBadge";
 import { SocialLinks } from "@/components/contact/ContactLinks";
 import { umamiAttributes } from "@/lib/analytics/umami";
-import { LogoDropCluster, type LogoItem } from "./LogoDropCluster";
+import { CoreStack } from "./CoreStack";
 import { useLocale, useTranslations } from "@/i18n/I18nProvider";
 import { withLocale } from "@/i18n/path";
 import { cn } from "@/lib/utils";
@@ -15,8 +15,9 @@ import { cn } from "@/lib/utils";
  * First impression in under 5 seconds: availability, name, one fixed target
  * role, a proof line (current role, years, location), one positioning
  * sentence, two CTAs that split the audience (technical recruiter vs
- * culture-curious hiring manager), a quiet résumé-request link, and the
- * Logo Drop Cluster behind it all (step 17).
+ * culture-curious hiring manager), a quiet résumé-request link, profile
+ * links and a static "Core stack" row. Height follows the content: no
+ * forced minimum, so the next section starts right after on mobile.
  *
  * Owns no data: every string comes from the caller. SRP — only renders.
  */
@@ -33,8 +34,6 @@ export interface HeroProps {
   exploreTargetId: string;
   /** DOM id of the section, observed by the sticky mobile contact pill. */
   id?: string;
-  /** Logos for the drop cluster band (step 17). Empty list = no cluster. */
-  logos?: readonly LogoItem[];
   className?: string;
 }
 
@@ -46,7 +45,6 @@ export function Hero({
   availability,
   exploreTargetId,
   id,
-  logos,
   className,
 }: HeroProps) {
   const t = useTranslations();
@@ -57,27 +55,12 @@ export function Hero({
       aria-label={t("hero.greeting")}
       className={cn(
         "relative isolate overflow-hidden",
-        "px-6 pt-20 pb-24 sm:pt-28 sm:pb-32",
-        // Floor on hero height so the logo cluster (absolute inset-0) has
-        // room to spread around the text. Without this the section
-        // collapses to text height and logos pile on top of the headline.
-        "min-h-[720px] sm:min-h-[760px] lg:min-h-[820px]",
+        "px-6 pt-12 pb-14 sm:pt-24 sm:pb-24",
         className,
       )}
     >
       {/* Ambient visual — soft accent blooms + a top-edge vignette. */}
       <AmbientBackdrop />
-
-      {/* Logo Cluster — fills the section behind the centered text. Its
-          placement zones (see LogoDropCluster.placementFor) keep logos in the
-          top/bottom strips and side margins, never the central text column, so
-          the cluster reads as a halo around the headline rather than a curtain
-          behind it. */}
-      {logos && logos.length > 0 && (
-        <div aria-hidden="true" className="absolute inset-0">
-          <LogoDropCluster logos={logos} />
-        </div>
-      )}
 
       <div className="relative z-10 mx-auto max-w-3xl text-center">
         <AvailabilityBadge
@@ -162,6 +145,8 @@ export function Hero({
           showLabels
           className="mt-3 justify-center gap-2"
         />
+
+        <CoreStack label={t("hero.coreStack")} className="mt-10 sm:mt-12" />
       </div>
 
     </section>
@@ -171,8 +156,7 @@ export function Hero({
 /**
  * Subtle, non-distracting backdrop: two soft accent radial blooms, a faint
  * top-edge vignette to anchor the name, and a bottom fade into the bg so
- * Zone 2 picks up cleanly. All CSS, no canvas — keeps the Logo Drop Cluster
- * (step 17) as the signature visual in the band below.
+ * the next section picks up cleanly. All CSS, no canvas, no motion.
  */
 function AmbientBackdrop() {
   return (

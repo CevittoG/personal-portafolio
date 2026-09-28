@@ -4,41 +4,48 @@ import { useMemo, useState } from "react";
 import { StickyContactPill } from "@/components/contact/StickyContactPill";
 import { Hero } from "@/components/hero/Hero";
 import { SearchBar } from "@/components/search/SearchBar";
-import { RoleShortcuts } from "@/components/search/RoleShortcuts";
+import { StarterChips } from "@/components/search/StarterChips";
 import { ActiveFilterChips } from "@/components/filters/ActiveFilterChips";
-import { StatsBar } from "@/components/stats/StatsBar";
 import { ExperienceDrawer } from "@/components/explorer/ExperienceDrawer";
 import { ExperienceGrid } from "@/components/explorer/ExperienceGrid";
+import { FeaturedRoles } from "@/components/explorer/FeaturedRoles";
 import { experienceRepository } from "@/lib/experience/json-repository";
 import { localizeEntry } from "@/lib/experience/localize";
+import { sortEntries } from "@/lib/experience/sort";
 import type { ExperienceEntry } from "@/lib/experience/types";
 import { useFilterTags } from "@/lib/filters/use-filter-tags";
+import { isSearchable } from "@/lib/search/scope";
+import { STARTER_TAGS } from "@/lib/search/starters";
 import { siteConfig } from "@/lib/site/config";
 import { yearsOfExperienceComputer } from "@/lib/stats/computers/years-of-experience";
 import { taxonomyRepository } from "@/lib/taxonomy/json-repository";
-import { logoSourcesFromTaxonomy } from "@/lib/taxonomy/logos";
-import { topTagsByUsage } from "@/lib/taxonomy/top-tags";
+import type { TaxonomyEntry } from "@/lib/taxonomy/types";
 import { useLocale, useTranslations } from "@/i18n/I18nProvider";
 
 /**
- * Explorer — shared across the EN (`/`) and ES (`/es`) routes.
+ * Explorer — the interactive part of the landing page, shared by `/` and
+ * `/es` (locale comes from the surrounding `I18nProvider`).
  *
- * Assembles Zones 1–4 per plan §6. Both locale pages render this single
- * component; locale comes from the surrounding `I18nProvider`, which is
- * set by each route's layout. This keeps the page files trivial and avoids
- * duplicating the assembly logic.
+ * Narrative first (plan §6, Phase 4):
+ *   1. Hero
+ *   2. Featured roles: the three engineering roles with their results
+ *   3. "Filter by skill": search, starter chips and the filterable grid
+ * The Story teaser and Contact block follow as server components
+ * (`LandingTail`), rendered by the page after this component.
  */
-const ZONE_2_ID = "discover";
 const HERO_ID = "hero";
+const WORK_ID = "work";
+const FILTER_ID = "discover";
+/** The Contact block in `LandingTail`; the sticky pill yields to it. */
+const LANDING_CONTACT_ID = "landing-contact";
 
 export function Explorer() {
   const t = useTranslations();
-  // Discover operates only on entries flagged as relevant (professional/
-  // technical experience). Non-relevant entries stay available for the Story
-  // timeline and direct deep-dive links, but never surface here or in stats.
-  // Prose (summary, top impact lines, reflective line) in the active
-  // locale when a translation exists; tags and filters are unaffected.
   const locale = useLocale();
+
+  // Discover operates only on entries flagged as relevant (professional/
+  // technical experience). Prose (summary, top impact lines, reflective
+  // line) is in the active locale when a translation exists.
   const entries = useMemo(
     () =>
       experienceRepository
@@ -46,8 +53,17 @@ export function Explorer() {
         .map((entry) => localizeEntry(entry, locale)),
     [locale],
   );
-  const taxonomy = useMemo(() => taxonomyRepository.getAll(), []);
-  const featured = useMemo(() => entries.filter((e) => e.featured), [entries]);
+  // The engineering roles, most recent first: the featured section and the
+  // grid's empty-state fallback.
+  const featured = useMemo(
+    () =>
+      sortEntries(
+        entries.filter((e) => e.story_act === "technical"),
+        "recent",
+        [],
+      ),
+    [entries],
+  );
 
   // Whole years only, so the proof line reads "5+ years" and never
   // overstates what the entry dates show.
@@ -55,27 +71,29 @@ export function Explorer() {
     () => Math.floor(yearsOfExperienceComputer.compute(entries)),
     [entries],
   );
-  const shortcutRoles = useMemo(
-    () =>
-      taxonomyRepository
-        .getByType("roles")
-        .filter((r) => roleUsageCount(entries, r.slug) >= 2),
-    [entries],
-  );
 
-  const topTags = useMemo(() => topTagsByUsage(entries, 6), [entries]);
-  const logos = useMemo(() => logoSourcesFromTaxonomy(taxonomyRepository), []);
+  // Search offers tools, roles and a few recruiter-facing concepts; the
+  // starter chips are curated, not usage-ranked.
+  const searchable = useMemo(
+    () => taxonomyRepository.getAll().filter(isSearchable),
+    [],
+  );
+  const starters = useMemo(
+    () =>
+      STARTER_TAGS.map((slug) => taxonomyRepository.getBySlug(slug)).filter(
+        (tag): tag is TaxonomyEntry => Boolean(tag),
+      ),
+    [],
+  );
+  const taxonomyBySlug = useMemo(
+    () => new Map(taxonomyRepository.getAll().map((tag) => [tag.slug, tag])),
+    [],
+  );
 
   const filter = useFilterTags();
   const activeSlugs = filter.slugs;
 
   const [selected, setSelected] = useState<ExperienceEntry | null>(null);
-
-  const taxonomyBySlug = useMemo(
-    () => new Map(taxonomy.map((tag) => [tag.slug, tag])),
-    [taxonomy],
-  );
-
   const handleSelect = (entry: ExperienceEntry) => setSelected(entry);
   const handleClose = () => setSelected(null);
 
@@ -92,13 +110,14 @@ export function Explorer() {
             ? t("contact.availability.open")
             : t("contact.availability.closed"),
         }}
-        exploreTargetId={ZONE_2_ID}
+        exploreTargetId={WORK_ID}
         id={HERO_ID}
-        logos={logos}
       />
 
+      <FeaturedRoles id={WORK_ID} entries={featured} onSelect={handleSelect} />
+
       <section
-        id={ZONE_2_ID}
+        id={FILTER_ID}
         aria-labelledby="discover-title"
         className="scroll-mt-24 px-6 py-16 sm:py-20"
       >
@@ -111,8 +130,8 @@ export function Explorer() {
               id="discover-title"
               className="text-3xl sm:text-4xl font-semibold tracking-tight text-text-primary"
             >
-            {t("discover.title")}
-          </h2>
+              {t("discover.title")}
+            </h2>
             <p className="mx-auto max-w-xl text-base text-text-secondary leading-relaxed">
               {t("discover.subtitle")}
             </p>
@@ -120,8 +139,8 @@ export function Explorer() {
 
           <div className="space-y-5">
             <SearchBar
-              suggestions={taxonomy}
-              topSuggestions={topTags}
+              suggestions={searchable}
+              topSuggestions={STARTER_TAGS}
               excludeSlugs={activeSlugs}
               onSelect={filter.add}
             />
@@ -131,34 +150,29 @@ export function Explorer() {
               onRemove={filter.remove}
               onClear={filter.clear}
             />
-            <RoleShortcuts
-              roles={shortcutRoles}
+            <StarterChips
+              tags={starters}
               activeSlugs={activeSlugs}
               onSelect={filter.add}
             />
           </div>
-
-          <StatsBar entries={entries} activeSlugs={activeSlugs} />
 
           <ExperienceGrid
             entries={entries}
             activeSlugs={activeSlugs}
             featuredFallback={featured}
             onSelect={handleSelect}
+            onTagSelect={filter.add}
           />
         </div>
       </section>
 
       <ExperienceDrawer entry={selected} onClose={handleClose} />
-      <StickyContactPill watchId={HERO_ID} suppressed={selected !== null} />
+      <StickyContactPill
+        watchId={HERO_ID}
+        suppressed={selected !== null}
+        hideWhenVisibleId={LANDING_CONTACT_ID}
+      />
     </>
   );
-}
-
-function roleUsageCount(entries: readonly ExperienceEntry[], slug: string): number {
-  let n = 0;
-  for (const e of entries) {
-    if ((e.tags.roles ?? []).includes(slug)) n++;
-  }
-  return n;
 }

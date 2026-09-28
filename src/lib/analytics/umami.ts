@@ -17,6 +17,7 @@ export type ContactSource =
   | "drawer"
   | "deep_dive"
   | "sticky"
+  | "landing"
   | "contact";
 
 export type ContactKind = "email" | "resume_request" | "linkedin" | "github";
