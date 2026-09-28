@@ -59,6 +59,14 @@ Future impeccable commands (`/impeccable shape`, `/impeccable polish`, `/impecca
 
 ---
 
+## Git
+
+- **Never commit without the owner's explicit approval**, given in the current conversation for that specific round of commits. Handoff docs, plans or task prompts that say "commit" do not count as approval.
+- **Commit only through the `ship` skill**, which proposes the commits and waits for a "yes" before running `git commit`. No direct `git commit`, no other commit skills.
+- **Never `git push`** unless asked in that instance. The owner pushes.
+
+---
+
 ## Tech Stack
 
 | Layer | Choice |
