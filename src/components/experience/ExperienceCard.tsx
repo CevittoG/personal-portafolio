@@ -7,11 +7,10 @@ import {
   getImpactHighlight,
   getMetaBadge,
 } from "@/lib/experience/format";
-import { visibleTagsByType } from "@/lib/experience/tag-display";
+import { cardTags } from "@/lib/experience/tag-display";
 import { formatTagLabel } from "@/lib/taxonomy/format";
 import type { TagType } from "@/lib/taxonomy/types";
 import { TagPill, type TagPillState } from "@/components/tags/TagPill";
-import { tagColorVar } from "@/components/tags/tag-colors";
 import { useTranslations } from "@/i18n/I18nProvider";
 import { track } from "@/lib/analytics/umami";
 import { cn } from "@/lib/utils";
@@ -22,17 +21,26 @@ import { cn } from "@/lib/utils";
  * `src/lib/experience/format.ts` (SRP — Card stays presentational; type
  * differences live in one place).
  *
+ * Order is what a recruiter scans for: heading, meta, summary, the headline
+ * result (`impact[0]`), then at most six stack pills (see `cardTags`).
+ *
  * Tag pill state is driven by `filterTags`:
  * - No filter active   → every pill renders as `inactive`.
  * - Filter active      → pills whose slug is in `filterTags` are `active`,
  *                        the rest are `muted` ("here's why this matched").
+ *
+ * Pills either do something or look inert: with `onTagSelect` (Explorer
+ * grid) an inactive pill adds that tag to the filter; without it (Related
+ * section) pills render as plain labels with no hover affordance.
  */
 export interface ExperienceCardProps {
   entry: ExperienceEntry;
   /** Active filter slugs from the Explorer. Empty/undefined = no filter. */
   filterTags?: readonly string[];
-  /** Opens the drawer (wired in Build Order step 11). */
+  /** Opens the drawer. */
   onSelect?: (entry: ExperienceEntry) => void;
+  /** Adds a tag to the Explorer filter. Omit to render pills as inert labels. */
+  onTagSelect?: (slug: string) => void;
   className?: string;
 }
 
@@ -40,6 +48,7 @@ export function ExperienceCard({
   entry,
   filterTags,
   onSelect,
+  onTagSelect,
   className,
 }: ExperienceCardProps) {
   const t = useTranslations();
@@ -56,7 +65,7 @@ export function ExperienceCard({
     return filterSet.has(slug) ? "active" : "muted";
   };
 
-  const tagGroups = visibleTagsByType(entry, filterTags ?? []);
+  const tags = cardTags(entry, filterTags ?? []);
 
   const handleClick = onSelect
     ? () => {
@@ -65,6 +74,14 @@ export function ExperienceCard({
       }
     : undefined;
   const interactive = Boolean(handleClick);
+
+  const pillClick = (slug: string, type: TagType, state: TagPillState) =>
+    onTagSelect && state === "inactive"
+      ? () => {
+          track("filter_added", { slug, type, source: "card" });
+          onTagSelect(slug);
+        }
+      : undefined;
 
   return (
     <article
@@ -135,36 +152,14 @@ export function ExperienceCard({
         </p>
       )}
 
-      {/* Tag pills — grouped by category, each capped at TAG_DISPLAY_CAP with
-          matches always shown; the rest collapse into a per-category "+N". */}
-      <div className="flex flex-wrap gap-1.5">
-        {tagGroups.flatMap((group) => [
-          ...group.shown.map((slug) => (
-            <TagPill
-              key={`${group.type}:${slug}`}
-              slug={slug}
-              label={formatTagLabel(slug)}
-              type={group.type as TagType}
-              state={stateFor(slug)}
-            />
-          )),
-          group.hiddenCount > 0 ? (
-            <OverflowPill
-              key={`${group.type}:overflow`}
-              type={group.type}
-              count={group.hiddenCount}
-            />
-          ) : null,
-        ])}
-      </div>
-
-      {/* Impact pull-quote — rendered as an inline-callout with a leading
-          accent dot rather than a side-stripe border (shared design law:
-          no >1px coloured side borders). */}
+      {/* Headline result — inline callout with a leading accent dot rather
+          than a side-stripe border (shared design law: no >1px coloured
+          side borders). Sits above the pills: the result is what a recruiter
+          should read second, after the role. */}
       {impact && (
         <p
           className={cn(
-            "mt-auto flex items-start gap-2 rounded-lg",
+            "flex items-start gap-2 rounded-lg",
             "bg-[color-mix(in_srgb,var(--color-accent)_8%,transparent)]",
             "px-3 py-2 text-sm italic text-text-primary",
           )}
@@ -175,6 +170,31 @@ export function ExperienceCard({
           />
           <span>{impact}</span>
         </p>
+      )}
+
+      {/* Stack pills — at most six, filter matches first. Interactive pills
+          sit above the card's stretched click target (relative z-10). */}
+      {tags.shown.length > 0 && (
+        <div className="mt-auto flex flex-wrap items-center gap-1.5">
+          {tags.shown.map(({ slug, type }) => {
+            const state = stateFor(slug);
+            const onClick = pillClick(slug, type, state);
+            return (
+              <TagPill
+                key={`${type}:${slug}`}
+                slug={slug}
+                label={formatTagLabel(slug)}
+                type={type}
+                state={state}
+                onClick={onClick}
+                className={cn(onClick && "relative z-10 min-h-6")}
+              />
+            );
+          })}
+          {tags.hiddenCount > 0 && (
+            <span className="text-xs text-text-muted">+{tags.hiddenCount}</span>
+          )}
+        </div>
       )}
 
       {/* CTA */}
@@ -191,25 +211,5 @@ export function ExperienceCard({
         </p>
       )}
     </article>
-  );
-}
-
-/**
- * "+N" pill marking tags hidden by the per-category cap. Non-interactive and
- * tinted with the category color so it reads as "more of this type", matching
- * the muted-pill weight without overloading TagPill's slug-based states.
- */
-function OverflowPill({ type, count }: { type: TagType; count: number }) {
-  return (
-    <span
-      aria-hidden="true"
-      className={cn(
-        "inline-flex items-center rounded-full border border-current/50",
-        "px-2.5 py-1 text-xs font-medium leading-none whitespace-nowrap",
-      )}
-      style={{ color: tagColorVar(type) }}
-    >
-      +{count}
-    </span>
   );
 }

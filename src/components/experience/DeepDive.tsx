@@ -99,6 +99,9 @@ export function DeepDive({ locale, id }: DeepDiveProps) {
 
 /* ── Sidebar ────────────────────────────────────────────────────────── */
 
+/** Tag types expanded by default in the sidebar: the stack a recruiter scans for. */
+const OPEN_TAG_TYPES: ReadonlySet<TagType> = new Set(["languages", "technologies"]);
+
 interface SidebarProps {
   entry: ExperienceEntry;
   heading: { primary: string; secondary: string | null };
@@ -211,13 +214,34 @@ function Sidebar({
           <p className="text-xs uppercase tracking-wider text-text-muted">
             {t("experience.sidebar.tags")}
           </p>
-          <div className="space-y-3">
+          {/* One collapsible group per tag type (no JS: <details>). The
+              stack (languages, technologies) starts open; the long tail of
+              concepts, scale and soft skills starts collapsed with a count. */}
+          <div className="space-y-1">
             {tagBuckets.map(({ type, slugs }) => (
-              <div key={type} className="space-y-1.5">
-                <p className="text-[0.65rem] uppercase tracking-wider text-text-muted">
-                  {tagTypeLabel(type)}
-                </p>
-                <div className="flex flex-wrap gap-1.5">
+              <details
+                key={type}
+                open={OPEN_TAG_TYPES.has(type)}
+                className="group/tags"
+              >
+                <summary
+                  className={cn(
+                    "flex min-h-8 cursor-pointer list-none items-center gap-2",
+                    "text-xs uppercase tracking-wider text-text-muted",
+                    "hover:text-text-secondary [&::-webkit-details-marker]:hidden",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent rounded-sm",
+                  )}
+                >
+                  <span
+                    aria-hidden="true"
+                    className="transition-transform duration-150 group-open/tags:rotate-90 motion-reduce:transition-none"
+                  >
+                    ▸
+                  </span>
+                  <span>{tagTypeLabel(type)}</span>
+                  <span className="text-text-muted/80">({slugs.length})</span>
+                </summary>
+                <div className="flex flex-wrap gap-1.5 pb-2 pt-1">
                   {slugs.map((slug) => (
                     <TagPill
                       key={slug}
@@ -228,7 +252,7 @@ function Sidebar({
                     />
                   ))}
                 </div>
-              </div>
+              </details>
             ))}
           </div>
         </section>

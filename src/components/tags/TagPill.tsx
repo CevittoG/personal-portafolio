@@ -47,8 +47,9 @@ const BASE_CLASSES = cn(
 const STATE_CLASSES: Record<TagPillState, string> = {
   // Filled, full-color — currently selected/matching
   active: "border-current",
-  // Default — color-tinted outline, no fill
-  inactive: "border-current/50 hover:border-current",
+  // Default — color-tinted outline, no fill. Hover only when clickable
+  // (added below), so an inert label never pretends to be a button.
+  inactive: "border-current/50",
   // Greyed out — visible but de-emphasized (doesn't match filter)
   muted: "border-border text-text-muted bg-transparent",
   // Active + interactive remove control
@@ -104,6 +105,7 @@ export function TagPill({
         interactive &&
           state !== "removable" &&
           "cursor-pointer active:scale-[0.97] motion-reduce:active:scale-100",
+        interactive && state === "inactive" && "hover:border-current",
         className,
       )}
       style={styleFor(type, state)}
@@ -112,7 +114,7 @@ export function TagPill({
       {sublabel && (
         <span
           aria-hidden="true"
-          className="text-[0.65rem] uppercase tracking-wider opacity-60"
+          className="text-xs uppercase tracking-wider opacity-60"
         >
           · {sublabel}
         </span>
@@ -123,7 +125,9 @@ export function TagPill({
           onClick={onRemove}
           aria-label={removeAriaLabel ?? `Remove ${label}`}
           className={cn(
-            "-mr-1 grid h-4 w-4 place-items-center rounded-full",
+            // 16px visual, 24px hit area via the ::after overlay
+            "relative -mr-1 grid h-4 w-4 place-items-center rounded-full",
+            "after:absolute after:-inset-1 after:content-['']",
             "cursor-pointer hover:bg-current/15",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-current",
             "transition-colors duration-150",

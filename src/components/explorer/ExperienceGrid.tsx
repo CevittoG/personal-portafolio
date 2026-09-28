@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ExperienceCard } from "@/components/experience/ExperienceCard";
+import { MAX_STAGGER_DELAY } from "@/components/motion/Reveal";
 import { defaultFilterStrategy } from "@/lib/filters/tag-match";
 import {
   SORT_IDS,
@@ -36,6 +37,8 @@ export interface ExperienceGridProps {
   activeSlugs: readonly string[];
   /** Called when the user clicks a card → opens the drawer (step 11). */
   onSelect?: (entry: ExperienceEntry) => void;
+  /** Called when the user clicks a pill on a card → adds it to the filter. */
+  onTagSelect?: (slug: string) => void;
   /** When activeSlugs is empty AND there are no entries, show these as a
    *  fallback (plan §6 Zone 4 empty state). */
   featuredFallback?: readonly ExperienceEntry[];
@@ -46,6 +49,7 @@ export function ExperienceGrid({
   entries,
   activeSlugs,
   onSelect,
+  onTagSelect,
   featuredFallback,
   className,
 }: ExperienceGridProps) {
@@ -84,7 +88,7 @@ export function ExperienceGrid({
           exit: { opacity: 0, y: -4 },
           transition: {
             duration: 0.32,
-            delay: Math.min(index * 0.05, 0.4),
+            delay: Math.min(index * 0.05, MAX_STAGGER_DELAY),
             ease: EASE_OUT_QUINT,
           },
           layout: true,
@@ -136,6 +140,7 @@ export function ExperienceGrid({
                   entry={entry}
                   filterTags={activeSlugs as string[]}
                   onSelect={onSelect ? () => onSelect(entry) : undefined}
+                  onTagSelect={onTagSelect}
                 />
               </motion.div>
             ))}
@@ -168,6 +173,7 @@ export function ExperienceGrid({
                     entry={entry}
                     filterTags={[]}
                     onSelect={onSelect ? () => onSelect(entry) : undefined}
+                    onTagSelect={onTagSelect}
                   />
                 ))}
               </div>
