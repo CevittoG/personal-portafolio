@@ -191,23 +191,6 @@ interface DrawerContentProps {
   isDesktop: boolean;
 }
 
-// Body section stagger: each direct child of the scroll body fades up
-// sequentially once the drawer panel finishes opening. Quiet by design.
-const BODY_CONTAINER = {
-  hidden: {},
-  show: {
-    transition: { staggerChildren: 0.05, delayChildren: 0.12 },
-  },
-} as const;
-const BODY_ITEM = {
-  hidden: { opacity: 0, y: 6 },
-  show: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.28, ease: [0.22, 1, 0.36, 1] as const },
-  },
-} as const;
-
 function DrawerContent({
   entry,
   titleId,
@@ -224,7 +207,6 @@ function DrawerContent({
   const period = formatPeriod(entry.period);
   const teaser = getDescriptionTeaser(entry);
   const topImpact = entry.impact.slice(0, 3);
-  const reduceMotion = useReducedMotion();
 
   // Tags grouped by type, in canonical order — empty buckets skipped
   const tagBuckets = TAG_TYPES
@@ -283,15 +265,11 @@ function DrawerContent({
       </header>
 
       {/* Scrollable body */}
-      <motion.div
-        variants={reduceMotion ? undefined : BODY_CONTAINER}
-        initial={reduceMotion ? false : "hidden"}
-        animate={reduceMotion ? undefined : "show"}
-        className="flex-1 overflow-y-auto px-6 py-5 space-y-6"
-      >
+      {/* Body renders at once: the panel's own slide is the only motion,
+          so content never waits on a stagger. */}
+      <div className="flex-1 overflow-y-auto px-6 py-5 space-y-6">
         {/* Meta row */}
-        <motion.div
-          variants={reduceMotion ? undefined : BODY_ITEM}
+        <div
           className="flex flex-wrap items-center gap-2 text-sm text-text-secondary"
         >
           <span>{period}</span>
@@ -314,34 +292,31 @@ function DrawerContent({
               <span>{subMeta}</span>
             </>
           )}
-        </motion.div>
+        </div>
 
         {/* Summary */}
         {entry.summary && (
-          <motion.p
-            variants={reduceMotion ? undefined : BODY_ITEM}
+          <p
             className="text-base leading-relaxed text-text-primary"
           >
             {entry.summary}
-          </motion.p>
+          </p>
         )}
 
         {/* Description teaser: first paragraph of `description`, which may
             carry inline **bold** run-in headings (same renderer as the
             deep dive). */}
         {teaser && teaser !== entry.summary && (
-          <motion.p
-            variants={reduceMotion ? undefined : BODY_ITEM}
+          <p
             className="text-sm leading-relaxed text-text-secondary"
           >
             {renderInline(teaser)}
-          </motion.p>
+          </p>
         )}
 
         {/* Top impact */}
         {topImpact.length > 0 && (
-          <motion.section
-            variants={reduceMotion ? undefined : BODY_ITEM}
+          <section
             aria-labelledby={`${titleId}-impact`}
             className="space-y-2"
           >
@@ -364,13 +339,12 @@ function DrawerContent({
                 </li>
               ))}
             </ul>
-          </motion.section>
+          </section>
         )}
 
         {/* Tag cloud, grouped by type */}
         {tagBuckets.length > 0 && (
-          <motion.section
-            variants={reduceMotion ? undefined : BODY_ITEM}
+          <section
             aria-labelledby={`${titleId}-tags`}
             className="space-y-3"
           >
@@ -385,9 +359,9 @@ function DrawerContent({
                 <TagBucket key={type} type={type} slugs={slugs} />
               ))}
             </div>
-          </motion.section>
+          </section>
         )}
-      </motion.div>
+      </div>
 
       {/* Footer: Dig deeper opens in new tab (plan §11), then the two
           direct contact actions. */}
@@ -418,7 +392,7 @@ function DrawerContent({
 function TagBucket({ type, slugs }: { type: TagType; slugs: readonly string[] }) {
   return (
     <div className="flex flex-wrap items-center gap-1.5">
-      <span className="mr-1 text-[0.65rem] uppercase tracking-wider text-text-muted">
+      <span className="mr-1 text-xs uppercase tracking-wider text-text-muted">
         {tagTypeLabel(type)}
       </span>
       {slugs.map((slug) => (

@@ -32,6 +32,12 @@ export interface RevealProps {
 // Ease-out-quint approximation. Starts fast, settles slow — "quiet but deliberate".
 const EASE_OUT_QUINT: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
+/**
+ * Longest a staggered item may wait, in seconds. Past ~150ms a stagger
+ * stops reading as rhythm and starts reading as the page being slow.
+ */
+export const MAX_STAGGER_DELAY = 0.15;
+
 export function Reveal({
   children,
   delay = 0,
@@ -63,7 +69,7 @@ export function Reveal({
  * RevealStagger — wraps a list of children with sequential reveal delays.
  *
  * Each direct child is wrapped in its own `<Reveal>` with `step × index`
- * delay. The wrapper element tag is configurable via `as` (default `div`)
+ * delay, capped at {@link MAX_STAGGER_DELAY}. The wrapper element tag is configurable via `as` (default `div`)
  * so callers can render semantic `<ul>` / `<ol>` lists.
  */
 export interface RevealStaggerProps {
@@ -98,7 +104,7 @@ export function RevealStagger({
         <Reveal
           key={isValidElement(child) && child.key != null ? child.key : i}
           className={childClassName}
-          delay={initialDelay + i * step}
+          delay={Math.min(initialDelay + i * step, MAX_STAGGER_DELAY)}
           y={y}
         >
           {child}
