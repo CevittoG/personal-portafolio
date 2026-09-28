@@ -17,7 +17,7 @@ Future impeccable commands (`/impeccable shape`, `/impeccable polish`, `/impecca
 
 ## Project Status
 
-**All 18 plan steps shipped (1–18 done).** Next.js 15.4.11 + TS + Tailwind v4 + Framer Motion 11 app, Docker dev/preview pipeline, fully bilingual (EN/ES), dark + light themed, with a signature ambient Logo Cluster on Hero (continuous float + cursor-repel via `useMotionValue` / `useSpring` / `useAnimationFrame`, replacing the original drop-from-above entrance — see plan §6 Zone 1 + Status Log 2026-05-25) and site-wide polish (scroll reveals, route fade, micro-interactions). 14 prerendered routes (7 EN at `/...` + 7 ES at `/es/...`).
+**All 18 plan steps shipped (1–18 done).** Next.js 15.4.11 + TS + Tailwind v4 + Framer Motion 11 app, Docker dev/preview pipeline, fully bilingual (EN/ES), dark + light themed, with a narrative-first landing (Phase 4, 2026-09-27: the animated Logo Cluster and the Stats Bar are gone) and site-wide polish (scroll reveals, route fade, micro-interactions). 14 prerendered routes (7 EN at `/...` + 7 ES at `/es/...`).
 
 **Routing:** `app/(en)/...` (invisible route group, unprefixed — Explorer, Story, Contact, Deep-dive; `/playground` was deleted 2026-09-27) and `app/es/...` (Spanish mirror). Each tree has its own `layout.tsx` wrapping in `I18nProvider` + shared `Navbar` + `Footer`. Root `app/layout.tsx` owns `<html>`, theme + lang inline scripts, the `ThemeProvider`, and `template.tsx` (180ms global route fade, pure CSS `.route-fade` since 2026-09-27 so static HTML never ships `opacity:0`).
 
@@ -25,7 +25,7 @@ Future impeccable commands (`/impeccable shape`, `/impeccable polish`, `/impecca
 
 **Theme (`src/lib/theme/`):** `types.ts`, `storage.ts` (`ThemeStorage` interface + `LocalStorageThemeStorage` — DIP), `inline-script.ts` (FOUC-safe pre-paint resolver), `ThemeProvider.tsx` (first render uses `DEFAULT_THEME` to match the server, then syncs from `<html data-theme>` after mount). Anything that must be right on first paint (e.g. the ThemeToggle icon) styles off `[data-theme]` with the `light:` custom variant in `globals.css`, never off React theme state — that was the 2026-09-27 hydration-mismatch fix. Light palette lives under `[data-theme="light"]` in `globals.css` with all 8 tag-type colors retuned.
 
-**SOLID `src/lib/` layer:** `taxonomy` (+ `logos.ts` feeding the cluster), `experience` (+ `sort.ts`, `csv.ts`, description renderer), `filters`, `related`, `stats` (computers now expose optional `labelKey: MessageKey`), `search`, `site`, `hooks`, `analytics`.
+**SOLID `src/lib/` layer:** `taxonomy`, `experience` (+ `sort.ts`, `csv.ts`, `tag-display.ts`, `localize.ts`, description renderer), `filters`, `related`, `stats` (only the years-in-engineering computer), `search` (scope, starters, aliases, closest match), `story` (career lanes), `site`, `hooks`, `analytics`.
 
 **Shared page bodies:** `Explorer.tsx` (client), `Story.tsx` / `Contact.tsx` / `DeepDive.tsx` (server, take `locale: Locale` prop). Route files are tiny wrappers — both EN and ES routes call the same component with their locale.
 
@@ -47,13 +47,15 @@ Future impeccable commands (`/impeccable shape`, `/impeccable polish`, `/impecca
 
 **404 localization (2026-05-29):** `app/not-found.tsx` is a client component that reads `usePathname()` to pick EN vs ES (it sits at the root layout, outside `I18nProvider`). Copy lives under `notFound` in both message catalogues.
 
-**Analytics (2026-06-09):** Umami cloud script injected from `src/app/layout.tsx` via `next/script` (`afterInteractive`), gated by `data-domains="asebagutierrezm.com"` so localhost/preview don't ship beacons. Typed wrapper at `src/lib/analytics/umami.ts` — the `EventMap` is the single source of truth for every custom event (`filter_added`, `filter_removed`, `search_typed`, `experience_opened`, `deep_dive_opened`, `contact_clicked`). Tracking is wired at user-gesture sites (SearchBar/RoleShortcuts/ActiveFilterChips/ExperienceCard/Drawer), never inside `useFilterTags` — the URL-state hook stays analytics-free. `search_typed` is debounced 600ms and skips queries <2 chars. Contact CTAs use Umami's declarative `data-umami-event-*` attributes, generated from the typed `EventMap` by `umamiAttributes()`, so server components stay server components. `src/types/global.d.ts` declares `window.umami`.
+**Analytics (2026-06-09):** Umami cloud script injected from `src/app/layout.tsx` via `next/script` (`afterInteractive`), gated by `data-domains="asebagutierrezm.com"` so localhost/preview don't ship beacons. Typed wrapper at `src/lib/analytics/umami.ts` — the `EventMap` is the single source of truth for every custom event (`filter_added`, `filter_removed`, `search_typed`, `experience_opened`, `deep_dive_opened`, `contact_clicked`). Tracking is wired at user-gesture sites (SearchBar/StarterChips/ActiveFilterChips/ExperienceCard incl. its pills/FeaturedRoles/Drawer), never inside `useFilterTags` — the URL-state hook stays analytics-free. `search_typed` is debounced 600ms and skips queries <2 chars. Contact CTAs use Umami's declarative `data-umami-event-*` attributes, generated from the typed `EventMap` by `umamiAttributes()`, so server components stay server components. `src/types/global.d.ts` declares `window.umami`.
 
 **Expert-review Phase 1 (2026-09-27):** positioning target is **Data / Data Platform Engineer**. Hero shows a fixed `hero.role`, a proof line with computed years, the shared `AvailabilityBadge`, and a résumé-request link (`AnimatedRoleLine` deleted). **The résumé is never a public file** (owner's decision): Contact has a `#resume` section with a pre-filled `mailto:` request; `siteConfig.resume` and `siteConfig.title` are gone. Contact states work authorization (U.S. permanent resident, no sponsorship). **Apple content must stay NDA-conservative** (owner is a contractor through a vendor): no incidents, security-finding specifics, internal topology, absolute internal volumes, tenant/instance/user counts, team details or vendor relationships; ratios and engineering judgement only. Industries stat removed. Full roadmap for later phases: see plan Status Log 2026-09-27.
 
 **Expert-review Phase 2 (2026-09-27, branch `phase-2-conversion-seo`):** all route metadata goes through `src/lib/site/metadata.ts` (canonical, hreflang, OG/Twitter; root sets only `metadataBase`). `sitemap.ts`/`robots.ts` are force-static; JSON-LD `Person` in the root layout. Share images are PNGs from `app/og/[image]/route.tsx` (not `opengraph-image.tsx`, which exports extensionless files); their hex values live in `src/lib/site/brand-tokens.ts`, the one documented exception to the globals.css rule. Contact links everywhere use hook-free `src/components/contact/ContactLinks.tsx` and `src/lib/site/contact.ts`; track them with `umamiAttributes()` (typed `data-umami-event-*`), `contact_clicked` carries `kind` + `source`. `StickyContactPill` on `/` mobile. Contact has an `AtAGlance` block fed by `CORE_STACK`/`getEngineeringYears()` in `src/lib/site/profile.ts`. 
 
 **Expert-review Phase 3 (2026-09-27):** content rewrite. First-person, results-first, no em dashes in any entry `summary`/`impact`/`personal_impact` or UI copy (long-form `description` fields still have some). AidProf is titled "Co-founder & Lead Engineer (title: Product Owner)" and its summary explains the overlap with uPlanner (nights and weekends from July 2021). Story Act 2 is "The choice", not a pivot. Entries can carry `translations.es` (`summary`, first ≤3 `impact`, `personal_impact`), applied by `localizeEntry()` in `src/lib/experience/localize.ts` at every locale-aware entry point (Explorer, Story, DeepDive, metadata) with per-field English fallback. Spanish is filled in for Apple, uPlanner and AidProf; never machine-translate new entries without the owner's review. Next up: Phase 4 (landing and interaction redesign).
+
+**Expert-review Phase 4 (2026-09-27):** landing and interaction redesign. Landing sections: `Hero` (static `CoreStack` row from the `simple-icons` package, `currentColor`, no min-height), `FeaturedRoles` (three engineering roles, three impact lines each), the filter section (`SearchBar` + `StarterChips` + `ExperienceGrid`), then server `LandingTail` (`CareerSwimlane` teaser + Contact block). Search hides concepts/scale/soft skills except ~18 allowlisted recruiter concepts (`src/lib/search/scope.ts`). Cards: ≤6 pills via `cardTags()`, headline result above pills, pills filter on click or are inert (TagPill hover only when clickable). Deep-dive tags collapse per type with `<details>`. `CareerSwimlane` lanes map to entry ids in `src/lib/story/career-lanes.ts`. No text under 12px; 24px+ hit areas. Next up: Phase 5 (engineering showcase).
 
 **Deferred (plan §18 Phase 2):** taxonomy `display_name_es` (still English). Entry prose translations exist only for the three technical entries (Phase 3); foundation entries and all `description`s stay English.
 
@@ -170,11 +172,11 @@ Tag type colors follow the pattern `--color-tag-{type}` (e.g., `--color-tag-role
 
 ## Architecture Patterns
 
-**Filter state:** Active tag slugs are stored as URL query params (`/?tags=python,etl,data-engineer`) for shareable filtered views. Grid and stats bar react to this client-side state.
+**Filter state:** Active tag slugs are stored as URL query params (`/?tags=python,etl,data-engineer`) for shareable filtered views. The grid reacts to this client-side state; clicking a pill on a grid card adds that tag.
 
 **Drawer vs. full page:** The Explorer drawer (slide-over) opens without URL change. It shows a preview of the entry + "Dig deeper" to open the full `/experience/[id]` page in a new tab. Grid scroll position is preserved on drawer close.
 
-**Stats bar:** Computed entirely client-side from filtered `experience.json` entries on every filter change. No server required.
+**Landing order (Phase 4):** Hero → Featured roles → Filter by skill → Story teaser → Contact. The first three are the client `Explorer`; the last two are the server `LandingTail` so build-time swimlane dates never hydrate.
 
 **Related experience algorithm:** Weighted tag overlap score (concepts = 3pt, technologies/roles = 2pt, others = 1pt). Computed at build time in `getStaticProps`, not at runtime.
 
@@ -210,7 +212,7 @@ Follow this sequence to avoid rework:
 
 **Experience Card** accepts the full entry object + `filterTags: string[]` to determine which tag pills render highlighted vs. muted.
 
-**Stat Card** animates value from 0 on mount and on value change (count-up, ~800ms ease-out via Framer Motion).
+**Motion caps:** staggers never exceed 150ms (`MAX_STAGGER_DELAY` in `Reveal.tsx`); no count-ups; the drawer body renders at once.
 
 **Navbar:** 64px, transparent by default. On scroll: `backdrop-blur-md` + `bg-surface/80`. Mobile: hamburger → full-screen overlay.
 
@@ -247,7 +249,7 @@ The project lives behind two compose services:
 The `src/lib/` layer is organized so that each common change touches exactly one file.
 
 - **New filter strategy** → add a class implementing `FilterStrategy` in `src/lib/filters/`. Do not edit existing strategies. (OCP)
-- **New stat in the Stats Bar** → add a `StatComputer` in `src/lib/stats/computers/` and append it to `src/lib/stats/registry.ts`. The Stats Bar component reads the registry. (OCP, SRP)
+- **New search behavior** → a `SearchStrategy` in `src/lib/search/` (e.g. `AliasSearchStrategy` wraps the substring one); scope, starter tags and aliases are single-purpose files there. (OCP)
 - **New related-experience scoring algorithm** → add an `IRelatedScorer` implementation in `src/lib/related/`. Page imports the interface; swap impls without touching the page. (DIP)
 - **New taxonomy type** (rare):
   1. Add the slug to the `TAG_TYPES` tuple in `src/lib/taxonomy/types.ts`.

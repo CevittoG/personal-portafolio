@@ -242,7 +242,7 @@ GitHub · LinkedIn · Email · Copyright line. Nothing else.
 
 ## 6. Page 1 — The Explorer (`/`)
 
-The heart of the site. Four distinct zones stacked vertically.
+The heart of the site. **Narrative first** *(reordered 2026-09-27, Phase 4; see Status Log)*: Hero → Featured roles (results) → "Filter by skill" (search + grid) → Story teaser (career swimlane) → Contact. The first three live in the client `Explorer.tsx`; the last two are the server-rendered `LandingTail.tsx`, rendered by the page after it (the swimlane's "ongoing" bar is computed at build, so it must not hydrate on the client).
 
 ---
 
@@ -276,32 +276,12 @@ The heart of the site. Four distinct zones stacked vertically.
 - Options (decide at design time): particle/graph network, cursor-reactive gradient, geometric pattern
 - Aceternity UI provides pre-built options — choose one that fits the dark palette
 
-**Logo Cluster (between Hero CTAs and Zone 2 title)**
+**Core stack row** *(replaced the Logo Cluster 2026-09-27; see Status Log)*
 
-A signature moment that translates "the stack I work with" into something alive and ambient, while remaining tasteful. *(Motion model superseded on 2026-05-25 — see Status Log. The original "drop from above + spring bounce" entrance was replaced by a quieter, continuous floating cluster with cursor-driven repel; component file is still named `LogoDropCluster.tsx`.)*
-
-- **What it is:** the `image` field on every `taxonomy.json` entry (Simple Icons SVG URLs for languages / libraries / technologies) is collected into a single set of unique logos. They pop into existence (opacity + scale stagger) inside a dedicated band that sits **between the Hero CTA pair and Zone 2's "What are you looking for?" search title**, then float continuously and **respond to the cursor** by being repelled outward when the pointer comes near.
-- **Source of truth:** `taxonomyRepository.getAll().filter(t => t.image)` → deduped by `image` URL. New logos appear automatically when added to taxonomy (OCP — no animation code change needed).
-- **Visual target:** soft, alive, not perfect grid. Logos overlap slightly, sit at slightly varied base rotations (±6°), with subtle drop shadows. The cluster reads as a single object that breathes.
-- **Motion spec:**
-  - **Entrance:** each logo fades + scales from `{opacity: 0, scale: 0.5}` to `{opacity: 1, scale: 1}` on a 70 ms × index stagger, 550 ms duration, ease-out-quint. Total entrance ≈ 1.95 s for ~20 logos.
-  - **Continuous float:** infinite mirror loop on `y: [0, -8, 0, 8, 0]`, `x: [0, 6, 0, -6, 0]`, `rotate: [base, base+5, base, base-5, base]`. Per-logo duration 5–10 s and phase 0–4 s, both seeded by slug so server and client agree and the cluster never pulses in sync.
-  - **Cursor repel:** single window `mousemove` listener at the cluster level; each logo runs a Framer Motion `useAnimationFrame` loop that reads the shared cursor position, computes distance to its own center, and — if within 150 px — sets a repulsion target along the cursor-to-center vector with magnitude `(1 - distance/150) × 50 px`. A spring (`stiffness: 300, damping: 20`) smooths the displacement. When the cursor leaves the radius, the target snaps to 0 and the logo springs home.
-  - Tooltip on hover: tag display name (`title` attribute).
-- **Layout:**
-  - Dedicated band, full-width, ~200–260 px tall on desktop, ~140–180 px on mobile
-  - Logos absolutely positioned inside the band; cluster centered horizontally
-  - Logo size: ~40–48 px on desktop, ~28–32 px on mobile; SVG, not raster
-- **Accessibility:**
-  - Wrap in a region with `aria-label="Technologies I work with"` and a visually hidden `<ul>` of tag names for screen readers
-  - Respect `prefers-reduced-motion`: no entrance, no float, no cursor listener attached — logos render statically at their seeded positions with their base rotation
-  - Logos are decorative for sighted users; the screen-reader list carries the semantic content
-- **Performance:**
-  - SVGs loaded via `<img>` with `loading="eager"` (above-the-fold) and `decoding="async"`
-  - Simple Icons CDN is already a remote dependency; preconnect in `<head>`
-  - Animation runs on `transform` + `opacity` only — no layout thrash
-  - One shared cursor ref + one window listener, not one listener per logo
-- **Implementation home:** `src/components/hero/LogoDropCluster.tsx`, consumed by `Hero`. Physics via Framer Motion `useMotionValue` + `useSpring` + `useAnimationFrame` (no extra library). Mounted gate defers entrance to post-hydration; a deterministic seed (hash of slug → mulberry32 PRNG) keeps positions and float timing stable across renders.
+- A static, labeled row under the CTAs: "Core stack" followed by the same `CORE_STACK` the Contact page's At a glance block shows (`src/lib/site/profile.ts`), so the two can't drift.
+- Logos come from the `simple-icons` npm package (only the imported paths ship; nothing loads from a CDN) and render in `currentColor`, not brand colors. A tool without a Simple Icons logo (SQL) shows its label only, never a synthesized logo.
+- No motion. The old `LogoDropCluster` (≈68 remote logos, one `getBoundingClientRect()` per logo per frame, forever) and its `min-h-[720px]` hero floor were removed; hero height now follows its content.
+- Implementation: `src/components/hero/CoreStack.tsx` (hook-free).
 
 ---
 
@@ -321,7 +301,10 @@ A signature moment that translates "the stack I work with" into something alive 
   ```
 - Selecting a tag from dropdown → adds it as an **active filter chip** below the bar
 - Multiple tags selectable — each is independently removable
-- Empty state (no input yet) → dropdown shows top 5–6 most-used tags across all entries as suggested starting points
+- Empty state (no input yet) → dropdown shows the curated starter tags (`STARTER_TAGS` in `src/lib/search/starters.ts`: Python, Snowflake, Kubernetes, PostgreSQL, Data Engineer, Backend), not usage-ranked tags (those surfaced soft skills)
+- **Scope** (`src/lib/search/scope.ts`): concepts, scale and soft skills are hidden from search, except an allowlist of ~18 recruiter-facing concepts (ETL, ELT, data pipelines, data modeling, warehousing, CDC, orchestration, distributed systems, ML, LLMs…); hiding those would make the most relevant data-platform queries dead ends
+- **Aliases** (`src/lib/search/aliases.ts`, applied by `AliasSearchStrategy` around the substring strategy): k8s → Kubernetes, postgres/pg → PostgreSQL, py, js, ts, cicd, sklearn, ml, llm… Only slugs that exist in taxonomy
+- **No match** → "No tags match …" plus up to three **closest matches** by edit distance (`src/lib/search/closest.ts`), e.g. "snowflke" → Snowflake
 
 **Active Filter Chips**
 - Render below the search bar once tags are selected
@@ -332,35 +315,21 @@ A signature moment that translates "the stack I work with" into something alive 
 - URL updates to reflect active tags: `/?tags=python,etl,data-engineer`
   - Makes filtered views **shareable and linkable** — a recruiter can send a specific filtered view
 
-**Secondary: Role Shortcut Pills**
-- A row of pre-built role chips below the search bar (or below active chips)
-- Label: *"Common searches"* or *"Quick filters"*
-- Clicking one **adds that role tag** to the active chips — same mechanism as search, not a separate system
-- Roles shown: derived from `roles` taxonomy entries that appear in at least 2 experience entries
-- These are entry-point shortcuts, not a parallel filter system
+**Secondary: Starter chips** *(were role shortcut pills; changed 2026-09-27)*
+- The same curated `STARTER_TAGS` as one-tap pills under the search bar ("Common searches"), 32px tall for touch
+- Clicking one **adds that tag** to the active chips — same mechanism as search, not a separate system
+- Component: `src/components/search/StarterChips.tsx`
 
 ---
 
-### Zone 3 — Stats Bar
+### Zone 3 — Featured roles *(replaced the Stats Bar 2026-09-27; see Status Log)*
 
-**Purpose:** Instant quantitative credibility, tuned to the active filter state.
+**Purpose:** Outcomes before totals. The count-up Stats Bar (years, technologies, projects) was removed: a recruiter reads results, and animated counters are easy to disprove against LinkedIn dates.
 
-**Components:**
-- 4–6 animated stat cards in a horizontal row (2×3 grid on mobile)
-- Each card: large number + contextual label
-- Numbers animate on filter change (count-up via Framer Motion)
-- Stats are **computed from filtered entries only** — they respond to the active tags
-
-**Example stats when `Data Engineer + Python` is active:**
-- `4 yrs` — *Relevant experience*
-- `12` — *Technologies used*
-- `15M+` — *Rows processed daily* (from scale tags / impact fields)
-- `6` — *Projects & roles*
-
-**Data computation:**
-- Filter `experience.json` by entries containing all active tag slugs
-- Aggregate: count unique technologies, years in engineering (only `story_act: "technical"` entries, overlapping periods merged so concurrent roles count once), count entries. The Industries stat was removed 2026-09-27 (it counted domain tags, not industries).
-- Computed at runtime (client-side) on filter change — no server needed
+- The three engineering roles (`story_act: "technical"`), most recent first, as cards with an **impact strip**: the entry's first three `impact[]` lines, the first one (the headline result) at full contrast
+- "Details" opens the Explorer drawer; "Full write-up ↗" opens the deep dive in a new tab
+- The years-in-engineering computer survives (hero proof line, metadata, At a glance) via `getEngineeringYears()`
+- Component: `src/components/explorer/FeaturedRoles.tsx`
 
 ---
 
@@ -381,14 +350,18 @@ A signature moment that translates "the stack I work with" into something alive 
 - Company name + role title (prominent)
 - Date range + employment type badge (`Full-time`, `Contract`, `Freelance`)
 - Summary text (1–2 lines, truncated with ellipsis if longer)
-- **Tag pills** — tags relevant to current filter are highlighted; non-matching tags shown muted. Visual cue: *"here's why this matched."*
-- **Impact highlight** — single most impressive metric from `impact[]`, shown as a pull-quote style stat. Example: *"15M+ rows/day"*
+- **Impact highlight** — the headline result, `impact[0]`, as a pull-quote callout, placed **above** the pills (changed 2026-09-27)
+- **Tag pills** — at most **6** (`cardTags()` in `src/lib/experience/tag-display.ts`): active-filter matches first (any type), then languages and technologies; a quiet "+N" for the rest. Matching tags highlighted, the rest muted: *"here's why this matched."* Pills either **filter on click** (Explorer grid: adds the tag, tracked as `filter_added` source `card`) or render **inert** with no hover (Related section)
 - `View details →` — opens the Drawer (see Section 11)
 
 **Empty state:**
 - Never a blank grid
 - Friendly message + suggestion to broaden search
 - Show the 3 most featured entries as fallback
+
+**Zone 5 — Story teaser** *(added 2026-09-27)*: "From classrooms to data platforms", the career swimlane (§7) without links, and "Read my story →".
+
+**Zone 6 — Contact** *(added 2026-09-27)*: "Hiring for a data role?", the résumé-on-request line, Email me / Request résumé, and "All contact details →". The mobile sticky contact pill hides while this block is on screen.
 
 **Export button:**
 - `↓ Download filtered profile` — positioned above grid, understated
@@ -405,6 +378,10 @@ A signature moment that translates "the stack I work with" into something alive 
 **Structure: Three acts, not a flat timeline.**
 
 ---
+
+### Career swimlane *(added 2026-09-27)*
+
+At the top of `/story` (and as the landing Story teaser): four lanes (Teaching, Founding, Data engineering, Data platform) on a shared 2016 → now axis. Each row reads as text first (lane · years · organization) with a thin bar under it, so it stays legible at phone width. Bars are neutral; the accent marks only the ongoing role. Lanes map to entry ids in `src/lib/story/career-lanes.ts`, so dates always come from `experience.json`. Server component (`CareerSwimlane.tsx`): positions are computed at build. On `/story` each row links to its deep dive.
 
 ### Act 1 — Before Tech (The Foundation)
 
@@ -601,13 +578,9 @@ Used in: Explorer grid, Related section.
 
 ---
 
-### Stat Card
+### Stat Card *(removed 2026-09-27)*
 
-Used in: Stats Bar (Zone 3).
-
-**Props:** `value` (string | number), `label` (string)
-
-**Behavior:** On mount or value change, animates from 0 to value (count-up) via Framer Motion. Duration ~800ms, ease-out.
+Removed with the Stats Bar (Phase 4). `src/lib/stats/` keeps only the `StatComputer` type and the years-in-engineering computer.
 
 ---
 
@@ -719,9 +692,6 @@ For each other entry in `experience.json` (excluding the current entry):
 - 90% viewport height
 - Swipe down gesture to dismiss (via Framer Motion drag constraints)
 
-**Stats Bar on mobile:**
-- 2×3 grid instead of horizontal row
-
 **Hero on mobile:**
 - CTA buttons stack vertically
 - Fixed role line and proof line stay, at a reduced font size
@@ -768,7 +738,7 @@ The `src/lib/` directory isolates each domain concern so common changes touch on
 - `experience/` — Discriminated `ExperienceEntry` union (job/project/education/personal), `IExperienceRepository` + JSON impl.
 - `filters/` — `FilterStrategy` interface; `AllTagsMatchStrategy` is the default. New rules drop in as sibling files (OCP).
 - `related/` — `IRelatedScorer` + `WeightedTagOverlapScorer` implementing the §12 weights.
-- `stats/` — `StatComputer<T>` interface, one stat per file in `computers/`, registered in `registry.ts` (consumed by the Stats Bar).
+- `stats/` — `StatComputer<T>` interface and the years-in-engineering computer (the Stats Bar, its registry and the other computers were removed 2026-09-27).
 
 Components import the **interfaces**, never the JSON impls. A composition root will be introduced when the first component needs it.
 
@@ -882,6 +852,8 @@ The site is bilingual. **English is the default.** Spanish is a first-class alte
 ---
 
 ## Status Log
+
+- **2026-09-27** — **Expert-review Phase 4: landing and interaction redesign.** (1) **Narrative-first `/`**: Hero → Featured roles (three engineering roles with a three-line impact strip; replaces the count-up Stats Bar) → "Filter by skill" (search, starter chips, grid) → Story teaser (career swimlane) → Contact block. The last two are server-rendered (`LandingTail.tsx`) so the build-time swimlane never hydrates. (2) **Search**: curated `STARTER_TAGS` replace usage-ranked suggestions (and the role shortcut row, now `StarterChips`); concepts/scale/soft skills hidden from search **except an allowlist of ~18 recruiter-facing concepts** (deviation from the roadmap, which hid all concepts: ETL and data pipelines are the core queries for this role); alias map (k8s, postgres, py…) via `AliasSearchStrategy`; "closest match" suggestions by edit distance on no match. (3) **Cards**: at most 6 pills (filter matches, then languages and technologies, plus "+N"); headline result above the pills; pills filter on click in the grid and render inert elsewhere; deep-dive tag list collapses by type with `<details>` (languages and technologies open). (4) **Hero**: `LogoDropCluster` and the CDN preconnect removed; static labeled "Core stack" row from the `simple-icons` package in `currentColor`; hero `min-h` floors removed. (5) **Motion**: Stats Bar and count-up removed; staggers capped at 150ms (`MAX_STAGGER_DELAY`); drawer body stagger removed. (6) **Accessibility**: no text under 12px; 24px hit area on the TagPill ×; 32px starter chips; inert pills lose their hover. (7) **Career swimlane** at the top of `/story` and as the landing teaser. (8) Mobile sticky contact pill hides while the landing Contact block is visible. Deleted: `StatsBar`, `StatCard`, stats registry and two computers, `RoleShortcuts`, `LogoDropCluster`, `taxonomy/logos.ts`, `taxonomy/top-tags.ts`. Verified: type-check ✅, lint ✅, build ✅, production preview at 390px and 1440px (search aliases/closest/scope, card pill filtering, swimlane EN/ES, pill hiding, deep-dive groups).
 
 - **2026-09-27** — **Expert-review Phase 3: content rewrite.** (1) **uPlanner**: summary rewritten in first person without company marketing (FT ranking and ISO removed from summary and description); `impact[0]` now leads with "Saved a university client 250+ staff hours per semester"; reflective line no longer says "working past my title". (2) **AidProf**: title "Co-founder & Lead Engineer (title: Product Owner)"; summary explains the overlap (uPlanner full-time from July 2021, AidProf on nights and weekends until it closed in February 2022); results-first `impact[0]` (the 10-stage grading pipeline); reflective line drops "compressed years of growth". (3) **Silabuz** set `relevant: false` (about 10 freelance events); School of Tech stays in Discover by the owner's decision. (4) **Story**: Act 2 reframed from "The pivot" to "The choice" (no single conversion moment, CS since 2016); "travel" dropped from the Act 1 intro; each Act 3 card shows a "Result:" line from `impact[0]`; the swimmer's self-critique paragraph cut from its description. (5) **Spanish entry prose**: optional `translations.es` block (`summary`, first ≤3 `impact` lines, `personal_impact`) with per-field English fallback via `localizeEntry()`, applied in Explorer, Story, DeepDive (+ related) and deep-dive metadata. Spanish drafted for Apple, uPlanner and AidProf (faithful to the approved English, Apple kept NDA-conservative), pending the owner's review. (6) Em dashes removed from all UI copy (`en.ts`/`es.ts`) and from every entry `summary`/`impact`/`personal_impact` (punctuation only); long-form `description` fields still contain some. (7) `portfolio-json-builder` skill documents `translations`, the voice rules and the stricter relevance guidance. Also added a `preview` config to `.claude/launch.json` (nginx on :8080). Verified: type-check ✅, lint ✅, build ✅, production preview checked.
 

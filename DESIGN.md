@@ -240,7 +240,7 @@ That is the only shadow in the system. Everything else uses borders + tonal laye
 The site's most-used primitive. Four states, one prop interface (LSP).
 - **Style:** fully pill-rounded, 1px border in the type's color, label in `0.75rem` weight 500. The type's color carries via `currentColor` so the border, text, and `color-mix` fill stay in sync.
 - **Active:** `border-current` + `color-mix(in srgb, [type-color] 14%, transparent)` background fill. Aria-pressed.
-- **Inactive:** `border-current/50`, no fill, hover bumps border to full opacity.
+- **Inactive:** `border-current/50`, no fill. Hover bumps the border to full opacity **only when the pill is clickable**; an inert pill (Related section, deep-dive sidebar, Story) has no hover, so it never pretends to be a button.
 - **Muted:** `border-border`, `text-text-muted`, transparent. Shown when a filter is active and this tag doesn't match — "here's why this entry isn't a primary hit."
 - **Removable:** active state + a tappable × button that uses `aria-label="Remove {label}"` (localized per locale).
 
@@ -251,8 +251,9 @@ The Explorer's primary container, also used in the Related section on deep-dive 
 - **Border:** 1px `border-border` at rest, shifts to `border-accent/40` on hover.
 - **Hover:** `-translate-y-0.5` plus the Card Hover Glow shadow (the one shadow in the system). 200ms ease-out.
 - **Focus:** 2px Lamp Ember ring on focus-within with 2px offset.
-- **Padding:** 20px internal (`p-5`), 16px gap (`gap-4`) between header, meta, summary, tag cluster, and impact callout.
-- **Impact callout:** quiet warm bar at the bottom — `color-mix(in srgb, accent 8%, transparent)` background, leading 6px accent dot, italic body text. Replaces the banned side-stripe border pattern.
+- **Padding:** 20px internal (`p-5`), 16px gap (`gap-4`) between header, meta, summary, impact callout, and tag cluster.
+- **Tag cluster:** at most six pills (filter matches, then languages and technologies) plus a quiet "+N". In the Explorer grid a pill adds its tag to the filter; elsewhere pills are inert.
+- **Impact callout:** quiet warm bar above the tag cluster (the headline result reads second, after the role) — `color-mix(in srgb, accent 8%, transparent)` background, leading 6px accent dot, italic body text. Replaces the banned side-stripe border pattern.
 
 ### Search Bar (combobox)
 - **Style:** `surface` background, `border-border` outline, `rounded-lg` (12px), padded `10px 14px`. WAI-ARIA combobox pattern (`role="combobox"`, `aria-activedescendant`).
@@ -268,12 +269,15 @@ The Explorer's primary container, also used in the Related section on deep-dive 
 - **Active route:** Lamp Ember text + `aria-current="page"`.
 - **Mobile:** hamburger → full-screen overlay (`bg-bg/95` + `backdrop-blur-sm`) with large nav links and a per-link bottom border.
 
-### Logo Drop Cluster (signature component)
-- **Pattern:** below-hero band carrying deduped taxonomy logos (Python, AWS, FastAPI, etc.) sourced from the Simple Icons CDN.
-- **Motion:** each logo drops from above the band on a Framer Motion spring (stiffness 80, damping 12, mass 0.8); a softer secondary spring drives `rotate`. Positions are deterministic via `mulberry32` seeded by `hash32(slug)` so SSR and client agree.
-- **Accessibility:** labeled region, visually hidden `<ul>` of tag names, static fade-in fallback when `prefers-reduced-motion`.
-- **Hover:** gentle lift + scale.
-- **Rule:** if a logo is missing from Simple Icons, omit it — do not synthesize a faux logo.
+### Core Stack row
+- **Pattern:** a static, labeled row under the hero CTAs: "Core stack" and the tools from `CORE_STACK`, each with its Simple Icons logo (bundled from the `simple-icons` package) in `currentColor`, text Secondary. Replaced the animated Logo Drop Cluster on 2026-09-27: the stack is information, not an ambient effect.
+- **Motion:** none.
+- **Rule:** if a tool has no Simple Icons logo (SQL), show the label only. Do not synthesize a faux logo, and never tint with brand colors (no hex outside the tokens).
+
+### Career Swimlane
+- **Pattern:** four lanes (Teaching, Founding, Data engineering, Data platform) on a shared 2016 → now axis, at the top of `/story` and in the landing Story teaser. Each row is text first (lane · years · organization) with a 8px bar on a `surface-elevated` track below.
+- **Color:** bars are `text-muted`; Lamp Ember marks only the ongoing role (the one "you are here" moment).
+- **Motion:** none. Positions are computed at build time.
 
 ### Tracing Story Rail (signature component)
 - **Pattern:** vertical rail on `/story`, anchored to the centre on `lg+` with entries alternating left/right, single-column left-rail below.
