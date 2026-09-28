@@ -7,6 +7,13 @@
       "runtimeArgs": ["compose", "up", "dev"],
       "port": 3000,
       "autoPort": false
+    },
+    {
+      "name": "preview",
+      "runtimeExecutable": "docker",
+      "runtimeArgs": ["compose", "--profile", "preview", "up", "--build", "preview"],
+      "port": 8080,
+      "autoPort": false
     }
   ]
 }
