@@ -62,6 +62,16 @@ export const es: Messages = {
     subtitle:
       "Busca por habilidad, herramienta o rol. Las tarjetas y estadísticas se ajustan a lo que selecciones.",
   },
+  career: {
+    title: "Mi carrera de un vistazo",
+    present: "Presente",
+    lanes: {
+      teaching: "Enseñanza",
+      founding: "Emprendimiento",
+      data: "Ingeniería de datos",
+      platform: "Plataforma de datos",
+    },
+  },
   search: {
     placeholder: "Busca por habilidad, herramienta o rol…",
     inputLabel: "Buscar experiencias por etiqueta",

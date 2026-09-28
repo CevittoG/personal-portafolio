@@ -64,6 +64,16 @@ export const en = {
     subtitle:
       "Search by skill, tool, or role. The cards and stats reshape to match what you pick.",
   },
+  career: {
+    title: "Career at a glance",
+    present: "Present",
+    lanes: {
+      teaching: "Teaching",
+      founding: "Founding",
+      data: "Data engineering",
+      platform: "Data platform",
+    },
+  },
   search: {
     placeholder: "Search by skill, tool, or role…",
     inputLabel: "Search experiences by tag",

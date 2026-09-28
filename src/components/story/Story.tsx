@@ -1,3 +1,4 @@
+import { CareerSwimlane } from "@/components/story/CareerSwimlane";
 import { NowMarker } from "@/components/story/NowMarker";
 import { PivotInterlude } from "@/components/story/PivotInterlude";
 import { StoryTimeline } from "@/components/story/StoryTimeline";
@@ -54,6 +55,16 @@ export function Story({ locale }: StoryProps) {
             {t("story.intro")}
           </p>
         </header>
+
+        <section aria-labelledby="career-glance-title" className="mx-auto max-w-3xl space-y-6">
+          <h2
+            id="career-glance-title"
+            className="text-center text-xs uppercase tracking-[0.2em] text-text-secondary"
+          >
+            {t("career.title")}
+          </h2>
+          <CareerSwimlane entries={all} locale={locale} linkToDeepDive />
+        </section>
 
         <Act
           eyebrow={t("story.actOne.eyebrow")}
