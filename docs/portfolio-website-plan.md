@@ -432,9 +432,9 @@ Covers hospitality, teaching, and travel years. The framing is deliberate: these
 
 ---
 
-### Act 2 — The Pivot
+### Act 2 — The Choice *(reframed 2026-09-27; see Status Log)*
 
-The deliberate transition into tech. A story moment — most engineers started in CS at 18. The contrast is the point.
+Not a pivot: the owner studied computer science from 2016, and teaching and engineering ran side by side for years. There was no single moment of conversion. Act 2 is the decision about which one to build a career on, and why engineering won (the analytical work at School of Tech), with teaching carried along rather than left behind.
 
 **Components:**
 
@@ -460,6 +460,7 @@ Professional tech experience as a narrative arc.
 - Same visual language as Act 1
 - Entries sourced from `experience.json` where `story_act = "technical"` (engineering roles)
 - Each entry links to its full page via `Dig deeper →` (opens `/experience/[id]` in new tab — same behavior as drawer button)
+- Each card adds one **result line** ("Result: …") under the reflective line, taken from the entry's headline `impact[0]` (`resultLabel` prop on `StoryTimeline`, Act 3 only)
 
 **Skills growth visualization**
 - Optional but high-impact
@@ -840,7 +841,7 @@ The site is bilingual. **English is the default.** Spanish is a first-class alte
 | Stat labels (e.g. "Relevant experience") | ✅ | Numbers + units stay numeric |
 | Search placeholder, "Common searches", empty states | ✅ | |
 | Tag `display_name` in `taxonomy.json` | 🟡 | Add an optional `display_name_es` (or `display_name: { en, es }` migration) — only translate where it matters. Tech names ("Python", "Snowflake") stay as-is in both languages. Concepts/roles/soft-skills get Spanish display names. |
-| Experience entries (`title`, `summary`, `description`, `impact`) | 🟡 | **Phase 1:** content stays in the language it was authored. **Phase 2 (future):** add parallel `_es` fields or a `translations: { es: { title, summary, ... } }` block. Plan v1 ships with EN content + ES UI chrome. |
+| Experience entries (`title`, `summary`, `description`, `impact`) | 🟡 | Optional `translations: { es: { summary, impact (first ≤3 lines), personal_impact } }` block per entry (2026-09-27), applied by `localizeEntry()` in `src/lib/experience/localize.ts` with English fallback per field. Live for the three technical entries (Apple, uPlanner, AidProf); Spanish drafted by Claude from the approved English, reviewed by the owner. `title` and `description` stay English. |
 | Company names, role titles, dates | ❌ | Proper nouns / format-driven |
 
 **Library choice:** `next-intl` — first-class App Router + static export support, lightweight, message catalogues as JSON, ICU MessageFormat for pluralization.
@@ -881,6 +882,8 @@ The site is bilingual. **English is the default.** Spanish is a first-class alte
 ---
 
 ## Status Log
+
+- **2026-09-27** — **Expert-review Phase 3: content rewrite.** (1) **uPlanner**: summary rewritten in first person without company marketing (FT ranking and ISO removed from summary and description); `impact[0]` now leads with "Saved a university client 250+ staff hours per semester"; reflective line no longer says "working past my title". (2) **AidProf**: title "Co-founder & Lead Engineer (title: Product Owner)"; summary explains the overlap (uPlanner full-time from July 2021, AidProf on nights and weekends until it closed in February 2022); results-first `impact[0]` (the 10-stage grading pipeline); reflective line drops "compressed years of growth". (3) **Silabuz** set `relevant: false` (about 10 freelance events); School of Tech stays in Discover by the owner's decision. (4) **Story**: Act 2 reframed from "The pivot" to "The choice" (no single conversion moment, CS since 2016); "travel" dropped from the Act 1 intro; each Act 3 card shows a "Result:" line from `impact[0]`; the swimmer's self-critique paragraph cut from its description. (5) **Spanish entry prose**: optional `translations.es` block (`summary`, first ≤3 `impact` lines, `personal_impact`) with per-field English fallback via `localizeEntry()`, applied in Explorer, Story, DeepDive (+ related) and deep-dive metadata. Spanish drafted for Apple, uPlanner and AidProf (faithful to the approved English, Apple kept NDA-conservative), pending the owner's review. (6) Em dashes removed from all UI copy (`en.ts`/`es.ts`) and from every entry `summary`/`impact`/`personal_impact` (punctuation only); long-form `description` fields still contain some. (7) `portfolio-json-builder` skill documents `translations`, the voice rules and the stricter relevance guidance. Also added a `preview` config to `.claude/launch.json` (nginx on :8080). Verified: type-check ✅, lint ✅, build ✅, production preview checked.
 
 - **2026-09-27** — **Drawer fixes.** (1) The description teaser rendered raw `**What I own.**` on the Apple entry; it now goes through `renderInline` from `src/lib/experience/description.tsx`, the same renderer as the deep dive. The Experience Card was checked: it renders `summary` and `impact[0]`, neither of which carries markdown in the data, so it is unchanged. (2) On desktop the "right slide-over" docked to the **left**: the mobile `inset-x-0` set `left: 0`, which `sm:right-0` did not cancel, and with a fixed width the left edge wins. Added `sm:left-auto`. Verified at 1440px (panel flush right, 960–1440) and 390px (bottom sheet unchanged, bold teaser); type-check ✅, lint ✅, build ✅.
 

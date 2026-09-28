@@ -191,6 +191,9 @@ Top-level structure is an array of entry objects.
 | `relevant` | boolean | yes | Professional/technical experience. `true` → shown in the "Discover" tool and counted in the years-of-experience stat. `false` → kept in data (Story, deep-dive) but hidden from Discover. Default `false`; set `true` for engineering/data/tech jobs, technical projects, and tech teaching/mentoring. |
 | `story_act` | string | no | Which Story-page act this entry belongs to: `"foundation"` (non-technical Act 1 — sports, hospitality, teaching, mentoring) or `"technical"` (Act 3 — engineering roles). **Omit** to keep an entry off the Story timeline (e.g. formal education). Independent of `relevant`: an entry can be `relevant: true` (in Discover) yet `story_act: "foundation"`. |
 | `personal_impact` | string | no | 1–2 sentence reflective statement: the pillar/core of this chapter and how it shaped the person. Shown on the Story timeline *in place of* `summary`. Distinct from `impact` (quantifiable outcomes) and `summary` (factual capsule). |
+| `translations` | object | no | Hand-written translations of the reader-facing prose, keyed by locale: `{ "es": { "summary": "…", "impact": ["…", "…", "…"], "personal_impact": "…" } }`. Every field is optional; `impact` replaces only the first N lines (max 3) and the rest stay English. Missing fields fall back to English (`localizeEntry()` in `src/lib/experience/localize.ts`). Written or reviewed by the site owner; never ship an unreviewed machine translation. Currently filled in for the `story_act: "technical"` entries. |
+
+**Voice for reader-facing fields** (`summary`, `impact`, `personal_impact`): first person, plain-spoken, no em dashes (use colons, commas, periods). `impact[0]` is the headline result: it drives the Explorer card pull-quote and the Act 3 "Result:" line on the Story page, so lead with the strongest outcome. Keep company marketing (awards, certifications, rankings) out of `summary`.
 
 ### Tags object shape
 
@@ -264,7 +267,7 @@ Media types: `"repo"`, `"url"`, `"demo"`, `"article"`, `"certificate"`.
   "featured": true,
   "relevant": true,
   "story_act": "technical",
-  "personal_impact": "This role turned a capable builder into a data engineer who owns systems end to end — and taught me to spot and fix inefficiencies before anyone asks."
+  "personal_impact": "This role turned a capable builder into a data engineer who owns systems end to end, and taught me to fix inefficiencies at their source."
 }
 ```
 
@@ -372,7 +375,7 @@ Media types: `"repo"`, `"url"`, `"demo"`, `"article"`, `"certificate"`.
   "media": [],
   "featured": true,
   "story_act": "foundation",
-  "personal_impact": "Teaching across three cultures taught me that communication is reading your audience and adapting — not just speaking clearly."
+  "personal_impact": "Teaching across three cultures taught me that communication is reading your audience and adapting, not just speaking clearly."
 }
 ```
 
