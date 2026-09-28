@@ -5,6 +5,7 @@ import { getTranslator } from "@/i18n/server";
 import type { MessageKey } from "@/i18n/translator";
 import { experienceTitle } from "@/lib/experience/format";
 import { experienceRepository } from "@/lib/experience/json-repository";
+import { localizeEntry } from "@/lib/experience/localize";
 import { siteConfig } from "./config";
 import { experienceImage, staticPageImage } from "./og-image";
 import { getEngineeringYears } from "./profile";
@@ -112,7 +113,7 @@ export function experienceMetadata(id: string, locale: Locale): Metadata {
       title: experienceTitle(entry),
       name: siteConfig.name,
     }),
-    description: entry.summary,
+    description: localizeEntry(entry, locale).summary,
     image: experienceImage(id, locale),
   });
 }

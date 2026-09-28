@@ -2,6 +2,7 @@ import { NowMarker } from "@/components/story/NowMarker";
 import { PivotInterlude } from "@/components/story/PivotInterlude";
 import { StoryTimeline } from "@/components/story/StoryTimeline";
 import { experienceRepository } from "@/lib/experience/json-repository";
+import { localizeEntry } from "@/lib/experience/localize";
 import { sortEntries } from "@/lib/experience/sort";
 import type { ExperienceEntry } from "@/lib/experience/types";
 import { getMessages, getTranslator } from "@/i18n/server";
@@ -29,7 +30,9 @@ export function Story({ locale }: StoryProps) {
   const t = getTranslator(locale);
   const messages = getMessages(locale);
 
-  const all = experienceRepository.getAll();
+  const all = experienceRepository
+    .getAll()
+    .map((entry) => localizeEntry(entry, locale));
   const act1Entries = chronological(
     all.filter((e) => e.story_act === "foundation"),
   );

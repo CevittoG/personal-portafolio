@@ -10,6 +10,7 @@ import { StatsBar } from "@/components/stats/StatsBar";
 import { ExperienceDrawer } from "@/components/explorer/ExperienceDrawer";
 import { ExperienceGrid } from "@/components/explorer/ExperienceGrid";
 import { experienceRepository } from "@/lib/experience/json-repository";
+import { localizeEntry } from "@/lib/experience/localize";
 import type { ExperienceEntry } from "@/lib/experience/types";
 import { useFilterTags } from "@/lib/filters/use-filter-tags";
 import { siteConfig } from "@/lib/site/config";
@@ -17,7 +18,7 @@ import { yearsOfExperienceComputer } from "@/lib/stats/computers/years-of-experi
 import { taxonomyRepository } from "@/lib/taxonomy/json-repository";
 import { logoSourcesFromTaxonomy } from "@/lib/taxonomy/logos";
 import { topTagsByUsage } from "@/lib/taxonomy/top-tags";
-import { useTranslations } from "@/i18n/I18nProvider";
+import { useLocale, useTranslations } from "@/i18n/I18nProvider";
 
 /**
  * Explorer — shared across the EN (`/`) and ES (`/es`) routes.
@@ -35,7 +36,16 @@ export function Explorer() {
   // Discover operates only on entries flagged as relevant (professional/
   // technical experience). Non-relevant entries stay available for the Story
   // timeline and direct deep-dive links, but never surface here or in stats.
-  const entries = useMemo(() => experienceRepository.getRelevant(), []);
+  // Prose (summary, top impact lines, reflective line) in the active
+  // locale when a translation exists; tags and filters are unaffected.
+  const locale = useLocale();
+  const entries = useMemo(
+    () =>
+      experienceRepository
+        .getRelevant()
+        .map((entry) => localizeEntry(entry, locale)),
+    [locale],
+  );
   const taxonomy = useMemo(() => taxonomyRepository.getAll(), []);
   const featured = useMemo(() => entries.filter((e) => e.featured), [entries]);
 

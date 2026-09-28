@@ -1,3 +1,4 @@
+import type { Locale } from "@/i18n/locale";
 import type { TagType } from "@/lib/taxonomy/types";
 
 export type TagMap = Record<TagType, string[]>;
@@ -43,6 +44,20 @@ interface BaseEntry {
    * shaped the person. Shown on the Story timeline in place of `summary`.
    * Distinct from `impact` (quantifiable outcomes) and `summary` (factual capsule).
    */
+  personal_impact?: string;
+  /**
+   * Optional hand-written translations of the reader-facing prose, keyed by
+   * non-default locale. Only `summary`, the first `impact` lines (up to 3)
+   * and `personal_impact` are localized; everything else stays in English.
+   * Missing fields fall back to English (see `localizeEntry`).
+   */
+  translations?: Partial<Record<Locale, EntryTranslation>>;
+}
+
+export interface EntryTranslation {
+  summary?: string;
+  /** Replaces `impact[0..n)`; lines past it stay in English. Max 3. */
+  impact?: string[];
   personal_impact?: string;
 }
 
