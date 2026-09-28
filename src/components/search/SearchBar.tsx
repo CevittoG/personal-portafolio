@@ -10,6 +10,7 @@ import {
 } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { track } from "@/lib/analytics/umami";
+import { closestMatches } from "@/lib/search/closest";
 import { defaultSearchStrategy } from "@/lib/search/substring";
 import type { SearchStrategy } from "@/lib/search/types";
 import { TAG_TYPES, type TagType, type TaxonomyEntry } from "@/lib/taxonomy/types";
@@ -31,7 +32,7 @@ import { cn } from "@/lib/utils";
 export interface SearchBarProps {
   /** Universe of selectable taxonomy entries. */
   suggestions: readonly TaxonomyEntry[];
-  /** Slugs surfaced when the query is empty (typically top-by-usage). */
+  /** Slugs surfaced when the query is empty (the curated starter tags). */
   topSuggestions?: readonly string[];
   /** Already-active slugs — excluded from the dropdown. */
   excludeSlugs?: readonly string[];
@@ -159,6 +160,16 @@ export function SearchBar({
     }
   }
 
+  /** Near misses ("snowflke" → Snowflake) when nothing matches exactly. */
+  const closest = useMemo(() => {
+    const q = query.trim();
+    if (!q || options.length > 0) return [];
+    return closestMatches(
+      q,
+      suggestions.filter((e) => !excludeSet.has(e.slug)),
+    );
+  }, [query, options.length, suggestions, excludeSet]);
+
   const showDropdown = open && options.length > 0;
   const activeId =
     activeIndex >= 0 && activeIndex < options.length
@@ -228,14 +239,14 @@ export function SearchBar({
           )}
         >
           {query.trim().length === 0 && (
-            <p className="px-3 py-1.5 text-[10px] uppercase tracking-wider text-text-muted">
+            <p className="px-3 py-1.5 text-xs uppercase tracking-wider text-text-muted">
               {t("search.commonStartingPoints")}
             </p>
           )}
           {grouped.map(({ type, items }) => (
             <div key={type} className="px-1 py-1">
               <p
-                className="px-2 py-1 text-[10px] font-medium uppercase tracking-wider"
+                className="px-2 py-1 text-xs font-medium uppercase tracking-wider"
                 style={{ color: tagColorVar(type) }}
               >
                 {type.replace("_", " ")}
@@ -293,9 +304,38 @@ export function SearchBar({
               "bg-surface-elevated px-4 py-3 text-sm text-text-secondary shadow-xl",
             )}
           >
-            {query.trim().length === 0
-              ? t("search.empty")
-              : t("search.noMatch", { query: query.trim() })}
+            {query.trim().length === 0 ? (
+              t("search.empty")
+            ) : (
+              <>
+                <p>{t("search.noMatch", { query: query.trim() })}</p>
+                {closest.length > 0 && (
+                  <div className="mt-2 flex flex-wrap items-center gap-1.5">
+                    <span className="text-xs text-text-muted">
+                      {t("search.closest")}
+                    </span>
+                    {closest.map((entry) => (
+                      <button
+                        key={entry.slug}
+                        type="button"
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          commit(entry);
+                        }}
+                        className={cn(
+                          "min-h-8 cursor-pointer rounded-full border border-current/40 px-3 text-xs",
+                          "hover:border-current transition-colors duration-150",
+                          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+                        )}
+                        style={{ color: tagColorVar(entry.type) }}
+                      >
+                        {entry.display_name}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

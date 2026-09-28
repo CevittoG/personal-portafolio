@@ -70,6 +70,7 @@ export const en = {
     suggestionsLabel: "Tag suggestions",
     empty: "Start typing to see tag suggestions…",
     noMatch: 'No tags match "{query}".',
+    closest: "Closest match:",
     commonStartingPoints: "Common starting points",
     commonSearches: "Common searches",
     rolesToStartWith: "Start with a role",

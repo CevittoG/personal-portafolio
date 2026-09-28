@@ -1,4 +1,5 @@
 import type { TaxonomyEntry } from "@/lib/taxonomy/types";
+import { AliasSearchStrategy } from "./alias";
 import type { SearchStrategy } from "./types";
 
 type Tier = 0 | 1 | 2 | 3;
@@ -42,4 +43,7 @@ export class SubstringSearchStrategy implements SearchStrategy {
   }
 }
 
-export const defaultSearchStrategy: SearchStrategy = new SubstringSearchStrategy();
+/** Substring matching with recruiter shorthands (k8s, postgres…) on top. */
+export const defaultSearchStrategy: SearchStrategy = new AliasSearchStrategy(
+  new SubstringSearchStrategy(),
+);

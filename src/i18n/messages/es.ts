@@ -68,6 +68,7 @@ export const es: Messages = {
     suggestionsLabel: "Sugerencias de etiquetas",
     empty: "Empieza a escribir para ver sugerencias…",
     noMatch: 'Ninguna etiqueta coincide con "{query}".',
+    closest: "Lo más parecido:",
     commonStartingPoints: "Puntos de partida frecuentes",
     commonSearches: "Búsquedas frecuentes",
     rolesToStartWith: "Empieza por un rol",
