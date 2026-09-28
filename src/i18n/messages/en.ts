@@ -135,7 +135,7 @@ export const en = {
   story: {
     metaTitle: "My Story | {name}",
     metaDescription:
-      "My path in three acts: before tech, the pivot, and the engineering career.",
+      "My path in three acts: before tech, the choice, and the engineering career.",
     eyebrow: "My Story",
     title: "The path that got me here",
     intro:
@@ -144,32 +144,33 @@ export const en = {
       eyebrow: "Act 1",
       title: "Before the terminal",
       intro:
-        "Years of hospitality, teaching, and travel — the foundation, not the prelude.",
+        "Swimming, university, hospitality and teaching: the foundation, not the prelude.",
       emptyTitle: "Personal milestones are being written up.",
       emptyHint:
         "Pre-tech experience entries will land here as they're documented.",
     },
     actTwo: {
       eyebrow: "Act 2",
-      title: "The pivot",
+      title: "The choice",
       paragraphs: [
-        "At some point the question stopped being **'what's next'** and started being **'what do I want to build for the next decade'**.",
-        "The answer was systems. Not because I loved code in the abstract — because I'd spent years explaining complex things to people who didn't have time to care, and software was the most leveraged version of that work I could find.",
+        "There was no single moment of conversion. I'd studied computer science since 2016, and for years **teaching and engineering ran side by side**: classrooms during the day, code for my degree at night.",
+        "The real decision was which one to build a career on. Teaching proved I could explain complex things to anyone. The analytical work I took on at School of Tech showed me I wanted to **build the systems**, not only explain them. So I chose engineering, and brought the teaching with me.",
       ],
     },
     actThree: {
       eyebrow: "Act 3",
       title: "Building systems",
       intro:
-        "Professional engineering work — data infrastructure, internal tools, and the products around them.",
+        "Professional engineering work: data infrastructure, internal tools, and the products around them.",
       emptyTitle: "Technical roles will appear here.",
       emptyHint:
         "Each role links to its full deep-dive page when you're ready to see the detail.",
+      resultLabel: "Result:",
     },
     now: {
       eyebrow: "Now",
       title: "What's next",
-      body: "I'm looking for the next role where I can keep doing this — building data and backend systems that hold up, and translating between the people who build them and the people who depend on them. If that matches what you're hiring for, the contact page has the fastest route in.",
+      body: "I'm looking for the next role where I can keep doing this: building data and backend systems that hold up, and translating between the people who build them and the people who depend on them. If that matches what you're hiring for, the contact page has the fastest route in.",
       cta: "Get in touch",
     },
   },

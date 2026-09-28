@@ -92,6 +92,7 @@ export function Story({ locale }: StoryProps) {
               highlightTagType="concepts"
               linkToDeepDive
               locale={locale}
+              resultLabel={t("story.actThree.resultLabel")}
             />
           ) : (
             <ActPlaceholder

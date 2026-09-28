@@ -133,7 +133,7 @@ export const es: Messages = {
   story: {
     metaTitle: "Mi historia | {name}",
     metaDescription:
-      "Una narrativa en tres actos: antes de la tecnología, el giro y la carrera técnica.",
+      "Mi camino en tres actos: antes de la tecnología, la elección y la carrera en ingeniería.",
     eyebrow: "Mi historia",
     title: "El camino que me trajo hasta aquí",
     intro:
@@ -142,17 +142,17 @@ export const es: Messages = {
       eyebrow: "Acto 1",
       title: "Antes de la terminal",
       intro:
-        "Años de hostelería, enseñanza y viajes: la base, no el preludio.",
+        "Natación, universidad, hotelería y enseñanza: la base, no el preludio.",
       emptyTitle: "Las experiencias personales se están redactando.",
       emptyHint:
         "Las entradas previas a la tecnología aparecerán aquí a medida que se documenten.",
     },
     actTwo: {
       eyebrow: "Acto 2",
-      title: "El giro",
+      title: "La elección",
       paragraphs: [
-        "En algún momento la pregunta dejó de ser **«qué sigue»** y empezó a ser **«qué quiero construir durante la próxima década»**.",
-        "La respuesta fueron los sistemas. No porque amara el código en abstracto, sino porque había pasado años explicando cosas complejas a personas que no tenían tiempo de profundizar, y el software era la versión más apalancada de ese trabajo que pude encontrar.",
+        "No hubo un momento único de conversión. Estudiaba computación desde 2016, y durante años **la enseñanza y la ingeniería avanzaron en paralelo**: salas de clase de día, código para la carrera de noche.",
+        "La verdadera decisión fue sobre cuál construir una carrera. Enseñar me demostró que podía explicar cosas complejas a cualquiera. El trabajo analítico que asumí en School of Tech me mostró que quería **construir los sistemas**, no solo explicarlos. Así que elegí la ingeniería, y me traje la enseñanza conmigo.",
       ],
     },
     actThree: {
@@ -163,6 +163,7 @@ export const es: Messages = {
       emptyTitle: "Aquí aparecerán los roles técnicos.",
       emptyHint:
         "Cada rol enlaza a su página completa cuando estés listo para ver el detalle.",
+      resultLabel: "Resultado:",
     },
     now: {
       eyebrow: "Ahora",

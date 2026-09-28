@@ -46,6 +46,9 @@ export interface StoryTimelineProps {
   linkToDeepDive?: boolean;
   /** Active locale, used to prefix deep-dive hrefs (`/es/experience/…`). */
   locale?: Locale;
+  /** When set, each card adds one result line under the reflective line:
+   *  this label followed by the entry's headline `impact[0]` (Act 3). */
+  resultLabel?: string;
   className?: string;
 }
 
@@ -54,6 +57,7 @@ export function StoryTimeline({
   highlightTagType = "soft_skills",
   linkToDeepDive = false,
   locale = "en",
+  resultLabel,
   className,
 }: StoryTimelineProps) {
   const reduceMotion = useReducedMotion();
@@ -105,6 +109,7 @@ export function StoryTimeline({
           highlightTagType={highlightTagType}
           linkToDeepDive={linkToDeepDive}
           locale={locale}
+          resultLabel={resultLabel}
         />
       ))}
     </ol>
@@ -117,17 +122,20 @@ function TimelineRow({
   highlightTagType,
   linkToDeepDive,
   locale,
+  resultLabel,
 }: {
   entry: ExperienceEntry;
   side: "left" | "right";
   highlightTagType: NonNullable<StoryTimelineProps["highlightTagType"]>;
   linkToDeepDive: boolean;
   locale: Locale;
+  resultLabel?: string;
 }) {
   const heading = getHeadingLine(entry);
   const meta = getDrawerSubMeta(entry);
   const period = formatPeriod(entry.period);
   const highlight = entry.tags[highlightTagType] ?? [];
+  const result = resultLabel ? entry.impact[0] : undefined;
 
   return (
     <li
@@ -222,6 +230,13 @@ function TimelineRow({
                 className="mt-[0.45rem] inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-accent"
               />
               <span>{entry.personal_impact ?? entry.summary}</span>
+            </p>
+          )}
+
+          {result && (
+            <p className="mt-3 text-sm leading-relaxed text-text-secondary">
+              <span className="font-medium text-text-primary">{resultLabel}</span>{" "}
+              {result}
             </p>
           )}
 
