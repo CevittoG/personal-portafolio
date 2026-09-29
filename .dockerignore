@@ -9,3 +9,8 @@ docs
 README.md
 *.md
 !package.json
+.pnpm-store
+.lighthouseci
+test-results
+playwright-report
+tests
