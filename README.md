@@ -40,9 +40,10 @@ flowchart LR
    fails `next build` everywhere (locally, in CI, on Render) with a readable
    list of problems. Zod runs at build time only; the browser gets types, not
    a validator.
-4. **Static site.** Next.js 15 exports 14 pages (7 English at `/…`, 7 Spanish
-   at `/es/…`), per-page canonical and hreflang, a sitemap, JSON-LD and
-   branded share images. Production is plain HTML on Render, behind
+4. **Static site.** Next.js 16 exports every page in English at `/…` and
+   Spanish at `/es/…`, each language with its own root layout so
+   `<html lang>` is right in the HTML, plus per-page canonical and hreflang,
+   a sitemap, JSON-LD and branded share images. Production is plain HTML on Render, behind
    Cloudflare. No server, no database.
 5. **Analytics.** Umami, cloud-hosted, with a typed event map
    (`src/lib/analytics/umami.ts`) so every tracked click is checked at
@@ -79,9 +80,11 @@ dynamic must happen at build time or in the browser.
 **2. A small custom i18n layer instead of next-intl.** English must stay
 unprefixed (`/story`) with Spanish under `/es`. next-intl does that with
 middleware, which a static export can't run. `src/i18n/` is a typed
-dot-path translator, a provider, and path helpers, about 200 lines.
-*Trade-off:* no ICU plurals; the pages that need `<html lang="es">` get it
-from a pre-paint script until the routing moves to a `[locale]` segment.
+dot-path translator, a provider, and path helpers, about 200 lines. Each
+language is its own root layout (`app/(en)`, `app/(es)`), so `lang` is in
+the static HTML and each page ships only its own catalogue.
+*Trade-off:* no ICU plurals, and switching language is a full page load
+(two root layouts can't share a client-side navigation).
 
 **3. Flat JSON with contracts, not a CMS.** Two files in git are the whole
 content model: diffable, reviewable, and validated on every build.
@@ -93,9 +96,11 @@ build validates first.
 React Server Components; the filterable grid, drawer and search are the
 client island. Anything computed from "today" (the career timeline's ongoing
 bar) renders on the server, so static HTML and hydration can't disagree.
-Reduced-motion variants switch only after mount for the same reason.
-*Trade-off:* the Explorer island still receives more data than it shows;
-trimming that is the next architecture step.
+Reduced-motion variants switch only after mount for the same reason. The
+server shapes what the island gets: entries with descriptions cut to the
+drawer teaser, and a small tag index instead of the taxonomy, so neither
+JSON file ships as JavaScript. *Trade-off:* data is shaped twice, once for
+server pages and once for the island's props.
 
 **5. The résumé is request-only.** There is no PDF in `public/`. The site
 carries what a recruiter screen needs (role, years, stack, location, work
@@ -107,6 +112,15 @@ and a résumé that fits the job.
 both themes on every page, text never goes below 12px, touch targets are at
 least 24px, and motion respects `prefers-reduced-motion`. *Trade-off:* the
 tag palette is a little less saturated than the original design.
+
+**7. Plain modules over single-implementation interfaces.** The first
+version wrapped every data access and rule in an interface plus a class
+(repositories, filter strategies, stat computers). Most had one
+implementation and some had dead methods, so they became plain functions
+and objects. An interface stays only where implementations actually
+compose (search: an alias strategy wraps the substring one). *Trade-off:*
+swapping an implementation later means editing its callers, which a
+single-implementation codebase does rarely.
 
 ## Project map
 

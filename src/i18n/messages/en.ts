@@ -300,8 +300,8 @@ export const en = {
       },
       {
         title: "A small custom i18n layer",
-        body: "English stays at /story and Spanish at /es/story. The common library does that with middleware, which a static site can't run, so the translator and path helpers are about 200 lines of typed code.",
-        tradeoff: "no plural rules, and Spanish pages get their language attribute from a pre-paint script for now.",
+        body: "English stays at /story and Spanish at /es/story. The common library does that with middleware, which a static site can't run, so the translator and path helpers are about 200 lines of typed code. Each language has its own root layout, so every page declares its language in the HTML and ships only its own translations.",
+        tradeoff: "no plural rules, and switching language reloads the page.",
       },
       {
         title: "Files with contracts, not a CMS",
@@ -311,7 +311,7 @@ export const en = {
       {
         title: "Server by default",
         body: "Pages render on the server; only the search, grid and drawer run in the browser. Anything that depends on today's date renders at build time, so the HTML and the hydrated page can't disagree.",
-        tradeoff: "the interactive part still receives more data than it shows. Trimming that is the next step.",
+        tradeoff: "the server shapes the data twice: once for the pages and once, trimmed, for the interactive part.",
       },
       {
         title: "Résumé on request",

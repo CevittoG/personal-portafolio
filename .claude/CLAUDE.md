@@ -17,19 +17,19 @@ Future impeccable commands (`/impeccable shape`, `/impeccable polish`, `/impecca
 
 ## Project Status
 
-**All 18 plan steps shipped (1–18 done).** Next.js 15.4.11 + TS + Tailwind v4 + Framer Motion 11 app, Docker dev/preview pipeline, fully bilingual (EN/ES), dark + light themed, with a narrative-first landing (Phase 4, 2026-09-27: the animated Logo Cluster and the Stats Bar are gone) and site-wide polish (scroll reveals, route fade, micro-interactions). 14 prerendered routes (7 EN at `/...` + 7 ES at `/es/...`).
+**All 18 plan steps shipped (1–18 done).** Next.js 16.3 + React 19.3 + TS + Tailwind v4 + Motion 13 (`LazyMotion`) app, Docker dev/preview pipeline, fully bilingual (EN/ES), dark + light themed, with a narrative-first landing (Phase 4, 2026-09-27: the animated Logo Cluster and the Stats Bar are gone) and site-wide polish (scroll reveals, route fade, micro-interactions). Every page is prerendered in EN at `/...` and ES at `/es/...`.
 
-**Routing:** `app/(en)/...` (invisible route group, unprefixed — Explorer, Story, Contact, Deep-dive; `/playground` was deleted 2026-09-27) and `app/es/...` (Spanish mirror). Each tree has its own `layout.tsx` wrapping in `I18nProvider` + shared `Navbar` + `Footer`. Root `app/layout.tsx` owns `<html>`, theme + lang inline scripts, the `ThemeProvider`, and `template.tsx` (180ms global route fade, pure CSS `.route-fade` since 2026-09-27 so static HTML never ships `opacity:0`).
+**Routing (multiple root layouts, since 2026-09-29):** `app/(en)/...` (unprefixed: landing, story, contact, how-its-built, experience/[id]) and `app/(es)/es/...` (Spanish mirror). **Each group's `layout.tsx` is a root layout**, both rendering `src/components/layout/RootDocument.tsx` (html with the right `lang`, theme pre-paint script, JSON-LD, `ThemeProvider`, `I18nProvider` with that locale's catalogue only, `MotionProvider`, Navbar, Footer, Umami, and the build-time `assertValidContent()`). There is no `app/layout.tsx`. Switching language is a full document load. 404 is `app/global-not-found.tsx` (`experimental.globalNotFound`); `app/global-error.tsx` is explicit. Each group's `template.tsx` re-exports `RouteFadeTemplate` (CSS `.route-fade`). `sitemap.ts`, `robots.ts` and `og/[image]` sit at `app/` with no layout.
 
-**i18n (`src/i18n/`):** custom thin layer (not `next-intl` — static export blocks middleware-based EN-unprefixed routing). `locale.ts`, `messages/{en,es,index}.ts` (typed catalogues, parity via `Messages = typeof en`), `translator.ts` (dot-notation + `{name}` interpolation + typed `MessageKey<T>`), `I18nProvider.tsx` (`useTranslations` / `useLocale` / `useMessages`), `server.ts` (`getTranslator(locale)` for RSCs), `path.ts` (`withLocale` / `switchLocale`), `inline-script.ts` (pre-paint `<html lang>` patch).
+**i18n (`src/i18n/`):** custom thin layer (not `next-intl` — static export blocks middleware-based EN-unprefixed routing). `locale.ts`, `messages/{en,es,index}.ts` (typed catalogues, parity via `Messages = typeof en`), `translator.ts` (dot-notation + `{name}` interpolation + typed `MessageKey<T>`), `I18nProvider.tsx` (takes `messages` from the layout; `useTranslations` / `useLocale`), `server.ts` (`getTranslator(locale)` for RSCs), `path.ts` (`withLocale` / `switchLocale`). **Client code never imports the catalogues**: shared code takes a `Translate` function (`getTranslator(locale)` on the server, `useTranslations()` in the client), e.g. `ContactActions t={t}` and `resumeRequestHref(t)`. Only the 404 page loads both catalogues.
 
-**Theme (`src/lib/theme/`):** `types.ts`, `storage.ts` (`ThemeStorage` interface + `LocalStorageThemeStorage` — DIP), `inline-script.ts` (FOUC-safe pre-paint resolver), `ThemeProvider.tsx` (first render uses `DEFAULT_THEME` to match the server, then syncs from `<html data-theme>` after mount). Anything that must be right on first paint (e.g. the ThemeToggle icon) styles off `[data-theme]` with the `light:` custom variant in `globals.css`, never off React theme state — that was the 2026-09-27 hydration-mismatch fix. Light palette lives under `[data-theme="light"]` in `globals.css` with all 8 tag-type colors retuned.
+**Theme (`src/lib/theme/`):** `types.ts`, `storage.ts` (`ThemeStorage` interface + `LocalStorageThemeStorage` — DIP), `inline-script.ts` (FOUC-safe pre-paint resolver), `ThemeProvider.tsx` (`useSyncExternalStore` over `<html data-theme>`: the server snapshot is `DEFAULT_THEME`, so hydration matches, then it follows the DOM). Anything that must be right on first paint (e.g. the ThemeToggle icon) styles off `[data-theme]` with the `light:` custom variant in `globals.css`, never off React theme state — that was the 2026-09-27 hydration-mismatch fix. Light palette lives under `[data-theme="light"]` in `globals.css` with all 8 tag-type colors retuned.
 
-**SOLID `src/lib/` layer:** `taxonomy`, `experience` (+ `sort.ts`, `csv.ts`, `tag-display.ts`, `localize.ts`, description renderer), `filters`, `related`, `stats` (only the years-in-engineering computer), `search` (scope, starters, aliases, closest match), `story` (career lanes), `site`, `hooks`, `analytics`.
+**`src/lib/` layer (plain modules, since 2026-09-29):** `taxonomy` (`taxonomyRepository`, `tag-index.ts` server-only), `experience` (`experienceRepository`, `sort.ts`, `csv.ts`, `tag-display.ts`, `localize.ts`, `client-entry.ts`, description renderer), `explorer/landing-data.ts` (server-only), `filters` (`matchesAllTags`), `related` (`scoreRelated`/`topRelated`), `stats/years-in-engineering.ts`, `search` (the one real strategy interface: scope, starters, aliases, closest match), `story` (career lanes), `site`, `hooks`, `analytics`.
 
-**Shared page bodies:** `Explorer.tsx` (client), `Story.tsx` / `Contact.tsx` / `DeepDive.tsx` (server, take `locale: Locale` prop). Route files are tiny wrappers — both EN and ES routes call the same component with their locale.
+**Shared page bodies:** `Landing.tsx` (server: `Hero` → client island `ExplorerClient` → `LandingTail`), `Story.tsx` / `Contact.tsx` / `DeepDive.tsx` / `HowItsBuilt.tsx` (server, take `locale`). Route files are tiny wrappers. **The browser never loads experience.json or taxonomy.json**: `buildLandingData(locale)` gives the island localized entries trimmed by `toClientEntry()` (description = drawer teaser) and a `tagIndex`; client components read tag labels via `useTagLabel()` from `TagIndexProvider`, never `formatTagLabel` (server-only).
 
-**Motion primitive:** `src/components/motion/Reveal.tsx` (`<Reveal>` + `<RevealStagger>`, 320ms ease-out-quint). Honors `prefers-reduced-motion` everywhere.
+**Motion:** `motion` 13 via `MotionProvider` (`LazyMotion strict`, `domMax` loaded in its own chunk): use `import * as m from "motion/react-m"` and hooks from `"motion/react"`; never `motion.*` (throws under strict). `Reveal` is CSS only (scroll-driven `.reveal` in `globals.css`). Honors `prefers-reduced-motion` everywhere.
 
 **Navbar:** scroll-aware, includes `ThemeToggle` (sun/moon cross-fade) + `LanguageSwitcher` (writes `NEXT_LOCALE` cookie, preserves query + hash via `switchLocale()`).
 
@@ -57,7 +57,9 @@ Future impeccable commands (`/impeccable shape`, `/impeccable polish`, `/impecca
 
 **Expert-review Phase 4 (2026-09-27):** landing and interaction redesign. Landing sections: `Hero` (static `CoreStack` row from the `simple-icons` package, `currentColor`, no min-height), `FeaturedRoles` (three engineering roles, three impact lines each), the filter section (`SearchBar` + `StarterChips` + `ExperienceGrid`), then server `LandingTail` (`CareerSwimlane` teaser + Contact block). Search hides concepts/scale/soft skills except ~18 allowlisted recruiter concepts (`src/lib/search/scope.ts`). Cards: ≤6 pills via `cardTags()`, headline result above pills, pills filter on click or are inert (TagPill hover only when clickable). Deep-dive tags collapse per type with `<details>`. `CareerSwimlane` lanes map to entry ids in `src/lib/story/career-lanes.ts`. No text under 12px; 24px+ hit areas. 
 
-**Expert-review Phase 5 (2026-09-28):** content types come from Zod schemas (`src/content/schema.ts`, `z.infer`); `src/content/validate.ts` checks cross-file rules; the root layout's `assertValidContent()` fails the build on invalid data; `src/content/data.ts` is the one typed boundary over the raw JSON (repositories import from it). Tests: `pnpm test` (Vitest, `tests/unit`), `pnpm test:e2e` (Playwright + axe, `tests/e2e`, serves `out/` with clean URLs; run it in `mcr.microsoft.com/playwright:v1.63.0-noble`, the Alpine dev image can't run browsers), `pnpm lhci` (Lighthouse budget). CI in `.github/workflows/ci.yml`. **When reduced motion changes what renders, use `useReducedMotionAfterMount`** (Framer's hook breaks hydration). Color tokens are computed to clear 4.6:1 on bg, surface, surface-elevated and the active pill tint; re-check with the e2e contrast tests after any token change. Security headers: `docker/security-headers.conf` (preview) and `docs/deploy/security-headers.md` (Render dashboard; CSP is report-only). `/how-its-built` mirrors the README. Next up: Phase 6 (architecture v2).
+**Expert-review Phase 5 (2026-09-28):** content types come from Zod schemas (`src/content/schema.ts`, `z.infer`); `src/content/validate.ts` checks cross-file rules; the root layout's `assertValidContent()` fails the build on invalid data; `src/content/data.ts` is the one typed boundary over the raw JSON (repositories import from it). Tests: `pnpm test` (Vitest, `tests/unit`), `pnpm test:e2e` (Playwright + axe, `tests/e2e`, serves `out/` with clean URLs; run it in `mcr.microsoft.com/playwright:v1.63.0-noble`, the Alpine dev image can't run browsers), `pnpm lhci` (Lighthouse budget). CI in `.github/workflows/ci.yml`. **When reduced motion changes what renders, use `useReducedMotionAfterMount`** (Framer's hook breaks hydration). Color tokens are computed to clear 4.6:1 on bg, surface, surface-elevated and the active pill tint; re-check with the e2e contrast tests after any token change. Security headers: `docker/security-headers.conf` (preview) and `docs/deploy/security-headers.md` (Render dashboard; CSP is report-only). `/how-its-built` mirrors the README. 
+
+**Expert-review Phase 6 (2026-09-29):** per-locale root layouts (`lang` in static HTML, no lang script), one catalogue per page, server-shaped client island (landing JS 204 → 141 kB by Next 15's First Load metric), plain modules, `motion` 13 with `LazyMotion`, CSS reveals, Next 16.3 + React 19.3 with native flat ESLint config (`eslint.config.mjs`) and the stricter React Hooks rules (no setState in effects: derive state, adjust during render, or `useSyncExternalStore`). Next up: Phase 7 (next-level bets).
 
 **Deferred (plan §18 Phase 2):** taxonomy `display_name_es` (still English). Entry prose translations exist only for the three technical entries (Phase 3); foundation entries and all `description`s stay English.
 
@@ -81,7 +83,7 @@ Future impeccable commands (`/impeccable shape`, `/impeccable polish`, `/impecca
 | Language | **TypeScript** |
 | Styling | **Tailwind CSS v4** — utility classes only; all color values live exclusively in `globals.css` CSS custom properties |
 | Components | **shadcn/ui** — components live in the codebase, not as a locked dependency |
-| Animation | **Framer Motion** |
+| Animation | **Motion 13** (`LazyMotion` + `m.*`); CSS scroll-driven reveals |
 | UI Sections | **Aceternity UI** — used selectively (Hero ambient visual, timeline effects) |
 | Data | **Flat JSON files** (`taxonomy.json` + `experience.json`) — no database, no CMS |
 
@@ -253,21 +255,22 @@ The project lives behind two compose services:
 
 ---
 
-## SOLID Conventions
+## Module Conventions
 
-The `src/lib/` layer is organized so that each common change touches exactly one file.
+Plain modules first (ADR 7 in the README, 2026-09-29): a function or object per concern, one file per common change. Add an interface only when a second implementation actually exists and composes. The search strategies are the one case today.
 
-- **New filter strategy** → add a class implementing `FilterStrategy` in `src/lib/filters/`. Do not edit existing strategies. (OCP)
-- **New search behavior** → a `SearchStrategy` in `src/lib/search/` (e.g. `AliasSearchStrategy` wraps the substring one); scope, starter tags and aliases are single-purpose files there. (OCP)
-- **New related-experience scoring algorithm** → add an `IRelatedScorer` implementation in `src/lib/related/`. Page imports the interface; swap impls without touching the page. (DIP)
+- **Filter rule** → `matchesAllTags` in `src/lib/filters/tag-match.ts`.
+- **New search behavior** → a `SearchStrategy` in `src/lib/search/` (e.g. `AliasSearchStrategy` wraps the substring one); scope, starter tags and aliases are single-purpose files there.
+- **Related-experience scoring** → `scoreRelated` / `topRelated` in `src/lib/related/weighted-tag-overlap.ts`.
+- **Client island data** → shape it on the server (`buildLandingData`, `toClientEntry`, `buildTagIndex`) and pass it as props; client components never import repositories or `src/content/data.ts`.
 - **New taxonomy type** (rare):
   1. Add the slug to the `TAG_TYPES` tuple in `src/lib/taxonomy/types.ts`.
   2. Add a `--color-tag-{type}` token in `src/app/globals.css`.
   3. Backfill the key on every entry in `src/data/experience.json` (use `[]` if empty).
   4. The Tag Pill reads color from a CSS-var map keyed by type, so no component change is needed.
-- **Importing data in components** — always import the **interface** (`IExperienceRepository`, `ITaxonomyRepository`) and use the exported singleton from `*-repository.ts` (e.g. `experienceRepository`). Never import the JSON file directly from a component. (DIP)
+- **Importing data** — server code uses `experienceRepository` / `taxonomyRepository`; never import the JSON files from a component.
 
-Tag Pill states (`active` | `inactive` | `muted` | `removable`) share one prop interface — every state is interchangeable in every consumer (LSP). Repository interfaces are deliberately narrow — only the methods callers actually use (ISP).
+Tag Pill states (`active` | `inactive` | `muted` | `removable`) share one prop interface — every state is interchangeable in every consumer.
 
 ---
 

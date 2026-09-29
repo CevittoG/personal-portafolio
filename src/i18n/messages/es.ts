@@ -298,8 +298,8 @@ export const es: Messages = {
       },
       {
         title: "Una capa de i18n propia y pequeña",
-        body: "El inglés queda en /story y el español en /es/story. La librería habitual lo resuelve con middleware, que un sitio estático no puede ejecutar, así que el traductor y los helpers de rutas son unas 200 líneas de código tipado.",
-        tradeoff: "no hay reglas de plural, y por ahora las páginas en español reciben su atributo de idioma desde un script previo al render.",
+        body: "El inglés queda en /story y el español en /es/story. La librería habitual lo resuelve con middleware, que un sitio estático no puede ejecutar, así que el traductor y los helpers de rutas son unas 200 líneas de código tipado. Cada idioma tiene su propio layout raíz, así que cada página declara su idioma en el HTML y solo envía sus propias traducciones.",
+        tradeoff: "no hay reglas de plural, y cambiar de idioma recarga la página.",
       },
       {
         title: "Archivos con contratos, no un CMS",
@@ -309,7 +309,7 @@ export const es: Messages = {
       {
         title: "Servidor por defecto",
         body: "Las páginas se renderizan en el servidor; solo la búsqueda, la grilla y el panel corren en el navegador. Lo que depende de la fecha de hoy se renderiza en el build, así el HTML y la página hidratada no pueden diferir.",
-        tradeoff: "la parte interactiva todavía recibe más datos de los que muestra. Reducir eso es el siguiente paso.",
+        tradeoff: "el servidor prepara los datos dos veces: una para las páginas y otra, recortada, para la parte interactiva.",
       },
       {
         title: "CV a pedido",
