@@ -1,146 +1,156 @@
-# Personal Portfolio Website
+# Sebastián Gutiérrez · portfolio
 
-An interactive portfolio that lets recruiters **discover** relevant experience based on what they're looking for, rather than reading a static resume top-to-bottom.
+[![CI](https://github.com/CevittoG/personal-portafolio/actions/workflows/ci.yml/badge.svg)](https://github.com/CevittoG/personal-portafolio/actions/workflows/ci.yml)
 
-> A resume *tells* recruiters about you. This site lets them *discover* you based on what they need.
+**Live:** [asebagutierrezm.com](https://asebagutierrezm.com) · [Spanish](https://asebagutierrezm.com/es)
 
----
+A bilingual portfolio for a data platform engineer, built the way I'd build a
+small data product: content lives in versioned files with a schema, every
+build validates it, and CI checks what the site promises (routes, languages,
+accessibility, performance) before anything deploys.
 
-## The Idea
-
-Three layers of depth, each serving a different reader and time budget:
-
-| Layer | Format | Time | Purpose |
-|---|---|---|---|
-| Card (grid) | Compact card | ~30 sec | Scan & filter |
-| Drawer | Slide-over panel | 2–3 min | Qualify the match |
-| Full page `/experience/[id]` | Full layout | 5–10 min | Deep research |
-
-The recruiter flow: land on the Explorer → type a skill/tool/role → tags surface → cards reshape → click a card → drawer opens → "Dig deeper" → full page in a new tab → related experiences → contact.
+![Landing page](docs/images/landing.png)
 
 ---
 
-## Tech Stack
+## How it works
 
-| Layer | Choice |
+```mermaid
+flowchart LR
+  A["docs/experience/*.md<br/>source notes"] -->|portfolio-json-builder<br/>Claude skill| B["taxonomy.json<br/>experience.json"]
+  B -->|Zod schemas +<br/>cross-file rules| C{"valid?"}
+  C -->|no| X["build fails<br/>with the list of problems"]
+  C -->|yes| D["next build<br/>static export → out/"]
+  D --> E["CI: lint · types · unit ·<br/>e2e + axe · Lighthouse"]
+  E -->|main| F["Render static site<br/>behind Cloudflare"]
+  F --> G["Umami analytics<br/>(typed events)"]
+```
+
+1. **Source notes to data.** Each role is documented in `docs/experience/*.md`.
+   A Claude skill (`.claude/skills/portfolio-json-builder`) turns them into two
+   JSON files: a controlled vocabulary of 210 tags (`taxonomy.json`) and the
+   entries themselves (`experience.json`).
+2. **Contracts.** `src/content/schema.ts` defines both files in Zod; the
+   TypeScript types are `z.infer` of those schemas, so data, types and
+   validator can't drift. `src/content/validate.ts` adds the rules a schema
+   can't express: every tag resolves under the right type, ids are unique,
+   `related` links resolve, and hand-maintained lists in code (search
+   aliases, starter tags, career lanes) point at real tags and entries.
+3. **Build.** The root layout calls `assertValidContent()`, so invalid data
+   fails `next build` everywhere (locally, in CI, on Render) with a readable
+   list of problems. Zod runs at build time only; the browser gets types, not
+   a validator.
+4. **Static site.** Next.js 15 exports 14 pages (7 English at `/…`, 7 Spanish
+   at `/es/…`), per-page canonical and hreflang, a sitemap, JSON-LD and
+   branded share images. Production is plain HTML on Render, behind
+   Cloudflare. No server, no database.
+5. **Analytics.** Umami, cloud-hosted, with a typed event map
+   (`src/lib/analytics/umami.ts`) so every tracked click is checked at
+   compile time.
+
+## Quality gates
+
+Every pull request and every push to `main` runs, in order:
+
+| Step | What it proves |
 |---|---|
-| Framework | **Next.js 15** (static export via `output: 'export'`) |
-| Language | **TypeScript** |
-| Styling | **Tailwind CSS v4** — utilities only; all colors as CSS custom properties in `src/app/globals.css` |
-| Components | **shadcn/ui** — owned in-repo, no library lock-in |
-| Animation | **Framer Motion** |
-| UI sections | **Aceternity UI** — selectively (Hero ambient visual, timeline effects) |
-| Data | **Flat JSON** — `taxonomy.json` + `experience.json`, imported as typed modules |
-| Package manager | **pnpm 9.x** (via Corepack inside Docker) |
-| Deployment | Static `out/` directory, deployable to any static host |
+| `pnpm lint`, `pnpm type-check` | Code style and types |
+| `pnpm validate:data` | Content matches its schema and cross-file rules |
+| `pnpm test` | Unit tests: locale paths, translator and catalogue parity, date math, overlap-merged years, sorting, related-role scoring, card tag selection, translations, search aliases and typo matching, and data integrity (including tests that break the data on purpose) |
+| `pnpm build` | Static export succeeds (and re-validates content) |
+| `pnpm test:e2e` | Playwright tests against the served export: every page returns 200 with the right `lang`, canonical and hreflang; zero axe color-contrast violations in dark **and** light theme; no page throws or fails hydration, with and without reduced motion |
+| `pnpm lhci` | Lighthouse budget: accessibility ≥ 95, SEO ≥ 95, best practices ≥ 90 (errors); performance ≥ 90 (warning) |
 
-No database. No CMS. No server runtime in production — nginx serves pre-rendered HTML.
+The end-to-end suite has already paid for itself: its first run found tag
+colors below 4.5:1 contrast and a hydration mismatch that reset the Spanish
+`lang` for visitors with reduced motion enabled. Both are fixed, and the
+color tokens are now computed to clear 4.6:1 on every surface they sit on.
 
----
+## Architecture decisions
 
-## Data Model
+Short records of the choices that shape the code. Each one names what was
+given up.
 
-Two JSON files drive every page:
+**1. Static export, no server.** The site is content that changes when I
+edit it, so every page is prerendered and served as files (Render +
+Cloudflare). *Trade-off:* no middleware, no per-request logic; anything
+dynamic must happen at build time or in the browser.
 
-- **`taxonomy.json`** — the controlled vocabulary. 8 tag types: `roles`, `languages`, `technologies`, `libraries`, `domains`, `concepts`, `scale`, `soft_skills`. No tag can appear in experience data unless it's defined here.
-- **`experience.json`** — array of entries. Discriminated by `type`: `job` | `project` | `education` | `personal`. Every entry must include all 8 tag-type keys (use `[]` if empty).
+**2. A small custom i18n layer instead of next-intl.** English must stay
+unprefixed (`/story`) with Spanish under `/es`. next-intl does that with
+middleware, which a static export can't run. `src/i18n/` is a typed
+dot-path translator, a provider, and path helpers, about 200 lines.
+*Trade-off:* no ICU plurals; the pages that need `<html lang="es">` get it
+from a pre-paint script until the routing moves to a `[locale]` segment.
 
-See [docs/portfolio-website-plan.md](docs/portfolio-website-plan.md) §3 for the full schema.
+**3. Flat JSON with contracts, not a CMS.** Two files in git are the whole
+content model: diffable, reviewable, and validated on every build.
+*Trade-off:* editing needs a pull request, and the narrowing from raw JSON to
+typed data is one documented cast (`src/content/data.ts`) trusted because the
+build validates first.
 
----
+**4. Server by default, client islands only where interactive.** Pages are
+React Server Components; the filterable grid, drawer and search are the
+client island. Anything computed from "today" (the career timeline's ongoing
+bar) renders on the server, so static HTML and hydration can't disagree.
+Reduced-motion variants switch only after mount for the same reason.
+*Trade-off:* the Explorer island still receives more data than it shows;
+trimming that is the next architecture step.
 
-## Routes
+**5. The résumé is request-only.** There is no PDF in `public/`. The site
+carries what a recruiter screen needs (role, years, stack, location, work
+authorization, degree) and the résumé comes by email, tailored to the role.
+*Trade-off:* one more step for a recruiter, in exchange for a conversation
+and a résumé that fits the job.
+
+**6. Accessibility is tested, not assumed.** Contrast is checked by axe in
+both themes on every page, text never goes below 12px, touch targets are at
+least 24px, and motion respects `prefers-reduced-motion`. *Trade-off:* the
+tag palette is a little less saturated than the original design.
+
+## Project map
 
 ```
-/                     Explorer — landing page, primary interaction
-/story                Timeline narrative (3 acts: Before Tech → Pivot → Technical Career)
-/experience/[id]      Deep-dive pages (statically generated from experience IDs)
-/contact              Availability status + contact CTA
+src/
+  app/            routes: (en)/… and es/…, sitemap, robots, og/[image] share images
+  components/     explorer, story, contact, experience (deep dive), hero, search, tags
+  content/        schema.ts (Zod), validate.ts, data.ts (typed boundary), assert-valid.ts
+  data/           taxonomy.json, experience.json
+  i18n/           messages (en, es), translator, provider, path helpers
+  lib/            experience, search, story, related, stats, site, analytics, theme
+tests/
+  unit/           Vitest
+  e2e/            Playwright + axe
+docs/
+  portfolio-website-plan.md   the plan and its status log
+  experience/                  source notes per role
+  deploy/security-headers.md   response headers for Render
 ```
 
-`/experience/[id]` is **not** in the nav — reached via the drawer's "Dig deeper" button (new tab) or a direct link.
+## Running it
 
----
-
-## Color System
-
-One file governs all colors: `src/app/globals.css`. CSS custom properties under `:root`, exposed to Tailwind v4 via `@theme inline`. Dark mode is the default; light mode is optional via `[data-theme="light"]` overrides.
-
-To retheme the entire site, change the values in that block. Nothing else in the codebase needs to change.
-
-Tag-type colors follow `--color-tag-{type}` (e.g. `--color-tag-roles`, `--color-tag-languages`) and are read by the Tag Pill component.
-
----
-
-## Local Development — Docker
-
-Docker is the canonical environment. No Node/pnpm required on the host.
+Docker is the development environment; nothing is needed on the host.
 
 ```bash
-# Dev server with hot reload (http://localhost:3000)
-docker compose up dev
-
-# One-off scripts inside the dev container
-docker compose run --rm dev pnpm type-check
-docker compose run --rm dev pnpm lint
-docker compose run --rm dev pnpm build       # produces ./out (static export)
-
-# Production preview — nginx serving the static export (http://localhost:8080)
-docker compose --profile preview up --build preview
+docker compose up dev                              # http://localhost:3000
+docker compose run --rm dev pnpm test              # unit tests
+docker compose run --rm dev pnpm validate:data     # content check only
+docker compose run --rm dev pnpm build             # static export → out/
+docker compose --profile preview up --build preview  # nginx on http://localhost:8080
 ```
 
-The `Dockerfile` is multi-stage: `base → deps → dev / builder → prod` (`nginx:alpine`). The dev service bind-mounts the repo with anonymous volumes for `node_modules` and `.next` so the host never shadows the container's installed dependencies.
+End-to-end tests need a Playwright browser, which the Alpine dev image can't
+run. Use the official image against a fresh build:
 
-Running on the host directly (Node 20+, pnpm) works too — the npm-script names match: `pnpm dev`, `pnpm build`, `pnpm lint`, `pnpm type-check`.
+```bash
+docker run --rm -v "$PWD":/work -v /work/node_modules -w /work mcr.microsoft.com/playwright:v1.63.0-noble \
+  bash -c "corepack enable && pnpm install --frozen-lockfile && pnpm test:e2e"
+```
 
----
+## Further reading
 
-## Architecture Notes
-
-**`src/lib/` is SOLID-aligned** — each common change touches exactly one file:
-
-- `taxonomy/` — `TagType`, `TaxonomyEntry`, `ITaxonomyRepository` + JSON impl
-- `experience/` — `ExperienceEntry` discriminated union, `IExperienceRepository` + JSON impl
-- `filters/` — `FilterStrategy` interface; new rules drop in as sibling files (OCP)
-- `related/` — `IRelatedScorer` + `WeightedTagOverlapScorer` (concepts = 3pt, technologies/roles = 2pt, others = 1pt)
-- `stats/` — `StatComputer<T>` interface, one stat per file in `computers/`, registered in `registry.ts`
-
-Components import the **interfaces**, never the JSON files directly.
-
-**Filter state lives in URL query params** (`/?tags=python,etl,data-engineer`) so filtered views are shareable. Grid and Stats Bar react to this client-side state.
-
-**Related experience** is computed at build time in `getStaticProps`, not at runtime.
-
-**Mobile drawer** becomes a bottom sheet below the `sm` breakpoint (90vh, swipe-down to dismiss via Framer Motion drag).
-
----
-
-## Build Order
-
-Components are built in a deliberate sequence to avoid rework. See [docs/portfolio-website-plan.md](docs/portfolio-website-plan.md) §15 for the full ledger.
-
-Current status:
-
-1. ✅ Color tokens & `globals.css`
-2. 🟡 `taxonomy.json` + `experience.json` — schema-correct skeletons committed; still need real data
-3. ✅ TypeScript types + `src/lib/` repository interfaces
-4. **Tag Pill component** ← next
-5. Navbar + Footer
-6. Experience Card
-7. Search bar + tag dropdown
-8. Active filter chips + URL sync
-9. Stats Bar
-10. Explorer page (`/`)
-11. Drawer (right-side + mobile bottom sheet)
-12. Deep Dive page (`/experience/[id]`)
-13. Story page (`/story`)
-14. Contact page (`/contact`)
-15. Polish — animations, Aceternity UI, Hero ambient visual
-
----
-
-## Reference Documents
-
-- [docs/portfolio-website-plan.md](docs/portfolio-website-plan.md) — the authoritative plan: all architectural decisions, component specs, copy tone, responsive strategy.
-- [docs/experience/](docs/experience/) — source material for populating `experience.json` (uPlanner, AidProf, etc.).
-- [.claude/CLAUDE.md](.claude/CLAUDE.md) — working notes for Claude Code sessions.
+- [docs/portfolio-website-plan.md](docs/portfolio-website-plan.md): the full
+  plan, component specs and a dated status log of every change.
+- [DESIGN.md](DESIGN.md) and [PRODUCT.md](PRODUCT.md): the visual system and
+  who the site is for.
+- The same story on the site itself: [How it's built](https://asebagutierrezm.com/how-its-built).

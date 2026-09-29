@@ -156,8 +156,11 @@ Array of experience entries. Each entry has a base shape shared by all types, pl
 
 ### Data Flow in Next.js
 
+**Content contracts (2026-09-28):** `src/content/schema.ts` defines both files in Zod and the TypeScript types in `src/lib/{taxonomy,experience}/types.ts` are `z.infer` of it. `src/content/validate.ts` adds cross-file rules (tags resolve under the right type, unique ids, `related` links, and code references: starter tags, search aliases, searchable concepts, career lanes). The root layout calls `assertValidContent()`, so invalid data fails `next build`; `pnpm validate:data` runs the same check alone. Raw JSON is narrowed to the typed model once, in `src/content/data.ts`. Zod is build-time only; nothing validates in the browser.
+
 ```
 taxonomy.json + experience.json
+  → validated at build (schemas + cross-file rules)
   → imported as typed modules at build time
     → Explorer page: full array, filtered client-side by active tags
     → Story page: filtered by type = "personal" + "job" for timeline
@@ -183,7 +186,7 @@ taxonomy.json + experience.json
 
   /* Text */
   --color-text-primary:     #F0F0FF;   /* Slightly cool white — easier on eyes than pure white */
-  --color-text-secondary:   #8888AA;   /* Muted labels, dates, metadata */
+  --color-text-secondary:   #A6A6C0;   /* Muted labels, dates, metadata */
   --color-text-muted:       #44445A;   /* Placeholders, disabled states */
 
   /* Accent */
@@ -192,14 +195,14 @@ taxonomy.json + experience.json
   --color-accent-subtle:    #6E56CF22; /* 10% opacity — tag backgrounds, highlights */
 
   /* Tag Type Colors (one per taxonomy type) */
-  --color-tag-roles:        #CF566E;   /* Rose */
+  --color-tag-roles:        #D9798C;   /* Rose */
   --color-tag-languages:    #56A0CF;   /* Sky blue */
   --color-tag-technologies: #56CF9E;   /* Teal */
   --color-tag-libraries:    #CF9A56;   /* Amber */
-  --color-tag-domains:      #9E56CF;   /* Purple */
-  --color-tag-concepts:     #CF7856;   /* Orange */
+  --color-tag-domains:      #B680DB;   /* Purple */
+  --color-tag-concepts:     #D28162;   /* Orange */
   --color-tag-scale:        #56CF56;   /* Green */
-  --color-tag-soft-skills:  #CF56B8;   /* Pink */
+  --color-tag-soft-skills:  #D771C3;   /* Pink */
 }
 ```
 
@@ -218,6 +221,7 @@ taxonomy.json + experience.json
 /story                Timeline narrative
 /experience/[id]      Deep-dive for a single entry (statically generated)
 /contact              Availability + CTA
+/how-its-built        Engineering story: pipeline, quality gates, decisions (added 2026-09-28; linked from the footer, mirrors the README)
 ```
 
 ### Navigation Type: Hybrid
@@ -852,6 +856,8 @@ The site is bilingual. **English is the default.** Spanish is a first-class alte
 ---
 
 ## Status Log
+
+- **2026-09-28** — **Expert-review Phase 5: engineering showcase.** (1) **Data contracts**: Zod schemas in `src/content/schema.ts` are the source of the content types (`z.infer`); `validate.ts` checks cross-file rules; the build fails on invalid content via `assertValidContent()` in the root layout; `pnpm validate:data` (tsx) runs it alone. The two repository casts became one documented boundary (`src/content/data.ts`). The schema immediately caught a wrong hand-written type (`issuer` is optional). (2) **Unit tests** (Vitest, 33): locale paths, translator and EN/ES key parity, `monthRange`/`durationMonths`, overlap-merged years, sorting, the related scorer, `cardTags`, `localizeEntry`, search aliases/scope/closest match, and data integrity with tests that break the data on purpose. (3) **E2E** (Playwright + axe against the served export with clean URLs): every page in both locales returns 200 with the right `lang`, canonical and hreflang; zero color-contrast violations in dark and light; no runtime or hydration errors with and without reduced motion; SEO files and share images served as PNG. (4) **Two real bugs found by the new suite and fixed**: tag pill and muted-text colors under 4.5:1 (tokens recomputed to clear 4.6:1 on bg, surface, surface-elevated and the active pill tint; dark `text-secondary` raised to `#A6A6C0` to stay above muted), and a hydration mismatch on the Story pages for reduced-motion visitors (`Reveal`/`StoryTimeline` rendered different markup on the first client render, React re-rendered the document and reset `lang`/theme) fixed with `useReducedMotionAfterMount`. (5) **CI** (`.github/workflows/ci.yml`, PRs and `main`): lint → type-check → validate:data → unit → build → e2e → Lighthouse CI (a11y/SEO ≥ 95 and best practices ≥ 90 as errors, performance ≥ 90 as a warning; reports kept as artifacts, not uploaded publicly). The Lighthouse step has not been verified locally (container Chrome crashed; the run was stopped). (6) **Security headers**: `docker/security-headers.conf` on the nginx preview and `docs/deploy/security-headers.md` for Render's dashboard (no `render.yaml`: the Render service setup is unconfirmed); CSP ships **report-only**. (7) **README** rewritten as an architecture brief (live link, CI badge, screenshot, data-flow diagram, quality gates, six ADRs) and a bilingual **`/how-its-built`** page mirroring it, linked from the footer, with its own share image and sitemap entry (share-image ids now split only the locale, so page ids may contain dashes).
 
 - **2026-09-27** — **Expert-review Phase 4: landing and interaction redesign.** (1) **Narrative-first `/`**: Hero → Featured roles (three engineering roles with a three-line impact strip; replaces the count-up Stats Bar) → "Filter by skill" (search, starter chips, grid) → Story teaser (career swimlane) → Contact block. The last two are server-rendered (`LandingTail.tsx`) so the build-time swimlane never hydrates. (2) **Search**: curated `STARTER_TAGS` replace usage-ranked suggestions (and the role shortcut row, now `StarterChips`); concepts/scale/soft skills hidden from search **except an allowlist of ~18 recruiter-facing concepts** (deviation from the roadmap, which hid all concepts: ETL and data pipelines are the core queries for this role); alias map (k8s, postgres, py…) via `AliasSearchStrategy`; "closest match" suggestions by edit distance on no match. (3) **Cards**: at most 6 pills (filter matches, then languages and technologies, plus "+N"); headline result above the pills; pills filter on click in the grid and render inert elsewhere; deep-dive tag list collapses by type with `<details>` (languages and technologies open). (4) **Hero**: `LogoDropCluster` and the CDN preconnect removed; static labeled "Core stack" row from the `simple-icons` package in `currentColor`; hero `min-h` floors removed. (5) **Motion**: Stats Bar and count-up removed; staggers capped at 150ms (`MAX_STAGGER_DELAY`); drawer body stagger removed. (6) **Accessibility**: no text under 12px; 24px hit area on the TagPill ×; 32px starter chips; inert pills lose their hover. (7) **Career swimlane** at the top of `/story` and as the landing teaser. (8) Mobile sticky contact pill hides while the landing Contact block is visible. Deleted: `StatsBar`, `StatCard`, stats registry and two computers, `RoleShortcuts`, `LogoDropCluster`, `taxonomy/logos.ts`, `taxonomy/top-tags.ts`. Verified: type-check ✅, lint ✅, build ✅, production preview at 390px and 1440px (search aliases/closest/scope, card pill filtering, swimlane EN/ES, pill hiding, deep-dive groups).
 

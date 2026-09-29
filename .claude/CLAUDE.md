@@ -55,7 +55,9 @@ Future impeccable commands (`/impeccable shape`, `/impeccable polish`, `/impecca
 
 **Expert-review Phase 3 (2026-09-27):** content rewrite. First-person, results-first, no em dashes in any entry `summary`/`impact`/`personal_impact` or UI copy (long-form `description` fields still have some). AidProf is titled "Co-founder & Lead Engineer (title: Product Owner)" and its summary explains the overlap with uPlanner (nights and weekends from July 2021). Story Act 2 is "The choice", not a pivot. Entries can carry `translations.es` (`summary`, first ≤3 `impact`, `personal_impact`), applied by `localizeEntry()` in `src/lib/experience/localize.ts` at every locale-aware entry point (Explorer, Story, DeepDive, metadata) with per-field English fallback. Spanish is filled in for Apple, uPlanner and AidProf; never machine-translate new entries without the owner's review. Next up: Phase 4 (landing and interaction redesign).
 
-**Expert-review Phase 4 (2026-09-27):** landing and interaction redesign. Landing sections: `Hero` (static `CoreStack` row from the `simple-icons` package, `currentColor`, no min-height), `FeaturedRoles` (three engineering roles, three impact lines each), the filter section (`SearchBar` + `StarterChips` + `ExperienceGrid`), then server `LandingTail` (`CareerSwimlane` teaser + Contact block). Search hides concepts/scale/soft skills except ~18 allowlisted recruiter concepts (`src/lib/search/scope.ts`). Cards: ≤6 pills via `cardTags()`, headline result above pills, pills filter on click or are inert (TagPill hover only when clickable). Deep-dive tags collapse per type with `<details>`. `CareerSwimlane` lanes map to entry ids in `src/lib/story/career-lanes.ts`. No text under 12px; 24px+ hit areas. Next up: Phase 5 (engineering showcase).
+**Expert-review Phase 4 (2026-09-27):** landing and interaction redesign. Landing sections: `Hero` (static `CoreStack` row from the `simple-icons` package, `currentColor`, no min-height), `FeaturedRoles` (three engineering roles, three impact lines each), the filter section (`SearchBar` + `StarterChips` + `ExperienceGrid`), then server `LandingTail` (`CareerSwimlane` teaser + Contact block). Search hides concepts/scale/soft skills except ~18 allowlisted recruiter concepts (`src/lib/search/scope.ts`). Cards: ≤6 pills via `cardTags()`, headline result above pills, pills filter on click or are inert (TagPill hover only when clickable). Deep-dive tags collapse per type with `<details>`. `CareerSwimlane` lanes map to entry ids in `src/lib/story/career-lanes.ts`. No text under 12px; 24px+ hit areas. 
+
+**Expert-review Phase 5 (2026-09-28):** content types come from Zod schemas (`src/content/schema.ts`, `z.infer`); `src/content/validate.ts` checks cross-file rules; the root layout's `assertValidContent()` fails the build on invalid data; `src/content/data.ts` is the one typed boundary over the raw JSON (repositories import from it). Tests: `pnpm test` (Vitest, `tests/unit`), `pnpm test:e2e` (Playwright + axe, `tests/e2e`, serves `out/` with clean URLs; run it in `mcr.microsoft.com/playwright:v1.63.0-noble`, the Alpine dev image can't run browsers), `pnpm lhci` (Lighthouse budget). CI in `.github/workflows/ci.yml`. **When reduced motion changes what renders, use `useReducedMotionAfterMount`** (Framer's hook breaks hydration). Color tokens are computed to clear 4.6:1 on bg, surface, surface-elevated and the active pill tint; re-check with the e2e contrast tests after any token change. Security headers: `docker/security-headers.conf` (preview) and `docs/deploy/security-headers.md` (Render dashboard; CSP is report-only). `/how-its-built` mirrors the README. Next up: Phase 6 (architecture v2).
 
 **Deferred (plan §18 Phase 2):** taxonomy `display_name_es` (still English). Entry prose translations exist only for the three technical entries (Phase 3); foundation entries and all `description`s stay English.
 
@@ -96,7 +98,13 @@ docker compose up dev
 # One-off scripts inside the dev container
 docker compose run --rm dev pnpm type-check
 docker compose run --rm dev pnpm lint
-docker compose run --rm dev pnpm build       # produces ./out (static export)
+docker compose run --rm dev pnpm validate:data   # content schemas + cross-file rules
+docker compose run --rm dev pnpm test            # unit tests (Vitest)
+docker compose run --rm dev pnpm build       # produces ./out (static export); also validates content
+
+# End-to-end tests (Playwright + axe) need the official Playwright image
+docker run --rm -v "$PWD":/work -v /work/node_modules -w /work mcr.microsoft.com/playwright:v1.63.0-noble \
+  bash -c "corepack enable && pnpm install --frozen-lockfile && pnpm test:e2e"
 
 # Production preview — nginx serving the static export (http://localhost:8080)
 docker compose --profile preview up --build preview
@@ -127,7 +135,7 @@ Array of entries with a shared base shape plus type-specific extension fields.
 
 **Entry types:** `job` | `project` | `education` | `personal`
 
-**Critical constraint on tags:** All 8 tag type keys must be present on every entry (use `[]` for empty types). Slug values must match entries in `taxonomy.json`.
+**Critical constraint on tags:** All 8 tag type keys must be present on every entry (use `[]` for empty types). Slug values must match entries in `taxonomy.json`. Both rules are enforced by the schemas and validator in `src/content/` on every build.
 
 Type-specific fields:
 - `job` → `company` (`{ name, url, industry }`), `location`, `employment_type`, `team`
@@ -164,6 +172,7 @@ Tag type colors follow the pattern `--color-tag-{type}` (e.g., `--color-tag-role
 /story                Timeline narrative (3 acts)
 /experience/[id]      Static deep-dive pages (generated from experience.json IDs)
 /contact              Availability status + contact CTA
+/how-its-built        Engineering story (footer link), mirrors the README
 ```
 
 `/experience/[id]` is **not** in the nav — reached only via drawer "Dig deeper" button (new tab) or direct link. All static paths generated by `getStaticPaths` from experience entry IDs.
