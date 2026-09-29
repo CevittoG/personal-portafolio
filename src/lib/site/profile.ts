@@ -1,5 +1,5 @@
 import { experienceRepository } from "@/lib/experience/json-repository";
-import { yearsOfExperienceComputer } from "@/lib/stats/computers/years-of-experience";
+import { yearsInEngineering } from "@/lib/stats/years-in-engineering";
 
 /**
  * Facts about the owner that several surfaces repeat: meta descriptions,
@@ -24,7 +24,5 @@ export const CORE_STACK = [
  * overstates what the entry dates show. Same source as the Stats Bar.
  */
 export function getEngineeringYears(): number {
-  return Math.floor(
-    yearsOfExperienceComputer.compute(experienceRepository.getRelevant()),
-  );
+  return Math.floor(yearsInEngineering(experienceRepository.getRelevant()));
 }

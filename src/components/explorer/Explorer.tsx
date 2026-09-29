@@ -17,7 +17,7 @@ import { useFilterTags } from "@/lib/filters/use-filter-tags";
 import { isSearchable } from "@/lib/search/scope";
 import { STARTER_TAGS } from "@/lib/search/starters";
 import { siteConfig } from "@/lib/site/config";
-import { yearsOfExperienceComputer } from "@/lib/stats/computers/years-of-experience";
+import { yearsInEngineering } from "@/lib/stats/years-in-engineering";
 import { taxonomyRepository } from "@/lib/taxonomy/json-repository";
 import type { TaxonomyEntry } from "@/lib/taxonomy/types";
 import { useLocale, useTranslations } from "@/i18n/I18nProvider";
@@ -68,7 +68,7 @@ export function Explorer() {
   // Whole years only, so the proof line reads "5+ years" and never
   // overstates what the entry dates show.
   const engineeringYears = useMemo(
-    () => Math.floor(yearsOfExperienceComputer.compute(entries)),
+    () => Math.floor(yearsInEngineering(entries)),
     [entries],
   );
 

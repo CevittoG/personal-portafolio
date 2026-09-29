@@ -1,31 +1,23 @@
 import { experienceData } from "@/content/data";
-import type { FilterStrategy } from "@/lib/filters/types";
-import type { IExperienceRepository } from "./repository";
-import type { ExperienceEntry, ExperienceType } from "./types";
+import type { ExperienceEntry } from "./types";
 
-class JsonExperienceRepository implements IExperienceRepository {
-  constructor(private readonly entries: ExperienceEntry[]) {}
-
+/**
+ * Read access to experience.json (validated at build, see `src/content/`).
+ * A plain module: one data source, three lookups. Components still go
+ * through here rather than importing the JSON, so the data boundary stays
+ * in one place.
+ */
+export const experienceRepository = {
   getAll(): ExperienceEntry[] {
-    return this.entries;
-  }
+    return experienceData;
+  },
 
+  /** Professional/technical entries: what the Explorer filters. */
   getRelevant(): ExperienceEntry[] {
-    return this.entries.filter((entry) => entry.relevant);
-  }
+    return experienceData.filter((entry) => entry.relevant);
+  },
 
   getById(id: string): ExperienceEntry | undefined {
-    return this.entries.find((entry) => entry.id === id);
-  }
-
-  getByType(type: ExperienceType): ExperienceEntry[] {
-    return this.entries.filter((entry) => entry.type === type);
-  }
-
-  getFiltered(activeTags: string[], strategy: FilterStrategy): ExperienceEntry[] {
-    if (activeTags.length === 0) return this.entries;
-    return this.entries.filter((entry) => strategy.matches(entry, activeTags));
-  }
-}
-
-export const experienceRepository: IExperienceRepository = new JsonExperienceRepository(experienceData);
+    return experienceData.find((entry) => entry.id === id);
+  },
+};

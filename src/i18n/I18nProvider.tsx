@@ -62,6 +62,3 @@ export function useLocale(): Locale {
   return useI18n().locale;
 }
 
-export function useMessages(): Messages {
-  return useI18n().messages;
-}

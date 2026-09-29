@@ -14,7 +14,7 @@ import {
 import { experienceRepository } from "@/lib/experience/json-repository";
 import { localizeEntry } from "@/lib/experience/localize";
 import type { ExperienceEntry } from "@/lib/experience/types";
-import { defaultRelatedScorer } from "@/lib/related/weighted-tag-overlap";
+import { topRelated } from "@/lib/related/weighted-tag-overlap";
 import { formatTagLabel } from "@/lib/taxonomy/format";
 import { tagTypeLabel } from "@/lib/taxonomy/labels";
 import { TAG_TYPES, type TagType } from "@/lib/taxonomy/types";
@@ -53,8 +53,7 @@ export function DeepDive({ locale, id }: DeepDiveProps) {
     .map((type) => ({ type, slugs: entry.tags[type] ?? [] }))
     .filter((b) => b.slugs.length > 0);
 
-  const related = defaultRelatedScorer
-    .topN(entry, experienceRepository.getAll(), 3)
+  const related = topRelated(entry, experienceRepository.getAll(), 3)
     .map((s) => ({ ...s, entry: localizeEntry(s.entry, locale) }));
 
   return (

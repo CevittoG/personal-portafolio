@@ -12,10 +12,6 @@ import type { ExperienceEntry } from "./types";
 export const SORT_IDS = ["recent", "relevant"] as const;
 export type SortId = (typeof SORT_IDS)[number];
 
-export const SORT_LABELS: Record<SortId, string> = {
-  recent: "Most recent",
-  relevant: "Most relevant",
-};
 
 export function sortEntries(
   entries: readonly ExperienceEntry[],

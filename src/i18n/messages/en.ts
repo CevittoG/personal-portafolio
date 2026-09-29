@@ -104,9 +104,6 @@ export const en = {
     clearAll: "Clear all",
     removeTag: "Remove {label}",
   },
-  stats: {
-    yearsOfExperience: "Years in engineering",
-  },
   grid: {
     sortLabel: "Sort",
     sortRecent: "Most recent",

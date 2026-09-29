@@ -3,8 +3,8 @@ import { durationMonths, formatPeriod, monthRange } from "@/lib/experience/forma
 import { localizeEntry } from "@/lib/experience/localize";
 import { sortEntries } from "@/lib/experience/sort";
 import { cardTags } from "@/lib/experience/tag-display";
-import { defaultRelatedScorer } from "@/lib/related/weighted-tag-overlap";
-import { yearsOfExperienceComputer } from "@/lib/stats/computers/years-of-experience";
+import { scoreRelated, topRelated } from "@/lib/related/weighted-tag-overlap";
+import { yearsInEngineering } from "@/lib/stats/years-in-engineering";
 import { job } from "./fixtures";
 
 describe("experience/format", () => {
@@ -39,9 +39,9 @@ describe("experience/format", () => {
   });
 });
 
-describe("stats/years-of-experience", () => {
+describe("stats/years-in-engineering", () => {
   it("counts only technical entries and merges overlaps", () => {
-    const years = yearsOfExperienceComputer.compute([
+    const years = yearsInEngineering([
       // 2020-12 → 2022-02 and 2021-07 → 2024-10 overlap: one span, 2020-12 → 2024-10
       job("founder", { story_act: "technical", period: { start: "2020-12", end: "2022-02" } }),
       job("data", { story_act: "technical", period: { start: "2021-07", end: "2024-10" } }),
@@ -52,7 +52,7 @@ describe("stats/years-of-experience", () => {
   });
 
   it("adds disjoint spans", () => {
-    const years = yearsOfExperienceComputer.compute([
+    const years = yearsInEngineering([
       job("a", { story_act: "technical", period: { start: "2018-01", end: "2019-01" } }),
       job("b", { story_act: "technical", period: { start: "2020-01", end: "2021-01" } }),
     ]);
@@ -82,13 +82,13 @@ describe("related/weighted-tag-overlap", () => {
   const none = job("none", { tags: { languages: ["php"] } });
 
   it("weights concepts 3, technologies/roles 2, others 1", () => {
-    expect(defaultRelatedScorer.score(target, concept).score).toBe(3);
-    expect(defaultRelatedScorer.score(target, tech).score).toBe(3);
-    expect(defaultRelatedScorer.score(target, tech).matchedSlugs.sort()).toEqual(["python", "snowflake"]);
+    expect(scoreRelated(target, concept).score).toBe(3);
+    expect(scoreRelated(target, tech).score).toBe(3);
+    expect(scoreRelated(target, tech).matchedSlugs.sort()).toEqual(["python", "snowflake"]);
   });
 
   it("excludes the target itself and zero scores", () => {
-    const top = defaultRelatedScorer.topN(target, [target, concept, tech, none], 3);
+    const top = topRelated(target, [target, concept, tech, none], 3);
     expect(top.map((s) => s.entry.id).sort()).toEqual(["concept", "tech"]);
   });
 });

@@ -1,10 +1,10 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { ExperienceCard } from "@/components/experience/ExperienceCard";
 import { MAX_STAGGER_DELAY } from "@/components/motion/Reveal";
-import { defaultFilterStrategy } from "@/lib/filters/tag-match";
+import { matchesAllTags } from "@/lib/filters/tag-match";
 import {
   SORT_IDS,
   type SortId,
@@ -57,7 +57,7 @@ export function ExperienceGrid({
   const [sort, setSort] = useState<SortId>("recent");
 
   const filtered = useMemo(
-    () => entries.filter((e) => defaultFilterStrategy.matches(e, activeSlugs as string[])),
+    () => entries.filter((e) => matchesAllTags(e, activeSlugs)),
     [entries, activeSlugs],
   );
 

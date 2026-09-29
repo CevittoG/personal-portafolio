@@ -102,9 +102,6 @@ export const es: Messages = {
     clearAll: "Limpiar todo",
     removeTag: "Quitar {label}",
   },
-  stats: {
-    yearsOfExperience: "Años en ingeniería",
-  },
   grid: {
     sortLabel: "Ordenar",
     sortRecent: "Más recientes",

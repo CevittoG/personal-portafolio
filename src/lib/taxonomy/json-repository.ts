@@ -1,35 +1,23 @@
 import { taxonomyData } from "@/content/data";
-import type { ITaxonomyRepository } from "./repository";
-import { TAG_TYPES, type TagType, type Taxonomy, type TaxonomyEntry } from "./types";
+import { TAG_TYPES, type TaxonomyEntry } from "./types";
 
-class JsonTaxonomyRepository implements ITaxonomyRepository {
-  private readonly bySlug: Map<string, TaxonomyEntry>;
-
-  constructor(source: Taxonomy) {
-    this.bySlug = new Map();
-    for (const type of TAG_TYPES) {
-      const bucket = source[type] ?? {};
-      for (const slug of Object.keys(bucket)) {
-        this.bySlug.set(slug, bucket[slug]);
-      }
-    }
-  }
-
-  getAll(): TaxonomyEntry[] {
-    return Array.from(this.bySlug.values());
-  }
-
-  getByType(type: TagType): TaxonomyEntry[] {
-    return this.getAll().filter((entry) => entry.type === type);
-  }
-
-  getBySlug(slug: string): TaxonomyEntry | undefined {
-    return this.bySlug.get(slug);
-  }
-
-  exists(slug: string): boolean {
-    return this.bySlug.has(slug);
+/**
+ * Read access to taxonomy.json (validated at build, see `src/content/`).
+ * Flattened once into a slug index; a plain module, like the experience one.
+ */
+const bySlug = new Map<string, TaxonomyEntry>();
+for (const type of TAG_TYPES) {
+  for (const entry of Object.values(taxonomyData[type] ?? {})) {
+    bySlug.set(entry.slug, entry);
   }
 }
 
-export const taxonomyRepository: ITaxonomyRepository = new JsonTaxonomyRepository(taxonomyData);
+export const taxonomyRepository = {
+  getAll(): TaxonomyEntry[] {
+    return Array.from(bySlug.values());
+  },
+
+  getBySlug(slug: string): TaxonomyEntry | undefined {
+    return bySlug.get(slug);
+  },
+};

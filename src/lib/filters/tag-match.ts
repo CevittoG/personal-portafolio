@@ -1,35 +1,19 @@
 import type { ExperienceEntry } from "@/lib/experience/types";
 import { TAG_TYPES } from "@/lib/taxonomy/types";
-import type { FilterStrategy } from "./types";
 
-function flattenSlugs(entry: ExperienceEntry): Set<string> {
+/**
+ * Explorer filter rule: an entry matches when it carries EVERY active tag
+ * (any type). No active tags matches everything. Filters narrow; they never
+ * widen, so a recruiter adding "Snowflake" to "Python" sees fewer cards.
+ */
+export function matchesAllTags(
+  entry: ExperienceEntry,
+  activeTags: readonly string[],
+): boolean {
+  if (activeTags.length === 0) return true;
   const slugs = new Set<string>();
   for (const type of TAG_TYPES) {
     for (const slug of entry.tags[type] ?? []) slugs.add(slug);
   }
-  return slugs;
+  return activeTags.every((slug) => slugs.has(slug));
 }
-
-/** Entry matches only when it contains EVERY active slug. */
-export class AllTagsMatchStrategy implements FilterStrategy {
-  readonly id = "all-tags";
-
-  matches(entry: ExperienceEntry, activeTags: string[]): boolean {
-    if (activeTags.length === 0) return true;
-    const slugs = flattenSlugs(entry);
-    return activeTags.every((slug) => slugs.has(slug));
-  }
-}
-
-/** Entry matches when it contains AT LEAST ONE active slug. */
-export class AnyTagMatchStrategy implements FilterStrategy {
-  readonly id = "any-tag";
-
-  matches(entry: ExperienceEntry, activeTags: string[]): boolean {
-    if (activeTags.length === 0) return true;
-    const slugs = flattenSlugs(entry);
-    return activeTags.some((slug) => slugs.has(slug));
-  }
-}
-
-export const defaultFilterStrategy: FilterStrategy = new AllTagsMatchStrategy();

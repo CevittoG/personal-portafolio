@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { TagPill } from "@/components/tags/TagPill";
 import { formatPeriod, getHeadingLine } from "@/lib/experience/format";
-import type { ScoredEntry } from "@/lib/related/scorer";
+import type { ScoredEntry } from "@/lib/related/weighted-tag-overlap";
 import { formatTagLabel } from "@/lib/taxonomy/format";
 import { taxonomyRepository } from "@/lib/taxonomy/json-repository";
 import type { TagType } from "@/lib/taxonomy/types";
