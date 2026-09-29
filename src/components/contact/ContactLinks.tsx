@@ -1,6 +1,5 @@
 import { SOCIAL_LINKS } from "@/components/layout/social-links";
-import type { Locale } from "@/i18n/locale";
-import { getTranslator } from "@/i18n/server";
+import type { Translate } from "@/i18n/translator";
 import {
   umamiAttributes,
   type ContactKind,
@@ -88,7 +87,9 @@ export function SocialLinks({
 /* ── Email + résumé request ──────────────────────────────────────────── */
 
 export interface ContactActionsProps {
-  locale: Locale;
+  /** `getTranslator(locale)` on the server, `useTranslations()` in client
+   *  components: this component never imports the catalogues itself. */
+  t: Translate;
   source: ContactSource;
   /** "stack": full-width buttons, one per row. "row": side by side. */
   layout?: "stack" | "row";
@@ -96,12 +97,11 @@ export interface ContactActionsProps {
 }
 
 export function ContactActions({
-  locale,
+  t,
   source,
   layout = "stack",
   className,
 }: ContactActionsProps) {
-  const t = getTranslator(locale);
   const button = cn(
     "inline-flex flex-1 items-center justify-center rounded-full whitespace-nowrap",
     "border border-border bg-surface py-2.5 text-sm font-medium",
@@ -127,7 +127,7 @@ export function ContactActions({
         <span>{t("contactCta.email")}</span>
       </a>
       <a
-        href={resumeRequestHref(locale)}
+        href={resumeRequestHref(t)}
         {...umamiAttributes("contact_clicked", {
           kind: "resume_request",
           source,

@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useMemo, type ReactNode } from "react";
-import { messagesByLocale, type Messages } from "./messages";
+import type { Messages } from "./messages";
 import type { Locale } from "./locale";
 import { translate, type MessageKey, type Values } from "./translator";
 
@@ -29,19 +29,21 @@ const I18nContext = createContext<I18nContextValue | null>(null);
 
 export interface I18nProviderProps {
   locale: Locale;
+  /** This locale's catalogue, passed from the (server) layout so the client
+   *  bundle never imports the catalogues: each page ships one language. */
+  messages: Messages;
   children: ReactNode;
 }
 
-export function I18nProvider({ locale, children }: I18nProviderProps) {
+export function I18nProvider({ locale, messages, children }: I18nProviderProps) {
   const value = useMemo<I18nContextValue>(() => {
-    const messages = messagesByLocale[locale];
     return {
       locale,
       messages,
       t: ((key: string, values?: Values) =>
         translate(messages, key, values)) as I18nContextValue["t"],
     };
-  }, [locale]);
+  }, [locale, messages]);
   return <I18nContext.Provider value={value}>{children}</I18nContext.Provider>;
 }
 

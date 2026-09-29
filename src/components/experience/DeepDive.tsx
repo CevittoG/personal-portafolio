@@ -79,7 +79,6 @@ export function DeepDive({ locale, id }: DeepDiveProps) {
             period={period}
             durationLabel={durationLabel}
             tagBuckets={tagBuckets}
-            locale={locale}
             t={t}
           />
           <MainContent
@@ -109,7 +108,6 @@ interface SidebarProps {
   period: string;
   durationLabel: string | null;
   tagBuckets: { type: TagType; slugs: string[] }[];
-  locale: Locale;
   t: ServerTranslator;
 }
 
@@ -121,7 +119,6 @@ function Sidebar({
   period,
   durationLabel,
   tagBuckets,
-  locale,
   t,
 }: SidebarProps) {
   const identityLabel =
@@ -205,7 +202,7 @@ function Sidebar({
         >
           {t("contactCta.title")}
         </p>
-        <ContactActions locale={locale} source="deep_dive" />
+        <ContactActions t={t} source="deep_dive" />
       </section>
 
       {tagBuckets.length > 0 && (

@@ -1,6 +1,7 @@
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { I18nProvider } from "@/i18n/I18nProvider";
+import { getMessages } from "@/i18n/server";
 
 /**
  * ES layout (plan §18).
@@ -15,7 +16,7 @@ export default function EsLayout({
   children: React.ReactNode;
 }) {
   return (
-    <I18nProvider locale="es">
+    <I18nProvider locale="es" messages={getMessages("es")}>
       <Navbar />
       <div className="flex-1">{children}</div>
       <Footer />

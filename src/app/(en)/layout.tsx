@@ -2,6 +2,7 @@ import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { I18nProvider } from "@/i18n/I18nProvider";
 import { DEFAULT_LOCALE } from "@/i18n/locale";
+import { getMessages } from "@/i18n/server";
 
 /**
  * EN layout (plan §18).
@@ -21,7 +22,7 @@ export default function EnLayout({
   children: React.ReactNode;
 }) {
   return (
-    <I18nProvider locale={DEFAULT_LOCALE}>
+    <I18nProvider locale={DEFAULT_LOCALE} messages={getMessages(DEFAULT_LOCALE)}>
       <Navbar />
       <div className="flex-1">{children}</div>
       <Footer />

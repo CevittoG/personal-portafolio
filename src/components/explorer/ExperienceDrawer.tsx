@@ -1,12 +1,7 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef } from "react";
-import {
-  AnimatePresence,
-  motion,
-  type PanInfo,
-  useReducedMotion,
-} from "framer-motion";
+import { motion, AnimatePresence, type PanInfo, useReducedMotion } from "framer-motion";
 import { TagPill } from "@/components/tags/TagPill";
 import { renderInline } from "@/lib/experience/description";
 import { ContactActions } from "@/components/contact/ContactLinks";
@@ -200,7 +195,6 @@ function DrawerContent({
   isDesktop,
 }: DrawerContentProps) {
   const t = useTranslations();
-  const locale = useLocale();
   const heading = getHeadingLine(entry);
   const subMeta = getDrawerSubMeta(entry);
   const badge = getMetaBadge(entry);
@@ -383,7 +377,7 @@ function DrawerContent({
           {t("drawer.digDeeper")}
           <span aria-hidden="true">↗</span>
         </a>
-        <ContactActions locale={locale} source="drawer" layout="row" />
+        <ContactActions t={t} source="drawer" layout="row" />
       </footer>
     </>
   );

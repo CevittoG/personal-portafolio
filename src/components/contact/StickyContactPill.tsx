@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useLocale, useTranslations } from "@/i18n/I18nProvider";
+import { useTranslations } from "@/i18n/I18nProvider";
 import { umamiAttributes } from "@/lib/analytics/umami";
 import { emailHref, resumeRequestHref } from "@/lib/site/contact";
 import { cn } from "@/lib/utils";
@@ -30,7 +30,6 @@ export function StickyContactPill({
   hideWhenVisibleId,
 }: StickyContactPillProps) {
   const t = useTranslations();
-  const locale = useLocale();
   const [pastHero, setPastHero] = useState(false);
   const [duplicateInView, setDuplicateInView] = useState(false);
 
@@ -94,7 +93,7 @@ export function StickyContactPill({
           {t("contactCta.email")}
         </a>
         <a
-          href={resumeRequestHref(locale)}
+          href={resumeRequestHref(t)}
           {...umamiAttributes("contact_clicked", {
             kind: "resume_request",
             source: "sticky",

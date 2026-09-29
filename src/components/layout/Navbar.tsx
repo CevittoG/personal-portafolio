@@ -204,7 +204,7 @@ export function Navbar() {
                 );
               })}
               <li className="pt-6">
-                <ContactActions locale={locale} source="mobile_menu" />
+                <ContactActions t={t} source="mobile_menu" />
               </li>
               <li>
                 <SocialLinks

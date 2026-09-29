@@ -99,7 +99,7 @@ export function Contact({ locale }: ContactProps) {
             {t("contact.resume.body")}
           </p>
           <a
-            href={resumeRequestHref(locale)}
+            href={resumeRequestHref(t)}
             {...umamiAttributes("contact_clicked", {
               kind: "resume_request",
               source: "contact",

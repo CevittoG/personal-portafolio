@@ -16,6 +16,14 @@ import type { Messages } from "./messages/en";
 export type Values = Record<string, string | number>;
 
 /**
+ * A bound translator, as returned by `getTranslator(locale)` (server) and
+ * `useTranslations()` (client). Code shared by both trees takes one of these
+ * instead of a locale, so it never imports the catalogues itself and the
+ * client bundle only carries the messages its page was given.
+ */
+export type Translate = <K extends MessageKey>(key: K, values?: Values) => string;
+
+/**
  * Dot-notation key into a Messages object. Constrained to leaf strings so
  * `t("hero.cta")` (which would resolve to an object) is a compile error.
  */

@@ -72,7 +72,7 @@ export function LandingTail({ locale }: { locale: Locale }) {
             {t("contact.resume.body")}
           </p>
           <ContactActions
-            locale={locale}
+            t={t}
             source="landing"
             layout="row"
             className="mx-auto max-w-md"

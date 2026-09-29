@@ -1,5 +1,5 @@
 import { messagesByLocale, type Messages } from "./messages";
-import { translate, type MessageKey, type Values } from "./translator";
+import { translate, type Translate, type Values } from "./translator";
 import type { Locale } from "./locale";
 
 /**
@@ -14,10 +14,8 @@ export function getMessages(locale: Locale): Messages {
   return messagesByLocale[locale];
 }
 
-export type ServerTranslator = <K extends MessageKey>(
-  key: K,
-  values?: Values,
-) => string;
+/** Kept as an alias: the same signature as the client `useTranslations()`. */
+export type ServerTranslator = Translate;
 
 export function getTranslator(locale: Locale): ServerTranslator {
   const messages = messagesByLocale[locale];
