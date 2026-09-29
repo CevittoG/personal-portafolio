@@ -1,14 +1,17 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
+import { motion } from "framer-motion";
 import type { ElementType, ReactNode } from "react";
 import { Children, isValidElement } from "react";
+import { useReducedMotionAfterMount } from "@/lib/hooks/use-reduced-motion";
 
 /**
  * Reveal — site-wide scroll-enter primitive (plan §15 polish, Layer A).
  *
  * Fades + nudges children upward as they cross into the viewport, once.
- * Honors `prefers-reduced-motion` by rendering the final state immediately.
+ * Honors `prefers-reduced-motion` by rendering the final state immediately,
+ * switching after mount so the first client render matches the server HTML
+ * (see `useReducedMotionAfterMount`).
  *
  * Renders a `motion.div`. Callers that need a different semantic tag wrap
  * the inner content with their own element. This keeps Framer Motion's
@@ -46,7 +49,7 @@ export function Reveal({
   amount = 0.2,
   className,
 }: RevealProps) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = useReducedMotionAfterMount();
 
   if (reduceMotion) {
     return <div className={className}>{children}</div>;

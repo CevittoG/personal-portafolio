@@ -4,12 +4,12 @@ import { useRef } from "react";
 import Link from "next/link";
 import {
   motion,
-  useReducedMotion,
   useScroll,
   useSpring,
   useTransform,
 } from "framer-motion";
 import { Reveal } from "@/components/motion/Reveal";
+import { useReducedMotionAfterMount } from "@/lib/hooks/use-reduced-motion";
 import { TagPill } from "@/components/tags/TagPill";
 import {
   formatPeriod,
@@ -60,7 +60,9 @@ export function StoryTimeline({
   resultLabel,
   className,
 }: StoryTimelineProps) {
-  const reduceMotion = useReducedMotion();
+  // After mount only: omitting the rail on the first render would not
+  // match the server HTML (see useReducedMotionAfterMount).
+  const reduceMotion = useReducedMotionAfterMount();
   const railRef = useRef<HTMLOListElement>(null);
 
   // `useScroll` returns 0 at the moment the ol's top hits the viewport bottom
