@@ -7,7 +7,12 @@
     "build": "next build",
     "start": "next start --hostname 0.0.0.0 --port 3000",
     "lint": "eslint .",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "validate:data": "tsx scripts/validate-data.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:e2e": "playwright test",
+    "lhci": "lhci autorun"
   },
   "dependencies": {
     "clsx": "^2.1.1",
@@ -15,11 +20,16 @@
     "next": "15.4.11",
     "react": "19.0.0",
     "react-dom": "19.0.0",
+    "server-only": "^0.0.1",
     "simple-icons": "^16.33.0",
-    "tailwind-merge": "^2.5.5"
+    "tailwind-merge": "^2.5.5",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@eslint/eslintrc": "^3.2.0",
+    "@lhci/cli": "^0.15.1",
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4.0.0",
     "@types/node": "^22.10.5",
     "@types/react": "^19.0.7",
@@ -27,8 +37,11 @@
     "eslint": "^9.18.0",
     "eslint-config-next": "15.4.11",
     "postcss": "^8.4.49",
+    "serve": "^14.2.6",
     "tailwindcss": "^4.0.0",
-    "typescript": "^5.7.3"
+    "tsx": "^4.23.15",
+    "typescript": "^5.7.3",
+    "vitest": "^5.0.2"
   },
   "packageManager": "pnpm@9.15.4",
   "engines": {
