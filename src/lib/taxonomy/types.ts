@@ -1,3 +1,6 @@
+import type { z } from "zod";
+import type { TaxonomyEntrySchema } from "@/content/schema";
+
 export const TAG_TYPES = [
   "roles",
   "languages",
@@ -11,15 +14,7 @@ export const TAG_TYPES = [
 
 export type TagType = (typeof TAG_TYPES)[number];
 
-export interface TaxonomyEntry {
-  slug: string;
-  display_name: string;
-  type: TagType;
-  icon: string | null;
-  /** SVG logo URL (Simple Icons CDN or local path). Null for abstract tags with no canonical logo. */
-  image: string | null;
-  color: string | null;
-  related: string[];
-}
+/** A taxonomy tag. Derived from the schema in `src/content/schema.ts`. */
+export type TaxonomyEntry = z.infer<typeof TaxonomyEntrySchema>;
 
 export type Taxonomy = Record<TagType, Record<string, TaxonomyEntry>>;

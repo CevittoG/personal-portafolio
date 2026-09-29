@@ -15,7 +15,7 @@ const HIDDEN_TYPES: ReadonlySet<TagType> = new Set([
   "soft_skills",
 ]);
 
-const SEARCHABLE_CONCEPTS: ReadonlySet<string> = new Set([
+export const SEARCHABLE_CONCEPTS: ReadonlySet<string> = new Set([
   "etl",
   "elt",
   "data-pipelines",

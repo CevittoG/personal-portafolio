@@ -1,102 +1,34 @@
-import type { Locale } from "@/i18n/locale";
+import type { z } from "zod";
+import type {
+  CompanySchema,
+  EducationEntrySchema,
+  EntryTranslationSchema,
+  ExperienceEntrySchema,
+  JobEntrySchema,
+  MediaSchema,
+  PeriodSchema,
+  PersonalEntrySchema,
+  ProjectEntrySchema,
+} from "@/content/schema";
 import type { TagType } from "@/lib/taxonomy/types";
 
+/**
+ * Experience types, derived from the Zod schemas in `src/content/schema.ts`
+ * (field docs live there). Type-only imports: no validator reaches the
+ * client bundle.
+ */
 export type TagMap = Record<TagType, string[]>;
 
-export interface Period {
-  start: string | null; // YYYY-MM (or YYYY); null = unknown start
-  end: string | null; // null = current
-}
+export type Period = z.infer<typeof PeriodSchema>;
+export type Media = z.infer<typeof MediaSchema>;
+export type Company = z.infer<typeof CompanySchema>;
+export type EntryTranslation = z.infer<typeof EntryTranslationSchema>;
 
-export interface Media {
-  label: string;
-  url: string;
-  type: "repo" | "url" | "demo" | "article" | "certificate";
-}
+export type JobEntry = z.infer<typeof JobEntrySchema>;
+export type ProjectEntry = z.infer<typeof ProjectEntrySchema>;
+export type EducationEntry = z.infer<typeof EducationEntrySchema>;
+export type PersonalEntry = z.infer<typeof PersonalEntrySchema>;
 
-interface BaseEntry {
-  id: string;
-  title: string;
-  period: Period;
-  summary: string;
-  description: string;
-  tags: TagMap;
-  impact: string[];
-  media: Media[];
-  featured: boolean;
-  /**
-   * Whether this entry counts as professional/technical experience. Drives
-   * the Explorer "Discover" tool (only relevant entries are shown/filtered)
-   * and the years-of-experience stat. Non-relevant entries (e.g. unrelated
-   * jobs, formal education, personal pursuits) are kept in the data for the
-   * Story timeline and direct deep-dive links but stay out of Discover.
-   */
-  relevant: boolean;
-  /**
-   * Which Story act this entry belongs to. Absent → not shown on the Story
-   * timeline (e.g. formal education). Independent of `relevant`/Discover:
-   * `"foundation"` is the non-technical Act 1, `"technical"` is the Act 3
-   * engineering career.
-   */
-  story_act?: "foundation" | "technical";
-  /**
-   * 1–2 sentence reflective statement: the pillar of this chapter and how it
-   * shaped the person. Shown on the Story timeline in place of `summary`.
-   * Distinct from `impact` (quantifiable outcomes) and `summary` (factual capsule).
-   */
-  personal_impact?: string;
-  /**
-   * Optional hand-written translations of the reader-facing prose, keyed by
-   * non-default locale. Only `summary`, the first `impact` lines (up to 3)
-   * and `personal_impact` are localized; everything else stays in English.
-   * Missing fields fall back to English (see `localizeEntry`).
-   */
-  translations?: Partial<Record<Locale, EntryTranslation>>;
-}
-
-export interface EntryTranslation {
-  summary?: string;
-  /** Replaces `impact[0..n)`; lines past it stay in English. Max 3. */
-  impact?: string[];
-  personal_impact?: string;
-}
-
-export interface Company {
-  name: string;
-  url: string | null;
-  industry: string;
-}
-
-export interface JobEntry extends BaseEntry {
-  type: "job";
-  company: Company;
-  location: string;
-  employment_type: "full-time" | "contract" | "freelance" | "part-time";
-  team: string | null;
-}
-
-export interface ProjectEntry extends BaseEntry {
-  type: "project";
-  status: "completed" | "ongoing" | "archived";
-  client: string | null;
-}
-
-export interface EducationEntry extends BaseEntry {
-  type: "education";
-  institution: string;
-  credential: "degree" | "certification" | "course" | "bootcamp";
-  issuer: string;
-}
-
-export interface PersonalEntry extends BaseEntry {
-  type: "personal";
-  region: string;
-}
-
-export type ExperienceEntry =
-  | JobEntry
-  | ProjectEntry
-  | EducationEntry
-  | PersonalEntry;
+export type ExperienceEntry = z.infer<typeof ExperienceEntrySchema>;
 
 export type ExperienceType = ExperienceEntry["type"];

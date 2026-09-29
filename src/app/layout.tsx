@@ -7,7 +7,12 @@ import { langInitScript } from "@/i18n/inline-script";
 import { siteConfig } from "@/lib/site/config";
 import { staticPageMetadata } from "@/lib/site/metadata";
 import { jsonLdScript, personJsonLd } from "@/lib/site/structured-data";
+import { assertValidContent } from "@/content/assert-valid";
 import "./globals.css";
+
+// Fail the build on invalid content (schemas + cross-file rules). Runs once
+// at module load during `next build`; server-only, never shipped.
+assertValidContent();
 
 // Root metadata: `metadataBase` resolves every relative canonical, hreflang
 // and og:image URL. Title/description fall back to the EN home copy (only

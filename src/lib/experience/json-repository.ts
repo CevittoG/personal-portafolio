@@ -1,9 +1,7 @@
-import experienceData from "@/data/experience.json";
+import { experienceData } from "@/content/data";
 import type { FilterStrategy } from "@/lib/filters/types";
 import type { IExperienceRepository } from "./repository";
 import type { ExperienceEntry, ExperienceType } from "./types";
-
-const data = experienceData as ExperienceEntry[];
 
 class JsonExperienceRepository implements IExperienceRepository {
   constructor(private readonly entries: ExperienceEntry[]) {}
@@ -30,4 +28,4 @@ class JsonExperienceRepository implements IExperienceRepository {
   }
 }
 
-export const experienceRepository: IExperienceRepository = new JsonExperienceRepository(data);
+export const experienceRepository: IExperienceRepository = new JsonExperienceRepository(experienceData);

@@ -1,8 +1,6 @@
-import taxonomyData from "@/data/taxonomy.json";
+import { taxonomyData } from "@/content/data";
 import type { ITaxonomyRepository } from "./repository";
 import { TAG_TYPES, type TagType, type Taxonomy, type TaxonomyEntry } from "./types";
-
-const data = taxonomyData as Taxonomy;
 
 class JsonTaxonomyRepository implements ITaxonomyRepository {
   private readonly bySlug: Map<string, TaxonomyEntry>;
@@ -34,4 +32,4 @@ class JsonTaxonomyRepository implements ITaxonomyRepository {
   }
 }
 
-export const taxonomyRepository: ITaxonomyRepository = new JsonTaxonomyRepository(data);
+export const taxonomyRepository: ITaxonomyRepository = new JsonTaxonomyRepository(taxonomyData);
