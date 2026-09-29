@@ -11,6 +11,6 @@ export const OG_COLORS = {
   surface: "#13131A",
   border: "#2A2A38",
   textPrimary: "#F0F0FF",
-  textSecondary: "#8888AA",
+  textSecondary: "#A6A6C0",
   accent: "#E5642E",
 } as const;

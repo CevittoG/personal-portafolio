@@ -38,13 +38,13 @@
         "role": "neutral",
         "displayName": "Text Secondary",
         "canonical": "oklch(63% 0.04 280)",
-        "tonalRamp": ["#2A2A38", "#44445A", "#5A5A75", "#7575A0", "#8888AA", "#A0A0BD", "#BBBBC8", "#D8D8E5"]
+        "tonalRamp": ["#2A2A38", "#44445A", "#5A5A75", "#7575A0", "#A6A6C0", "#A0A0BD", "#BBBBC8", "#D8D8E5"]
       },
       "text-muted": {
         "role": "neutral",
         "displayName": "Text Muted",
         "canonical": "oklch(33% 0.04 280)",
-        "tonalRamp": ["#1C1C26", "#2A2A38", "#33334A", "#44445A", "#5A5A75", "#6E6E88", "#8888AA", "#A0A0BD"]
+        "tonalRamp": ["#1C1C26", "#2A2A38", "#33334A", "#44445A", "#5A5A75", "#6E6E88", "#A6A6C0", "#A0A0BD"]
       },
       "accent": {
         "role": "primary",
@@ -68,49 +68,49 @@
         "role": "secondary",
         "displayName": "Tag · Roles (Rose)",
         "canonical": "oklch(62% 0.16 5)",
-        "tonalRamp": ["#3D1620", "#5E2030", "#7E2C40", "#9F3850", "#B23F5A", "#CF566E", "#DD7A8C", "#EBA8B5"]
+        "tonalRamp": ["#3D1620", "#5E2030", "#7E2C40", "#9F3850", "#A43A53", "#D9798C", "#DD7A8C", "#EBA8B5"]
       },
       "tag-languages": {
         "role": "secondary",
         "displayName": "Tag · Languages (Sky)",
         "canonical": "oklch(62% 0.13 245)",
-        "tonalRamp": ["#0F2E48", "#173F60", "#1F517C", "#286596", "#2F7EB3", "#56A0CF", "#82BAD9", "#B8D8EA"]
+        "tonalRamp": ["#0F2E48", "#173F60", "#1F517C", "#286596", "#26658F", "#56A0CF", "#82BAD9", "#B8D8EA"]
       },
       "tag-technologies": {
         "role": "secondary",
         "displayName": "Tag · Technologies (Teal)",
         "canonical": "oklch(72% 0.14 165)",
-        "tonalRamp": ["#0E382A", "#155138", "#1B6948", "#22825C", "#2FA67F", "#56CF9E", "#86E0BB", "#BCEFD7"]
+        "tonalRamp": ["#0E382A", "#155138", "#1B6948", "#22825C", "#1F6C53", "#56CF9E", "#86E0BB", "#BCEFD7"]
       },
       "tag-libraries": {
         "role": "secondary",
         "displayName": "Tag · Libraries (Amber)",
         "canonical": "oklch(72% 0.12 70)",
-        "tonalRamp": ["#3A2810", "#5A3D18", "#7A5220", "#9A6A2D", "#B5803B", "#CF9A56", "#DDB888", "#EBD2B5"]
+        "tonalRamp": ["#3A2810", "#5A3D18", "#7A5220", "#9A6A2D", "#7F5A29", "#CF9A56", "#DDB888", "#EBD2B5"]
       },
       "tag-domains": {
         "role": "secondary",
         "displayName": "Tag · Domains (Iris)",
         "canonical": "oklch(58% 0.18 300)",
-        "tonalRamp": ["#2A1248", "#3F1A66", "#54237F", "#6B2D9D", "#7F3FB5", "#9E56CF", "#BC85DD", "#D6B5EB"]
+        "tonalRamp": ["#2A1248", "#3F1A66", "#54237F", "#6B2D9D", "#7F3FB5", "#B680DB", "#BC85DD", "#D6B5EB"]
       },
       "tag-concepts": {
         "role": "secondary",
         "displayName": "Tag · Concepts (Persimmon)",
         "canonical": "oklch(68% 0.14 45)",
-        "tonalRamp": ["#3A1F10", "#5A301A", "#7A4022", "#9A4F2C", "#B55F3F", "#CF7856", "#DD9A82", "#EBC1B0"]
+        "tonalRamp": ["#3A1F10", "#5A301A", "#7A4022", "#9A4F2C", "#934D33", "#D28162", "#DD9A82", "#EBC1B0"]
       },
       "tag-scale": {
         "role": "secondary",
         "displayName": "Tag · Scale (Sap)",
         "canonical": "oklch(72% 0.18 145)",
-        "tonalRamp": ["#103810", "#185018", "#226822", "#2F852F", "#3FAA3F", "#56CF56", "#88E088", "#BCEEBB"]
+        "tonalRamp": ["#103810", "#185018", "#226822", "#2F852F", "#286D28", "#56CF56", "#88E088", "#BCEEBB"]
       },
       "tag-soft-skills": {
         "role": "secondary",
         "displayName": "Tag · Soft Skills (Fuchsia)",
         "canonical": "oklch(62% 0.20 340)",
-        "tonalRamp": ["#3D1238", "#5F1A54", "#7F236F", "#9F2D8B", "#B53F9F", "#CF56B8", "#DD86CB", "#EBB8DC"]
+        "tonalRamp": ["#3D1238", "#5F1A54", "#7F236F", "#9F2D8B", "#9C3689", "#D771C3", "#DD86CB", "#EBB8DC"]
       }
     },
     "typographyMeta": {

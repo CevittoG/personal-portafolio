@@ -16,8 +16,8 @@
 
   /* Text */
   --color-text-primary:     #F0F0FF;
-  --color-text-secondary:   #8888AA;
-  --color-text-muted:       #7A7A95; /* 4.75:1 on bg — AA for small text */
+  --color-text-secondary:   #A6A6C0;
+  --color-text-muted:       #9595AA; /* ≥4.6:1 on bg, surface and surface-elevated — AA for small text */
 
   /* Accent — Ember Sunset (DESIGN.md §2 "Lamp Ember"). The one warm light
      in The Quiet Workshop. Single accent across CTAs, focus rings, link
@@ -31,14 +31,14 @@
   --color-on-accent:        #0A0A0F;
 
   /* Tag-type colors (one per taxonomy type — see plan §3) */
-  --color-tag-roles:        #CF566E;
+  --color-tag-roles:        #D9798C;
   --color-tag-languages:    #56A0CF;
   --color-tag-technologies: #56CF9E;
   --color-tag-libraries:    #CF9A56;
-  --color-tag-domains:      #9E56CF;
-  --color-tag-concepts:     #CF7856;
+  --color-tag-domains:      #B680DB;
+  --color-tag-concepts:     #D28162;
   --color-tag-scale:        #56CF56;
-  --color-tag-soft-skills:  #CF56B8;
+  --color-tag-soft-skills:  #D771C3;
 }
 
 /* Light mode override (plan §17). Dark remains default; this block only
@@ -56,7 +56,7 @@
   /* Text — deep slate stack */
   --color-text-primary:     #0F172A;
   --color-text-secondary:   #475569;
-  --color-text-muted:       #64748B; /* 4.57:1 on bg — AA for small text */
+  --color-text-muted:       #546175; /* ≥4.6:1 on bg, surface and surface-elevated — AA for small text */
 
   /* Accent — Ember Sunset, darker for AA contrast on the light surface */
   --color-accent:           #B23F12;
@@ -65,14 +65,14 @@
   --color-on-accent:        #FFFFFF;
 
   /* Tag-type colors — same hue, dropped saturation + lightness */
-  --color-tag-roles:        #B23F5A;
-  --color-tag-languages:    #2F7EB3;
-  --color-tag-technologies: #2FA67F;
-  --color-tag-libraries:    #B5803B;
+  --color-tag-roles:        #A43A53;
+  --color-tag-languages:    #26658F;
+  --color-tag-technologies: #1F6C53;
+  --color-tag-libraries:    #7F5A29;
   --color-tag-domains:      #7F3FB5;
-  --color-tag-concepts:     #B55F3F;
-  --color-tag-scale:        #3FAA3F;
-  --color-tag-soft-skills:  #B53F9F;
+  --color-tag-concepts:     #934D33;
+  --color-tag-scale:        #286D28;
+  --color-tag-soft-skills:  #9C3689;
 }
 
 /* Smooth theme cross-fade. Scoped to the root and the shared border-color

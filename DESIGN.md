@@ -7,19 +7,19 @@ colors:
   surface-elevated: "#1C1C26"
   border: "#2A2A38"
   text-primary: "#F0F0FF"
-  text-secondary: "#8888AA"
-  text-muted: "#7A7A95"
+  text-secondary: "#A6A6C0"
+  text-muted: "#9595AA"
   accent: "#E5642E"
   accent-hover: "#F07A45"
   accent-subtle: "#E5642E22"
-  tag-roles: "#CF566E"
+  tag-roles: "#D9798C"
   tag-languages: "#56A0CF"
   tag-technologies: "#56CF9E"
   tag-libraries: "#CF9A56"
-  tag-domains: "#9E56CF"
-  tag-concepts: "#CF7856"
+  tag-domains: "#B680DB"
+  tag-concepts: "#D28162"
   tag-scale: "#56CF56"
-  tag-soft-skills: "#CF56B8"
+  tag-soft-skills: "#D771C3"
 typography:
   display:
     fontFamily: "ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
@@ -162,21 +162,21 @@ A dark, faintly blue-tinted interior with one warm lamp and a controlled spectru
 - **Bench Surface Elevated** (`#1C1C26` dark / `#F2F2F7` light): hover state for cards, scrolled navbar background. Tonal lift, never a shadow.
 - **Border Slate** (`#2A2A38` dark / `#E2E2EC` light): subtle dividers and outlines. Used heavily as a quiet line, never as decoration.
 - **Text Primary** (`#F0F0FF` dark / `#0F172A` light): slightly-cool body and heading color. Easier on eyes than pure white.
-- **Text Secondary** (`#8888AA` dark / `#475569` light): muted labels, sub-headings, metadata.
-- **Text Muted** (`#7A7A95` dark / `#64748B` light): placeholders, disabled controls, period text on cards. Raised 2026-09-27 to meet AA (4.5:1) for small text; the previous `#44445A` / `#94A3B8` were 2.1:1 / 2.5:1.
+- **Text Secondary** (`#A6A6C0` dark / `#475569` light): muted labels, sub-headings, metadata.
+- **Text Muted** (`#9595AA` dark / `#546175` light): placeholders, disabled controls, period text on cards. Raised 2026-09-27 to meet AA (4.5:1) for small text; the previous `#44445A` / `#94A3B8` were 2.1:1 / 2.5:1.
 - **On Accent** (`#0A0A0F` dark / `#FFFFFF` light): text and icons on ember-filled CTAs. Dark ink in dark mode because white on `#E5642E` is only 3.4:1.
 
 ### Tag Spectrum (semantic, full palette)
 Eight hues, one per taxonomy type, rotated around the wheel so adjacent types remain distinguishable. Tag colors are NEVER used for non-taxonomy purposes — they encode meaning, and using them decoratively dilutes that contract.
 
-- **Tag · Roles** — Rose (`#CF566E` / `#B23F5A`)
-- **Tag · Languages** — Sky (`#56A0CF` / `#2F7EB3`)
-- **Tag · Technologies** — Teal (`#56CF9E` / `#2FA67F`)
-- **Tag · Libraries** — Amber (`#CF9A56` / `#B5803B`)
-- **Tag · Domains** — Iris (`#9E56CF` / `#7F3FB5`)
-- **Tag · Concepts** — Persimmon (`#CF7856` / `#B55F3F`)
-- **Tag · Scale** — Sap (`#56CF56` / `#3FAA3F`)
-- **Tag · Soft Skills** — Fuchsia (`#CF56B8` / `#B53F9F`)
+- **Tag · Roles** — Rose (`#D9798C` / `#A43A53`)
+- **Tag · Languages** — Sky (`#56A0CF` / `#26658F`)
+- **Tag · Technologies** — Teal (`#56CF9E` / `#1F6C53`)
+- **Tag · Libraries** — Amber (`#CF9A56` / `#7F5A29`)
+- **Tag · Domains** — Iris (`#B680DB` / `#7F3FB5`)
+- **Tag · Concepts** — Persimmon (`#D28162` / `#934D33`)
+- **Tag · Scale** — Sap (`#56CF56` / `#286D28`)
+- **Tag · Soft Skills** — Fuchsia (`#D771C3` / `#9C3689`)
 
 ### Named Rules
 

@@ -239,7 +239,7 @@ function Sidebar({
                     ▸
                   </span>
                   <span>{tagTypeLabel(type)}</span>
-                  <span className="text-text-muted/80">({slugs.length})</span>
+                  <span>({slugs.length})</span>
                 </summary>
                 <div className="flex flex-wrap gap-1.5 pb-2 pt-1">
                   {slugs.map((slug) => (
