@@ -13,3 +13,8 @@ next-env.d.ts
 # IDE
 .vscode/
 .idea/
+
+# Test and audit output
+.lighthouseci/
+test-results/
+playwright-report/
