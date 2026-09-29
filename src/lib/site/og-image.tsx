@@ -103,6 +103,7 @@ const PAGE_EYEBROW = {
   home: null,
   story: "story.eyebrow",
   contact: "contact.eyebrow",
+  "how-its-built": "howItsBuilt.eyebrow",
 } as const satisfies Record<StaticPage, string | null>;
 
 /** `/og/<id>.png` path for a fixed page. */
@@ -129,10 +130,14 @@ export function allShareImageIds(
 }
 
 export function renderShareImageById(id: string): ImageResponse {
-  const [locale, kind, ...rest] = id.split("-");
+  // "<locale>-<page>" or "<locale>-experience-<entry id>". Page ids may
+  // contain dashes ("how-its-built"), so only the locale is split off.
+  const dash = id.indexOf("-");
+  const locale = id.slice(0, dash);
+  const kind = id.slice(dash + 1);
   if (!isLocale(locale)) throw new Error(`Unknown share image: ${id}`);
-  if (kind === "experience") {
-    const entry = experienceRepository.getById(rest.join("-"));
+  if (kind.startsWith("experience-")) {
+    const entry = experienceRepository.getById(kind.slice("experience-".length));
     return renderShareImage({
       locale,
       headline: entry ? experienceTitle(entry) : undefined,

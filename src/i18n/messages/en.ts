@@ -34,6 +34,7 @@ export const en = {
     github: "GitHub",
     linkedin: "LinkedIn",
     email: "Email",
+    howItsBuilt: "How it's built",
   },
   hero: {
     greeting: "Hi, I'm",
@@ -233,6 +234,103 @@ export const en = {
       emailBody:
         "Hi Sebastián,\n\nI'd like to see your résumé for this role:\n\nRole:\nCompany:\nJob posting link:\nLocation or remote:\n\nAnything else I should know:\n\nThanks,\n",
     },
+  },
+  howItsBuilt: {
+    metaTitle: "How it's built | {name}",
+    metaDescription:
+      "The engineering behind this site: validated content, a static bilingual build, and CI that tests routes, accessibility and performance before anything deploys.",
+    eyebrow: "How it's built",
+    title: "Built like a small data product",
+    intro:
+      "Content lives in versioned files with a schema, every build validates it, and every change has to pass the same checks before it reaches production. Here is how that works, and the trade-offs behind it.",
+    pipelineTitle: "From notes to a deployed page",
+    pipeline: [
+      {
+        title: "Source notes",
+        body: "Each role starts as a Markdown document. A Claude skill turns those notes into two JSON files: a controlled vocabulary of tags and the experience entries themselves.",
+      },
+      {
+        title: "Contracts",
+        body: "Zod schemas define both files, and the TypeScript types are inferred from them, so the data, the types and the validator can't drift apart.",
+      },
+      {
+        title: "Cross-file rules",
+        body: "A validator checks what a schema can't: every tag exists under the right type, ids are unique, and the lists in code (search aliases, starter tags, timeline lanes) point at real data.",
+      },
+      {
+        title: "Static build",
+        body: "Invalid content fails the build with a readable list of problems. Valid content becomes plain HTML in English and Spanish, with canonical links, hreflang, a sitemap and share images.",
+      },
+      {
+        title: "Deploy and measure",
+        body: "The site runs as static files on Render behind Cloudflare, with no server or database. Umami records a small set of typed events, like which skills visitors filter by.",
+      },
+    ],
+    gatesTitle: "What every change has to pass",
+    gates: [
+      {
+        title: "Lint and types",
+        body: "ESLint and strict TypeScript, including typed message keys, so a missing translation is a compile error.",
+      },
+      {
+        title: "Content validation",
+        body: "The schemas and cross-file rules, run on their own before the build.",
+      },
+      {
+        title: "Unit tests",
+        body: "Date math, overlap-merged years of experience, sorting, related-role scoring, search aliases and typo matching, and tests that break the data on purpose to prove the validator catches it.",
+      },
+      {
+        title: "End-to-end tests",
+        body: "Every page in both languages returns 200 with the right language, canonical link and hreflang, and hydrates without errors, with and without reduced motion.",
+      },
+      {
+        title: "Accessibility",
+        body: "Automated color-contrast checks in dark and light theme on every page. Their first run found real failures; the color tokens are now computed to clear 4.6:1 on every surface.",
+      },
+      {
+        title: "Lighthouse budget",
+        body: "Accessibility and SEO at 95 or more and best practices at 90 or more fail the build if they drop; performance is tracked as a warning.",
+      },
+    ],
+    decisionsTitle: "Decisions and their trade-offs",
+    tradeoffLabel: "Trade-off:",
+    decisions: [
+      {
+        title: "Static export, no server",
+        body: "The content changes when I edit it, so every page is prerendered and served as files.",
+        tradeoff: "no per-request logic; anything dynamic happens at build time or in the browser.",
+      },
+      {
+        title: "A small custom i18n layer",
+        body: "English stays at /story and Spanish at /es/story. The common library does that with middleware, which a static site can't run, so the translator and path helpers are about 200 lines of typed code.",
+        tradeoff: "no plural rules, and Spanish pages get their language attribute from a pre-paint script for now.",
+      },
+      {
+        title: "Files with contracts, not a CMS",
+        body: "Two JSON files in git are the whole content model: diffable, reviewable, and validated on every build.",
+        tradeoff: "an edit needs a pull request, and the step from raw JSON to typed data is one documented assumption backed by validation.",
+      },
+      {
+        title: "Server by default",
+        body: "Pages render on the server; only the search, grid and drawer run in the browser. Anything that depends on today's date renders at build time, so the HTML and the hydrated page can't disagree.",
+        tradeoff: "the interactive part still receives more data than it shows. Trimming that is the next step.",
+      },
+      {
+        title: "Résumé on request",
+        body: "There is no PDF to download. The site carries what a screen needs, and the résumé comes by email, tailored to the role.",
+        tradeoff: "one more step for a recruiter, in exchange for a conversation.",
+      },
+      {
+        title: "Accessibility is tested",
+        body: "Contrast is measured, text never goes below 12px, touch targets are at least 24px, and motion respects the reduced-motion setting.",
+        tradeoff: "a slightly less saturated tag palette.",
+      },
+    ],
+    sourceTitle: "Read the code",
+    sourceBody:
+      "The repository is public: the data contracts, the tests and the CI workflow are all there, with an architecture overview in the README.",
+    sourceCta: "View the repository",
   },
   notFound: {
     code: "404",

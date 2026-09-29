@@ -21,6 +21,8 @@ export interface SiteConfig {
   links: {
     github: string;
     linkedin: string;
+    /** This site's source, linked from "How it's built". */
+    repo: string;
   };
   /** Availability boolean for the Contact page badge (plan §9). The
    *  human-readable strings come from `t("contact.availability.*")`. */
@@ -37,6 +39,7 @@ export const siteConfig: SiteConfig = {
   links: {
     github: "https://github.com/CevittoG",
     linkedin: "https://www.linkedin.com/in/asebagutierrezm/",
+    repo: "https://github.com/CevittoG/personal-portafolio",
   },
   availability: {
     open: true,

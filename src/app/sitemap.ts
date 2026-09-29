@@ -17,6 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/",
     "/story",
     "/contact",
+    "/how-its-built",
     ...experienceRepository.getAll().map((e) => `/experience/${e.id}`),
   ];
   const absolute = (path: string) =>

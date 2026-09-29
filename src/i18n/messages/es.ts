@@ -32,6 +32,7 @@ export const es: Messages = {
     github: "GitHub",
     linkedin: "LinkedIn",
     email: "Correo",
+    howItsBuilt: "Cómo está construido",
   },
   hero: {
     greeting: "Hola, soy",
@@ -231,6 +232,103 @@ export const es: Messages = {
       emailBody:
         "Hola Sebastián,\n\nMe gustaría ver tu CV para este puesto:\n\nRol:\nEmpresa:\nEnlace a la oferta:\nUbicación o remoto:\n\nAlgo más que debería saber:\n\nGracias,\n",
     },
+  },
+  howItsBuilt: {
+    metaTitle: "Cómo está construido | {name}",
+    metaDescription:
+      "La ingeniería detrás de este sitio: contenido validado, un build estático bilingüe y un CI que prueba rutas, accesibilidad y rendimiento antes de publicar.",
+    eyebrow: "Cómo está construido",
+    title: "Construido como un pequeño producto de datos",
+    intro:
+      "El contenido vive en archivos versionados con un esquema, cada build lo valida y cada cambio pasa los mismos controles antes de llegar a producción. Así funciona, y estos son sus trade-offs.",
+    pipelineTitle: "De las notas a una página publicada",
+    pipeline: [
+      {
+        title: "Notas de origen",
+        body: "Cada rol parte como un documento Markdown. Una skill de Claude convierte esas notas en dos archivos JSON: un vocabulario controlado de etiquetas y las experiencias.",
+      },
+      {
+        title: "Contratos",
+        body: "Esquemas Zod definen ambos archivos y los tipos de TypeScript se infieren de ellos, así que datos, tipos y validador no pueden desalinearse.",
+      },
+      {
+        title: "Reglas entre archivos",
+        body: "Un validador revisa lo que un esquema no puede: cada etiqueta existe en el tipo correcto, los ids son únicos y las listas del código (alias de búsqueda, etiquetas iniciales, carriles de la línea de tiempo) apuntan a datos reales.",
+      },
+      {
+        title: "Build estático",
+        body: "Si el contenido no es válido, el build falla con una lista legible de problemas. Si es válido, se convierte en HTML en inglés y español, con enlaces canónicos, hreflang, sitemap e imágenes para compartir.",
+      },
+      {
+        title: "Publicar y medir",
+        body: "El sitio corre como archivos estáticos en Render detrás de Cloudflare, sin servidor ni base de datos. Umami registra un conjunto pequeño de eventos tipados, como por qué habilidades filtran los visitantes.",
+      },
+    ],
+    gatesTitle: "Lo que cada cambio debe pasar",
+    gates: [
+      {
+        title: "Lint y tipos",
+        body: "ESLint y TypeScript estricto, incluidas las claves de traducción tipadas, así que una traducción faltante es un error de compilación.",
+      },
+      {
+        title: "Validación de contenido",
+        body: "Los esquemas y las reglas entre archivos, ejecutados por separado antes del build.",
+      },
+      {
+        title: "Pruebas unitarias",
+        body: "Cálculo de fechas, años de experiencia con períodos superpuestos fusionados, orden, puntaje de roles relacionados, alias de búsqueda y tolerancia a errores de tipeo, y pruebas que rompen los datos a propósito para demostrar que el validador lo detecta.",
+      },
+      {
+        title: "Pruebas end-to-end",
+        body: "Cada página en ambos idiomas responde 200 con el idioma, el enlace canónico y el hreflang correctos, y se hidrata sin errores, con y sin movimiento reducido.",
+      },
+      {
+        title: "Accesibilidad",
+        body: "Chequeos automáticos de contraste en tema oscuro y claro en cada página. Su primera ejecución encontró fallas reales; los tokens de color ahora se calculan para superar 4,6:1 en cada superficie.",
+      },
+      {
+        title: "Presupuesto de Lighthouse",
+        body: "Si accesibilidad y SEO bajan de 95 o buenas prácticas de 90, el build falla; el rendimiento se sigue como advertencia.",
+      },
+    ],
+    decisionsTitle: "Decisiones y sus trade-offs",
+    tradeoffLabel: "Trade-off:",
+    decisions: [
+      {
+        title: "Export estático, sin servidor",
+        body: "El contenido cambia cuando yo lo edito, así que cada página se prerenderiza y se sirve como archivo.",
+        tradeoff: "no hay lógica por solicitud; lo dinámico ocurre en el build o en el navegador.",
+      },
+      {
+        title: "Una capa de i18n propia y pequeña",
+        body: "El inglés queda en /story y el español en /es/story. La librería habitual lo resuelve con middleware, que un sitio estático no puede ejecutar, así que el traductor y los helpers de rutas son unas 200 líneas de código tipado.",
+        tradeoff: "no hay reglas de plural, y por ahora las páginas en español reciben su atributo de idioma desde un script previo al render.",
+      },
+      {
+        title: "Archivos con contratos, no un CMS",
+        body: "Dos archivos JSON en git son todo el modelo de contenido: se pueden comparar, revisar y validar en cada build.",
+        tradeoff: "editar requiere un pull request, y el paso de JSON crudo a datos tipados es una suposición documentada respaldada por la validación.",
+      },
+      {
+        title: "Servidor por defecto",
+        body: "Las páginas se renderizan en el servidor; solo la búsqueda, la grilla y el panel corren en el navegador. Lo que depende de la fecha de hoy se renderiza en el build, así el HTML y la página hidratada no pueden diferir.",
+        tradeoff: "la parte interactiva todavía recibe más datos de los que muestra. Reducir eso es el siguiente paso.",
+      },
+      {
+        title: "CV a pedido",
+        body: "No hay PDF para descargar. El sitio entrega lo que necesita una primera revisión, y el CV llega por correo, adaptado al rol.",
+        tradeoff: "un paso más para quien recluta, a cambio de una conversación.",
+      },
+      {
+        title: "La accesibilidad se prueba",
+        body: "El contraste se mide, el texto nunca baja de 12px, las zonas táctiles miden al menos 24px y el movimiento respeta la preferencia de movimiento reducido.",
+        tradeoff: "una paleta de etiquetas un poco menos saturada.",
+      },
+    ],
+    sourceTitle: "Lee el código",
+    sourceBody:
+      "El repositorio es público: los contratos de datos, las pruebas y el workflow de CI están ahí, con una descripción de la arquitectura en el README.",
+    sourceCta: "Ver el repositorio",
   },
   notFound: {
     code: "404",

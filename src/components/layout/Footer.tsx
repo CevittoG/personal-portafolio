@@ -2,7 +2,9 @@
 
 import { cn } from "@/lib/utils";
 import { OWNER_NAME, SOCIAL_LINKS } from "./social-links";
-import { useTranslations } from "@/i18n/I18nProvider";
+import Link from "next/link";
+import { useLocale, useTranslations } from "@/i18n/I18nProvider";
+import { withLocale } from "@/i18n/path";
 
 /**
  * Global Footer (plan §5, §18).
@@ -13,6 +15,7 @@ import { useTranslations } from "@/i18n/I18nProvider";
  */
 export function Footer() {
   const t = useTranslations();
+  const locale = useLocale();
   const year = new Date().getFullYear();
 
   return (
@@ -23,9 +26,22 @@ export function Footer() {
           "px-6 py-6 flex-col sm:flex-row",
         )}
       >
-        <p className="text-xs text-text-muted">
-          {t("footer.rights", { year, name: OWNER_NAME })}
-        </p>
+        <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-4">
+          <p className="text-xs text-text-muted">
+            {t("footer.rights", { year, name: OWNER_NAME })}
+          </p>
+          <Link
+            href={withLocale("/how-its-built", locale)}
+            className={cn(
+              "inline-flex min-h-6 items-center rounded-sm text-xs text-text-secondary",
+              "underline decoration-border underline-offset-4",
+              "hover:text-accent hover:decoration-accent transition-colors duration-150",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+            )}
+          >
+            {t("footer.howItsBuilt")}
+          </Link>
+        </div>
         <ul className="flex items-center gap-2">
           {SOCIAL_LINKS.map((link) => (
             <li key={link.label}>
