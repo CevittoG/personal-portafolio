@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { AnimatePresence, motion } from "framer-motion";
+import * as m from "motion/react-m";
+import { AnimatePresence } from "motion/react";
 import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS } from "./nav-items";
@@ -157,7 +158,7 @@ export function Navbar() {
       {/* Mobile overlay */}
       <AnimatePresence>
         {mobileOpen && (
-          <motion.div
+          <m.div
             id="mobile-nav"
             role="dialog"
             aria-modal="true"
@@ -172,7 +173,7 @@ export function Navbar() {
             // top-0, so top-16 + (100dvh - 4rem) covers the viewport.
             className="sm:hidden fixed inset-x-0 top-16 z-30 h-[calc(100dvh-4rem)] overflow-y-auto bg-bg"
           >
-            <motion.ul
+            <m.ul
               initial={{ y: -8, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -8, opacity: 0 }}
@@ -213,8 +214,8 @@ export function Navbar() {
                   className="justify-center gap-4"
                 />
               </li>
-            </motion.ul>
-          </motion.div>
+            </m.ul>
+          </m.div>
         )}
       </AnimatePresence>
     </header>

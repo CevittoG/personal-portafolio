@@ -8,7 +8,8 @@ import {
   useState,
   type KeyboardEvent,
 } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import * as m from "motion/react-m";
+import { AnimatePresence, useReducedMotion } from "motion/react";
 import { track } from "@/lib/analytics/umami";
 import { closestMatches } from "@/lib/search/closest";
 import { defaultSearchStrategy } from "@/lib/search/substring";
@@ -227,7 +228,7 @@ export function SearchBar({
 
       <AnimatePresence>
         {showDropdown && (
-        <motion.div
+        <m.div
           {...panelMotion}
           id={listboxId}
           role="listbox"
@@ -291,13 +292,13 @@ export function SearchBar({
               </ul>
             </div>
           ))}
-        </motion.div>
+        </m.div>
         )}
       </AnimatePresence>
 
       <AnimatePresence>
         {open && options.length === 0 && (
-          <motion.div
+          <m.div
             {...panelMotion}
             className={cn(
               "absolute z-50 mt-2 w-full rounded-xl border border-border",
@@ -336,7 +337,7 @@ export function SearchBar({
                 )}
               </>
             )}
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
     </div>

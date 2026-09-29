@@ -1,7 +1,8 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import * as m from "motion/react-m";
+import { AnimatePresence, useReducedMotion } from "motion/react";
 import { ExperienceCard } from "@/components/experience/ExperienceCard";
 import { MAX_STAGGER_DELAY } from "@/components/motion/Reveal";
 import { matchesAllTags } from "@/lib/filters/tag-match";
@@ -132,20 +133,20 @@ export function ExperienceGrid({
 
       {/* Grid or empty state */}
       {!isEmpty && (
-        <motion.div layout className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <m.div layout className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence initial={true}>
             {sorted.map((entry, i) => (
-              <motion.div key={entry.id} {...cardMotion(i)}>
+              <m.div key={entry.id} {...cardMotion(i)}>
                 <ExperienceCard
                   entry={entry}
                   filterTags={activeSlugs as string[]}
                   onSelect={onSelect ? () => onSelect(entry) : undefined}
                   onTagSelect={onTagSelect}
                 />
-              </motion.div>
+              </m.div>
             ))}
           </AnimatePresence>
-        </motion.div>
+        </m.div>
       )}
 
       {isEmpty && (

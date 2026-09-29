@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
+import * as m from "motion/react-m";
+import { AnimatePresence, useReducedMotion } from "motion/react";
 import { TagPill } from "@/components/tags/TagPill";
 import { tagTypeLabel } from "@/lib/taxonomy/labels";
 import { useTranslations } from "@/i18n/I18nProvider";
@@ -66,7 +67,7 @@ export function ActiveFilterChips({
           const tag = taxonomyBySlug.get(slug);
           if (!tag) return null;
           return (
-            <motion.span key={slug} {...chipMotion} className="inline-flex">
+            <m.span key={slug} {...chipMotion} className="inline-flex">
               <TagPill
                 slug={slug}
                 label={tag.display_name}
@@ -79,7 +80,7 @@ export function ActiveFilterChips({
                 }}
                 removeAriaLabel={t("filters.removeTag", { label: tag.display_name })}
               />
-            </motion.span>
+            </m.span>
           );
         })}
       </AnimatePresence>

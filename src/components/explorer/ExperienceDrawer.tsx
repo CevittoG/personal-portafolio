@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef } from "react";
-import { motion, AnimatePresence, type PanInfo, useReducedMotion } from "framer-motion";
+import * as m from "motion/react-m";
+import { AnimatePresence, type PanInfo, useReducedMotion } from "motion/react";
 import { TagPill } from "@/components/tags/TagPill";
 import { renderInline } from "@/lib/experience/description";
 import { ContactActions } from "@/components/contact/ContactLinks";
@@ -122,7 +123,7 @@ export function ExperienceDrawer({
           aria-labelledby={titleId}
         >
           {/* Overlay */}
-          <motion.button
+          <m.button
             type="button"
             aria-label={t("drawer.closeDrawer")}
             onClick={onClose}
@@ -134,7 +135,7 @@ export function ExperienceDrawer({
           />
 
           {/* Panel */}
-          <motion.aside
+          <m.aside
             initial={panelVariants.initial}
             animate={panelVariants.animate}
             exit={panelVariants.exit}
@@ -168,7 +169,7 @@ export function ExperienceDrawer({
               detailHref={resolveDetailHref(entry)}
               isDesktop={isDesktop}
             />
-          </motion.aside>
+          </m.aside>
         </div>
       )}
     </AnimatePresence>

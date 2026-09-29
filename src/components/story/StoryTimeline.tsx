@@ -2,7 +2,8 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import * as m from "motion/react-m";
+import { useScroll, useSpring, useTransform } from "motion/react";
 import { Reveal } from "@/components/motion/Reveal";
 import { useReducedMotionAfterMount } from "@/lib/hooks/use-reduced-motion";
 import { TagPill } from "@/components/tags/TagPill";
@@ -89,7 +90,7 @@ export function StoryTimeline({
       />
       {/* Scroll-linked accent overlay drawing the rail in as you read */}
       {!reduceMotion && (
-        <motion.span
+        <m.span
           aria-hidden="true"
           style={{ scaleY, transformOrigin: "top" }}
           className={cn(

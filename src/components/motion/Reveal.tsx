@@ -1,118 +1,21 @@
-"use client";
-
-import { motion } from "framer-motion";
-import type { ElementType, ReactNode } from "react";
-import { Children, isValidElement } from "react";
-import { useReducedMotionAfterMount } from "@/lib/hooks/use-reduced-motion";
+import type { ReactNode } from "react";
+import { cn } from "@/lib/utils";
 
 /**
- * Reveal — site-wide scroll-enter primitive (plan §15 polish, Layer A).
+ * Reveal — scroll-enter fade, in CSS (plan §15 polish, Layer A).
  *
- * Fades + nudges children upward as they cross into the viewport, once.
- * Honors `prefers-reduced-motion` by rendering the final state immediately,
- * switching after mount so the first client render matches the server HTML
- * (see `useReducedMotionAfterMount`).
- *
- * Renders a `motion.div`. Callers that need a different semantic tag wrap
- * the inner content with their own element. This keeps Framer Motion's
- * typing narrow and predictable.
- *
- * Motion law: 320ms, ease-out-quint, transform+opacity only. No bounce.
+ * A scroll-driven animation (`animation-timeline: view()`, see `.reveal`
+ * in globals.css) fades and nudges content up as it enters the viewport.
+ * No JavaScript and no hydration concerns: it renders the same markup on
+ * the server and the client. Browsers without scroll-driven animations,
+ * and visitors with reduced motion, simply see the content.
  */
-export interface RevealProps {
-  children: ReactNode;
-  /** Delay before the reveal kicks in, in seconds. Defaults to 0. */
-  delay?: number;
-  /** Y offset to start from, in px. Defaults to 8. */
-  y?: number;
-  /** Duration in seconds. Defaults to 0.32. */
-  duration?: number;
-  /** Fraction of element that must be in view to trigger. Defaults to 0.2. */
-  amount?: number;
-  className?: string;
+export function Reveal({ children, className }: { children: ReactNode; className?: string }) {
+  return <div className={cn("reveal", className)}>{children}</div>;
 }
-
-// Ease-out-quint approximation. Starts fast, settles slow — "quiet but deliberate".
-const EASE_OUT_QUINT: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 /**
  * Longest a staggered item may wait, in seconds. Past ~150ms a stagger
  * stops reading as rhythm and starts reading as the page being slow.
  */
 export const MAX_STAGGER_DELAY = 0.15;
-
-export function Reveal({
-  children,
-  delay = 0,
-  y = 8,
-  duration = 0.32,
-  amount = 0.2,
-  className,
-}: RevealProps) {
-  const reduceMotion = useReducedMotionAfterMount();
-
-  if (reduceMotion) {
-    return <div className={className}>{children}</div>;
-  }
-
-  return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount }}
-      transition={{ duration, delay, ease: EASE_OUT_QUINT }}
-    >
-      {children}
-    </motion.div>
-  );
-}
-
-/**
- * RevealStagger — wraps a list of children with sequential reveal delays.
- *
- * Each direct child is wrapped in its own `<Reveal>` with `step × index`
- * delay, capped at {@link MAX_STAGGER_DELAY}. The wrapper element tag is configurable via `as` (default `div`)
- * so callers can render semantic `<ul>` / `<ol>` lists.
- */
-export interface RevealStaggerProps {
-  children: ReactNode;
-  /** Delay between successive children, in seconds. Defaults to 0.06. */
-  step?: number;
-  /** Initial delay before the first child reveals. Defaults to 0. */
-  initialDelay?: number;
-  /** Y offset to start from, in px. Defaults to 8. */
-  y?: number;
-  /** Wrapper element tag. Defaults to `div`. */
-  as?: ElementType;
-  className?: string;
-  /** Class applied to each per-child Reveal. */
-  childClassName?: string;
-}
-
-export function RevealStagger({
-  children,
-  step = 0.06,
-  initialDelay = 0,
-  y = 8,
-  as,
-  className,
-  childClassName,
-}: RevealStaggerProps) {
-  const Wrapper = (as ?? "div") as ElementType;
-  const items = Children.toArray(children);
-  return (
-    <Wrapper className={className}>
-      {items.map((child, i) => (
-        <Reveal
-          key={isValidElement(child) && child.key != null ? child.key : i}
-          className={childClassName}
-          delay={Math.min(initialDelay + i * step, MAX_STAGGER_DELAY)}
-          y={y}
-        >
-          {child}
-        </Reveal>
-      ))}
-    </Wrapper>
-  );
-}

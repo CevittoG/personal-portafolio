@@ -3,6 +3,7 @@ import Script from "next/script";
 import type { ReactNode } from "react";
 import { assertValidContent } from "@/content/assert-valid";
 import { Footer } from "@/components/layout/Footer";
+import { MotionProvider } from "@/components/motion/MotionProvider";
 import { Navbar } from "@/components/layout/Navbar";
 import { I18nProvider } from "@/i18n/I18nProvider";
 import type { Locale } from "@/i18n/locale";
@@ -58,9 +59,11 @@ export function RootDocument({ locale, children }: { locale: Locale; children: R
       <body className="min-h-screen flex flex-col">
         <ThemeProvider>
           <I18nProvider locale={locale} messages={getMessages(locale)}>
-            <Navbar />
-            <div className="flex-1">{children}</div>
-            <Footer />
+            <MotionProvider>
+              <Navbar />
+              <div className="flex-1">{children}</div>
+              <Footer />
+            </MotionProvider>
           </I18nProvider>
         </ThemeProvider>
         {/* Umami analytics — cloud-hosted, fire-and-forget. `data-domains`

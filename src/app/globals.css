@@ -141,6 +141,29 @@ body {
    React state (e.g. the ThemeToggle icon). */
 @custom-variant light (&:where([data-theme="light"], [data-theme="light"] *));
 
+/* Scroll-enter reveal (<Reveal>): a scroll-driven animation, no JS. Only
+   where supported and wanted; everyone else sees the content as is. */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 35%;
+    }
+  }
+}
+
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @keyframes route-fade {
   from {
     opacity: 0;
