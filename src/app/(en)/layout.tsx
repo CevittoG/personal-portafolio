@@ -1,31 +1,14 @@
-import { Footer } from "@/components/layout/Footer";
-import { Navbar } from "@/components/layout/Navbar";
-import { I18nProvider } from "@/i18n/I18nProvider";
+import type { Metadata } from "next";
+import { RootDocument, rootMetadata } from "@/components/layout/RootDocument";
 import { DEFAULT_LOCALE } from "@/i18n/locale";
-import { getMessages } from "@/i18n/server";
+
+export const metadata: Metadata = rootMetadata(DEFAULT_LOCALE);
 
 /**
- * EN layout (plan §18).
- *
- * The (en) route group is invisible in URLs — pages here resolve at the
- * unprefixed root (`/`, `/story`, etc.). This layout wraps the tree in an
- * `I18nProvider` pinned to the default locale and renders the shared shell
- * (Navbar + Footer) so they consume the EN catalogue.
- *
- * Static export note: Next.js root layout can't branch on URL, so locale-
- * specific shell rendering has to live in per-locale layouts. ES has the
- * mirror at `src/app/es/layout.tsx`.
+ * EN root layout. The `(en)` route group is invisible in URLs, so pages here
+ * resolve at `/`, `/story`… and render `<html lang="en">`. The Spanish tree
+ * has its own root layout at `(es)/layout.tsx`; both share `RootDocument`.
  */
-export default function EnLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return (
-    <I18nProvider locale={DEFAULT_LOCALE} messages={getMessages(DEFAULT_LOCALE)}>
-      <Navbar />
-      <div className="flex-1">{children}</div>
-      <Footer />
-    </I18nProvider>
-  );
+export default function EnRootLayout({ children }: { children: React.ReactNode }) {
+  return <RootDocument locale={DEFAULT_LOCALE}>{children}</RootDocument>;
 }

@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 
 /**
- * Root template — site-wide route fade (plan §15 polish, Layer D).
+ * Route fade template (plan §15 polish, Layer D), re-exported as
+ * `template.tsx` by both root-layout groups, `(en)` and `(es)`.
  *
  * Next.js App Router re-mounts this on every route change, so the CSS
  * animation on `.route-fade` (globals.css) replays per navigation. 180ms

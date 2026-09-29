@@ -93,3 +93,18 @@ test("landing: search, filter and drawer work on the client island", async ({ pa
   // Labels come from the tag index, not a titleized slug ("Postgresql").
   await expect(drawer.getByText("PostgreSQL", { exact: true })).toBeVisible();
 });
+
+/**
+ * EN and ES are separate root layouts, so switching language is a full
+ * document load; the static HTML must already carry the right lang.
+ */
+test("language switcher moves between root layouts and keeps the page", async ({ page, request }) => {
+  const html = await (await request.get("/es/story")).text();
+  expect(html).toMatch(/<html[^>]*lang="es"/);
+
+  await page.goto("/story");
+  await page.getByRole("button", { name: "ES" }).first().click();
+  await expect(page).toHaveURL(/\/es\/story$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "es");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText("El camino que me trajo hasta aquí");
+});
