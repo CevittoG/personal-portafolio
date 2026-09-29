@@ -4,10 +4,9 @@ import {
   createContext,
   useCallback,
   useContext,
-  useEffect,
   useMemo,
-  useState,
   type ReactNode,
+  useSyncExternalStore,
 } from "react";
 import { defaultThemeStorage, type ThemeStorage } from "./storage";
 import { DEFAULT_THEME, type Theme } from "./types";
@@ -46,20 +45,19 @@ export function ThemeProvider({
   children,
   storage = defaultThemeStorage,
 }: ThemeProviderProps) {
-  // Start from the server's value: reading the DOM here would make the
-  // first client render differ from the static HTML whenever the inline
-  // script resolved "light" (stored preference or OS setting).
-  const [theme, setThemeState] = useState<Theme>(DEFAULT_THEME);
-
-  // After mount: adopt what the inline script resolved before paint.
-  useEffect(() => {
-    const fromDom = readDomTheme();
-    if (fromDom) setThemeState(fromDom);
-  }, []);
+  // `<html data-theme>` is the source of truth (the inline script sets it
+  // before paint). During hydration React uses the server snapshot
+  // (DEFAULT_THEME), so the first render matches the static HTML; right
+  // after, it reads the DOM and re-renders if they differ. No effect, no
+  // hydration mismatch.
+  const theme = useSyncExternalStore(
+    subscribeToDomTheme,
+    () => readDomTheme() ?? DEFAULT_THEME,
+    () => DEFAULT_THEME,
+  );
 
   const applyTheme = useCallback(
     (next: Theme) => {
-      setThemeState(next);
       if (typeof document !== "undefined") {
         document.documentElement.dataset.theme = next;
       }
@@ -78,6 +76,16 @@ export function ThemeProvider({
   );
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
+}
+
+/** Re-render when `<html data-theme>` changes (toggle, other tabs' writes). */
+function subscribeToDomTheme(onChange: () => void): () => void {
+  const observer = new MutationObserver(onChange);
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
+  return () => observer.disconnect();
 }
 
 /** Read the theme attribute set on `<html>` by the inline script. */

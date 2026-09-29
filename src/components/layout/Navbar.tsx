@@ -47,9 +47,13 @@ export function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  useEffect(() => {
+  // Close the mobile menu on navigation: adjust state during render when
+  // the pathname changes (React's recommended pattern, no effect).
+  const [menuPath, setMenuPath] = useState(pathname);
+  if (pathname !== menuPath) {
+    setMenuPath(pathname);
     setMobileOpen(false);
-  }, [pathname]);
+  }
 
   useEffect(() => {
     if (!mobileOpen) return;

@@ -120,10 +120,8 @@ export function SearchBar({
     return () => document.removeEventListener("mousedown", handler);
   }, [open]);
 
-  /* ── Keep activeIndex within bounds when options change ─────────── */
-  useEffect(() => {
-    if (activeIndex >= options.length) setActiveIndex(options.length - 1);
-  }, [options.length, activeIndex]);
+  /* ── Highlighted option, clamped to the current options ─────────── */
+  const current = Math.min(activeIndex, options.length - 1);
 
   /* ── Handlers ───────────────────────────────────────────────────── */
 
@@ -147,11 +145,11 @@ export function SearchBar({
       setActiveIndex((i) => Math.min(i + 1, options.length - 1));
     } else if (e.key === "ArrowUp") {
       e.preventDefault();
-      setActiveIndex((i) => Math.max(i - 1, 0));
+      setActiveIndex((i) => Math.max(Math.min(i, options.length - 1) - 1, 0));
     } else if (e.key === "Enter") {
-      if (open && activeIndex >= 0 && activeIndex < options.length) {
+      if (open && current >= 0) {
         e.preventDefault();
-        commit(options[activeIndex]);
+        commit(options[current]);
       }
     } else if (e.key === "Escape") {
       setOpen(false);
@@ -173,8 +171,8 @@ export function SearchBar({
 
   const showDropdown = open && options.length > 0;
   const activeId =
-    activeIndex >= 0 && activeIndex < options.length
-      ? optionDomId(listboxId, options[activeIndex].slug)
+    current >= 0
+      ? optionDomId(listboxId, options[current].slug)
       : undefined;
 
   const reduceMotion = useReducedMotion();
@@ -255,7 +253,7 @@ export function SearchBar({
               <ul role="presentation" className="flex flex-wrap gap-1">
                 {items.map((entry) => {
                   const idx = options.indexOf(entry);
-                  const isActive = idx === activeIndex;
+                  const isActive = idx === current;
                   return (
                     <li key={entry.slug} role="presentation">
                       <button
