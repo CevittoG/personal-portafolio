@@ -1,11 +1,11 @@
 "use client";
 
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { TagPill } from "@/components/tags/TagPill";
 import { tagTypeLabel } from "@/lib/taxonomy/labels";
 import { useTranslations } from "@/i18n/I18nProvider";
 import { track } from "@/lib/analytics/umami";
-import type { TaxonomyEntry } from "@/lib/taxonomy/types";
+import type { TagRef } from "@/lib/taxonomy/types";
 import { cn } from "@/lib/utils";
 
 /**
@@ -23,9 +23,9 @@ import { cn } from "@/lib/utils";
 export interface ActiveFilterChipsProps {
   /** Currently active tag slugs. Order is preserved in the rendered row. */
   slugs: readonly string[];
-  /** Slug → TaxonomyEntry lookup, supplied by the page so this component
-   *  stays decoupled from the repository (DIP). Unknown slugs are skipped. */
-  taxonomyBySlug: ReadonlyMap<string, TaxonomyEntry>;
+  /** Slug → tag lookup, supplied by the page so this component stays
+   *  decoupled from the repository. Unknown slugs are skipped. */
+  taxonomyBySlug: ReadonlyMap<string, TagRef>;
   onRemove: (slug: string) => void;
   onClear: () => void;
   className?: string;

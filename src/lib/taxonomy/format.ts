@@ -1,7 +1,9 @@
 import { taxonomyRepository } from "./json-repository";
 
 /**
- * Resolve a tag slug to its display label.
+ * Resolve a tag slug to its display label. Server-side: it reads the
+ * taxonomy repository. Client components use `useTagLabel()` instead, which
+ * reads the small index their page was given.
  * - When the slug exists in taxonomy → returns its `display_name`.
  * - Otherwise → titleizes the slug ("data-engineer" → "Data Engineer").
  *

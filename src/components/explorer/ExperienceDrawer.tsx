@@ -17,7 +17,7 @@ import type { ExperienceEntry } from "@/lib/experience/types";
 import { useLocale, useTranslations } from "@/i18n/I18nProvider";
 import { withLocale } from "@/i18n/path";
 import { useMediaQuery } from "@/lib/hooks/use-media-query";
-import { formatTagLabel } from "@/lib/taxonomy/format";
+import { useTagLabel } from "@/components/tags/TagIndex";
 import { tagTypeLabel } from "@/lib/taxonomy/labels";
 import { TAG_TYPES, type TagType } from "@/lib/taxonomy/types";
 import { cn } from "@/lib/utils";
@@ -384,6 +384,7 @@ function DrawerContent({
 }
 
 function TagBucket({ type, slugs }: { type: TagType; slugs: readonly string[] }) {
+  const tagLabel = useTagLabel();
   return (
     <div className="flex flex-wrap items-center gap-1.5">
       <span className="mr-1 text-xs uppercase tracking-wider text-text-muted">
@@ -393,7 +394,7 @@ function TagBucket({ type, slugs }: { type: TagType; slugs: readonly string[] })
         <TagPill
           key={slug}
           slug={slug}
-          label={formatTagLabel(slug)}
+          label={tagLabel(slug)}
           type={type}
           state="inactive"
         />

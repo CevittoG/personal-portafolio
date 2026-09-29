@@ -1,4 +1,4 @@
-import type { TaxonomyEntry } from "@/lib/taxonomy/types";
+import type { TagRef } from "@/lib/taxonomy/types";
 import { SEARCH_ALIASES } from "./aliases";
 import type { SearchStrategy } from "./types";
 
@@ -18,13 +18,13 @@ export class AliasSearchStrategy implements SearchStrategy {
     this.id = `alias+${inner.id}`;
   }
 
-  search(query: string, candidates: readonly TaxonomyEntry[]): TaxonomyEntry[] {
+  search<T extends TagRef>(query: string, candidates: readonly T[]): T[] {
     const q = query.trim().toLowerCase();
     const results = this.inner.search(query, candidates);
     if (q.length < 2) return results;
 
     const bySlug = new Map(candidates.map((c) => [c.slug, c]));
-    const aliasHits: TaxonomyEntry[] = [];
+    const aliasHits: T[] = [];
     for (const [alias, slug] of Object.entries(this.aliases)) {
       if (alias !== q && !alias.startsWith(q)) continue;
       const entry = bySlug.get(slug);

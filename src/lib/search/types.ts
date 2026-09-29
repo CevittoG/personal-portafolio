@@ -1,4 +1,4 @@
-import type { TaxonomyEntry } from "@/lib/taxonomy/types";
+import type { TagRef } from "@/lib/taxonomy/types";
 
 /**
  * SearchStrategy — pluggable algorithm for ranking taxonomy entries
@@ -12,8 +12,5 @@ export interface SearchStrategy {
    * return an empty array — the caller is responsible for the empty-state
    * (typically "top N tags by usage").
    */
-  search(
-    query: string,
-    candidates: readonly TaxonomyEntry[],
-  ): TaxonomyEntry[];
+  search<T extends TagRef>(query: string, candidates: readonly T[]): T[];
 }

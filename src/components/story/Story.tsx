@@ -3,7 +3,10 @@ import { NowMarker } from "@/components/story/NowMarker";
 import { PivotInterlude } from "@/components/story/PivotInterlude";
 import { StoryTimeline } from "@/components/story/StoryTimeline";
 import { experienceRepository } from "@/lib/experience/json-repository";
+import { toClientEntry } from "@/lib/experience/client-entry";
 import { localizeEntry } from "@/lib/experience/localize";
+import { buildTagIndex } from "@/lib/taxonomy/tag-index";
+import { TagIndexProvider } from "@/components/tags/TagIndex";
 import { sortEntries } from "@/lib/experience/sort";
 import type { ExperienceEntry } from "@/lib/experience/types";
 import { getMessages, getTranslator } from "@/i18n/server";
@@ -34,12 +37,18 @@ export function Story({ locale }: StoryProps) {
   const all = experienceRepository
     .getAll()
     .map((entry) => localizeEntry(entry, locale));
+  // The timeline is a client component: it gets trimmed entries (no
+  // long-form descriptions) and labels for just the tags it shows.
   const act1Entries = chronological(
     all.filter((e) => e.story_act === "foundation"),
-  );
+  ).map(toClientEntry);
   const act3Entries = chronological(
     all.filter((e) => e.story_act === "technical"),
-  );
+  ).map(toClientEntry);
+  const tagIndex = buildTagIndex([
+    ...act1Entries.flatMap((e) => e.tags.soft_skills),
+    ...act3Entries.flatMap((e) => e.tags.concepts),
+  ]);
 
   return (
     <main className="px-6 py-12 sm:py-16">
@@ -72,12 +81,14 @@ export function Story({ locale }: StoryProps) {
           intro={t("story.actOne.intro")}
         >
           {act1Entries.length > 0 ? (
-            <StoryTimeline
-              entries={act1Entries}
-              highlightTagType="soft_skills"
-              linkToDeepDive
-              locale={locale}
-            />
+            <TagIndexProvider index={tagIndex}>
+              <StoryTimeline
+                entries={act1Entries}
+                highlightTagType="soft_skills"
+                linkToDeepDive
+                locale={locale}
+              />
+            </TagIndexProvider>
           ) : (
             <ActPlaceholder
               title={t("story.actOne.emptyTitle")}
@@ -98,13 +109,15 @@ export function Story({ locale }: StoryProps) {
           intro={t("story.actThree.intro")}
         >
           {act3Entries.length > 0 ? (
-            <StoryTimeline
-              entries={act3Entries}
-              highlightTagType="concepts"
-              linkToDeepDive
-              locale={locale}
-              resultLabel={t("story.actThree.resultLabel")}
-            />
+            <TagIndexProvider index={tagIndex}>
+              <StoryTimeline
+                entries={act3Entries}
+                highlightTagType="concepts"
+                linkToDeepDive
+                locale={locale}
+                resultLabel={t("story.actThree.resultLabel")}
+              />
+            </TagIndexProvider>
           ) : (
             <ActPlaceholder
               title={t("story.actThree.emptyTitle")}

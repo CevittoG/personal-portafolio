@@ -23,7 +23,14 @@ const LINK = cn(
   "focus-visible:ring-offset-2 focus-visible:ring-offset-bg",
 );
 
-export function LandingTail({ locale }: { locale: Locale }) {
+export function LandingTail({
+  locale,
+  contactId,
+}: {
+  locale: Locale;
+  /** DOM id of the Contact block (the sticky pill yields to it). */
+  contactId: string;
+}) {
   const t = getTranslator(locale);
   return (
     <>
@@ -57,7 +64,7 @@ export function LandingTail({ locale }: { locale: Locale }) {
       </section>
 
       <section
-        id="landing-contact"
+        id={contactId}
         aria-labelledby="landing-contact-title"
         className="px-6 pb-20 pt-4 sm:pb-28"
       >

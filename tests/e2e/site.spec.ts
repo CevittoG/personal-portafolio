@@ -74,3 +74,22 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
     }
   });
 }
+
+/**
+ * The landing island works on server-prepared data: search (with an
+ * alias), filtering, and the drawer with labels from the tag index.
+ */
+test("landing: search, filter and drawer work on the client island", async ({ page }) => {
+  await page.goto("/");
+  const search = page.getByRole("combobox", { name: /search experiences/i });
+  await search.fill("k8s");
+  await page.getByRole("option", { name: "Kubernetes" }).click();
+  await expect(page).toHaveURL(/tags=kubernetes/);
+  await expect(page.getByText(/^Showing \d+ of \d+$/)).toBeVisible();
+
+  await page.getByRole("button", { name: "Details" }).first().click();
+  const drawer = page.getByRole("dialog");
+  await expect(drawer).toBeVisible();
+  // Labels come from the tag index, not a titleized slug ("Postgresql").
+  await expect(drawer.getByText("PostgreSQL", { exact: true })).toBeVisible();
+});

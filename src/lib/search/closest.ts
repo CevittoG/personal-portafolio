@@ -1,4 +1,4 @@
-import type { TaxonomyEntry } from "@/lib/taxonomy/types";
+import type { TagRef } from "@/lib/taxonomy/types";
 
 /**
  * Nearest taxonomy entries by edit distance, for the "no exact match"
@@ -6,11 +6,11 @@ import type { TaxonomyEntry } from "@/lib/taxonomy/types";
  * display name and the slug, and only returns entries within a distance
  * that scales with the query length, so nonsense queries return nothing.
  */
-export function closestMatches(
+export function closestMatches<T extends TagRef>(
   query: string,
-  candidates: readonly TaxonomyEntry[],
+  candidates: readonly T[],
   limit = 3,
-): TaxonomyEntry[] {
+): T[] {
   const q = query.trim().toLowerCase();
   if (q.length < 3) return [];
   const maxDistance = Math.max(2, Math.floor(q.length / 3));

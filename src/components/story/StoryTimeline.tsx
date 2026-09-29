@@ -2,12 +2,7 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import {
-  motion,
-  useScroll,
-  useSpring,
-  useTransform,
-} from "framer-motion";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { Reveal } from "@/components/motion/Reveal";
 import { useReducedMotionAfterMount } from "@/lib/hooks/use-reduced-motion";
 import { TagPill } from "@/components/tags/TagPill";
@@ -17,7 +12,7 @@ import {
   getHeadingLine,
 } from "@/lib/experience/format";
 import type { ExperienceEntry } from "@/lib/experience/types";
-import { formatTagLabel } from "@/lib/taxonomy/format";
+import { useTagLabel } from "@/components/tags/TagIndex";
 import { withLocale } from "@/i18n/path";
 import type { Locale } from "@/i18n/locale";
 import { cn } from "@/lib/utils";
@@ -133,6 +128,7 @@ function TimelineRow({
   locale: Locale;
   resultLabel?: string;
 }) {
+  const tagLabel = useTagLabel();
   const heading = getHeadingLine(entry);
   const meta = getDrawerSubMeta(entry);
   const period = formatPeriod(entry.period);
@@ -248,7 +244,7 @@ function TimelineRow({
                 <TagPill
                   key={slug}
                   slug={slug}
-                  label={formatTagLabel(slug)}
+                  label={tagLabel(slug)}
                   type={highlightTagType}
                   state="inactive"
                 />

@@ -1,15 +1,10 @@
 import type { Metadata } from "next";
 import { staticPageMetadata } from "@/lib/site/metadata";
-import { Explorer } from "@/components/explorer/Explorer";
-import { LandingTail } from "@/components/explorer/LandingTail";
+import { Landing } from "@/components/explorer/Landing";
 
 export const metadata: Metadata = staticPageMetadata("home", "es");
 
+/** ES landing route (`/es`): same server `<Landing>` as `/`, in Spanish. */
 export default function ExplorerPage() {
-  return (
-    <>
-      <Explorer />
-      <LandingTail locale="es" />
-    </>
-  );
+  return <Landing locale="es" />;
 }

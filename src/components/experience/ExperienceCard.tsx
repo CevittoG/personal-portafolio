@@ -8,7 +8,7 @@ import {
   getMetaBadge,
 } from "@/lib/experience/format";
 import { cardTags } from "@/lib/experience/tag-display";
-import { formatTagLabel } from "@/lib/taxonomy/format";
+import { useTagLabel } from "@/components/tags/TagIndex";
 import type { TagType } from "@/lib/taxonomy/types";
 import { TagPill, type TagPillState } from "@/components/tags/TagPill";
 import { useTranslations } from "@/i18n/I18nProvider";
@@ -52,6 +52,7 @@ export function ExperienceCard({
   className,
 }: ExperienceCardProps) {
   const t = useTranslations();
+  const tagLabel = useTagLabel();
   const heading = getHeadingLine(entry);
   const badge = getMetaBadge(entry);
   const impact = getImpactHighlight(entry);
@@ -183,7 +184,7 @@ export function ExperienceCard({
               <TagPill
                 key={`${type}:${slug}`}
                 slug={slug}
-                label={formatTagLabel(slug)}
+                label={tagLabel(slug)}
                 type={type}
                 state={state}
                 onClick={onClick}

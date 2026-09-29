@@ -1,4 +1,4 @@
-import type { TagType, TaxonomyEntry } from "@/lib/taxonomy/types";
+import type { TagRef, TagType } from "@/lib/taxonomy/types";
 
 /**
  * What the Explorer search offers. Recruiters search for tools and roles,
@@ -36,7 +36,7 @@ export const SEARCHABLE_CONCEPTS: ReadonlySet<string> = new Set([
   "rag",
 ]);
 
-export function isSearchable(entry: TaxonomyEntry): boolean {
+export function isSearchable(entry: TagRef): boolean {
   if (!HIDDEN_TYPES.has(entry.type)) return true;
   return entry.type === "concepts" && SEARCHABLE_CONCEPTS.has(entry.slug);
 }

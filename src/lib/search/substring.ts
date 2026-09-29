@@ -1,11 +1,11 @@
-import type { TaxonomyEntry } from "@/lib/taxonomy/types";
+import type { TagRef } from "@/lib/taxonomy/types";
 import { AliasSearchStrategy } from "./alias";
 import type { SearchStrategy } from "./types";
 
 type Tier = 0 | 1 | 2 | 3;
 //                   0 = exact, 1 = prefix on display_name, 2 = prefix on slug, 3 = contains
 
-function tier(entry: TaxonomyEntry, q: string): Tier | null {
+function tier(entry: TagRef, q: string): Tier | null {
   const name = entry.display_name.toLowerCase();
   const slug = entry.slug.toLowerCase();
   if (name === q || slug === q) return 0;
@@ -22,13 +22,10 @@ function tier(entry: TaxonomyEntry, q: string): Tier | null {
 export class SubstringSearchStrategy implements SearchStrategy {
   readonly id = "substring";
 
-  search(
-    query: string,
-    candidates: readonly TaxonomyEntry[],
-  ): TaxonomyEntry[] {
+  search<T extends TagRef>(query: string, candidates: readonly T[]): T[] {
     const q = query.trim().toLowerCase();
     if (!q) return [];
-    const scored: Array<{ entry: TaxonomyEntry; t: Tier }> = [];
+    const scored: Array<{ entry: T; t: Tier }> = [];
     for (const entry of candidates) {
       const t = tier(entry, q);
       if (t !== null) scored.push({ entry, t });

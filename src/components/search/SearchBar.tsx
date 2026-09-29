@@ -8,12 +8,12 @@ import {
   useState,
   type KeyboardEvent,
 } from "react";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { track } from "@/lib/analytics/umami";
 import { closestMatches } from "@/lib/search/closest";
 import { defaultSearchStrategy } from "@/lib/search/substring";
 import type { SearchStrategy } from "@/lib/search/types";
-import { TAG_TYPES, type TagType, type TaxonomyEntry } from "@/lib/taxonomy/types";
+import { TAG_TYPES, type TagRef, type TagType } from "@/lib/taxonomy/types";
 import { tagColorVar } from "@/components/tags/tag-colors";
 import { useTranslations } from "@/i18n/I18nProvider";
 import { cn } from "@/lib/utils";
@@ -31,7 +31,7 @@ import { cn } from "@/lib/utils";
  */
 export interface SearchBarProps {
   /** Universe of selectable taxonomy entries. */
-  suggestions: readonly TaxonomyEntry[];
+  suggestions: readonly TagRef[];
   /** Slugs surfaced when the query is empty (the curated starter tags). */
   topSuggestions?: readonly string[];
   /** Already-active slugs — excluded from the dropdown. */
@@ -73,13 +73,13 @@ export function SearchBar({
   const options = useMemo(() => {
     const q = query.trim();
     if (q.length === 0) {
-      // Empty state: show top suggestions, mapped back into TaxonomyEntry.
-      const bySlug = new Map<string, TaxonomyEntry>(
-        suggestions.map((s): [string, TaxonomyEntry] => [s.slug, s]),
+      // Empty state: show top suggestions, mapped back into TagRef.
+      const bySlug = new Map<string, TagRef>(
+        suggestions.map((s): [string, TagRef] => [s.slug, s]),
       );
       return topSuggestions
         .map((slug) => bySlug.get(slug))
-        .filter((e): e is TaxonomyEntry => Boolean(e))
+        .filter((e): e is TagRef => Boolean(e))
         .filter((e) => !excludeSet.has(e.slug))
         .slice(0, MAX_VISIBLE);
     }
@@ -91,9 +91,9 @@ export function SearchBar({
 
   /** Group options by taxonomy type, preserving original order within group. */
   const grouped = useMemo(() => {
-    const buckets: Record<TagType, TaxonomyEntry[]> = Object.fromEntries(
-      TAG_TYPES.map((t) => [t, [] as TaxonomyEntry[]]),
-    ) as Record<TagType, TaxonomyEntry[]>;
+    const buckets: Record<TagType, TagRef[]> = Object.fromEntries(
+      TAG_TYPES.map((t) => [t, [] as TagRef[]]),
+    ) as Record<TagType, TagRef[]>;
     for (const entry of options) buckets[entry.type].push(entry);
     return TAG_TYPES.map((type) => ({ type, items: buckets[type] }))
       .filter((g) => g.items.length > 0);
@@ -126,7 +126,7 @@ export function SearchBar({
 
   /* ── Handlers ───────────────────────────────────────────────────── */
 
-  function commit(entry: TaxonomyEntry) {
+  function commit(entry: TagRef) {
     track("filter_added", {
       slug: entry.slug,
       type: entry.type,

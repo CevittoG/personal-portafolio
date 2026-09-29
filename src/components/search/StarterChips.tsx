@@ -3,7 +3,7 @@
 import { TagPill } from "@/components/tags/TagPill";
 import { useTranslations } from "@/i18n/I18nProvider";
 import { track } from "@/lib/analytics/umami";
-import type { TaxonomyEntry } from "@/lib/taxonomy/types";
+import type { TagRef } from "@/lib/taxonomy/types";
 import { cn } from "@/lib/utils";
 
 /**
@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
  * Chips are 32px tall so they clear the 24px minimum hit area on touch.
  */
 export interface StarterChipsProps {
-  tags: readonly TaxonomyEntry[];
+  tags: readonly TagRef[];
   /** Already-selected slugs render as `active` and stop being clickable. */
   activeSlugs: readonly string[];
   onSelect: (slug: string) => void;

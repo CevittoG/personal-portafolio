@@ -1,21 +1,14 @@
 import type { Metadata } from "next";
 import { staticPageMetadata } from "@/lib/site/metadata";
 import { DEFAULT_LOCALE } from "@/i18n/locale";
-import { Explorer } from "@/components/explorer/Explorer";
-import { LandingTail } from "@/components/explorer/LandingTail";
+import { Landing } from "@/components/explorer/Landing";
 
 export const metadata: Metadata = staticPageMetadata("home", DEFAULT_LOCALE);
 
 /**
- * EN landing route (`/`): the client `<Explorer>` (hero, featured roles,
- * skill filter) followed by the server-rendered `<LandingTail>` (Story
- * teaser, Contact). Locale comes from `(en)/layout.tsx`.
+ * EN landing route (`/`). Assembly lives in the server `<Landing>`
+ * (Hero, the client Explorer island, then the Story teaser and Contact).
  */
 export default function ExplorerPage() {
-  return (
-    <>
-      <Explorer />
-      <LandingTail locale={DEFAULT_LOCALE} />
-    </>
-  );
+  return <Landing locale={DEFAULT_LOCALE} />;
 }

@@ -1,11 +1,10 @@
-"use client";
-
 import Link from "next/link";
 import { AvailabilityBadge } from "@/components/contact/AvailabilityBadge";
 import { SocialLinks } from "@/components/contact/ContactLinks";
 import { umamiAttributes } from "@/lib/analytics/umami";
 import { CoreStack } from "./CoreStack";
-import { useLocale, useTranslations } from "@/i18n/I18nProvider";
+import type { Locale } from "@/i18n/locale";
+import { getTranslator } from "@/i18n/server";
 import { withLocale } from "@/i18n/path";
 import { cn } from "@/lib/utils";
 
@@ -19,9 +18,12 @@ import { cn } from "@/lib/utils";
  * links and a static "Core stack" row. Height follows the content: no
  * forced minimum, so the next section starts right after on mobile.
  *
- * Owns no data: every string comes from the caller. SRP — only renders.
+ * Server component: rendered once at build, so its copy and the Core stack
+ * logos never ship as client JavaScript. Owns no data; every value comes
+ * from the caller.
  */
 export interface HeroProps {
+  locale: Locale;
   name: string;
   positioningStatement: string;
   /** The one target role, shown under the name. */
@@ -38,6 +40,7 @@ export interface HeroProps {
 }
 
 export function Hero({
+  locale,
   name,
   positioningStatement,
   role,
@@ -47,8 +50,7 @@ export function Hero({
   id,
   className,
 }: HeroProps) {
-  const t = useTranslations();
-  const locale = useLocale();
+  const t = getTranslator(locale);
   return (
     <section
       id={id}
