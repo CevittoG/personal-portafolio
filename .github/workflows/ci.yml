@@ -1,0 +1,68 @@
+name: CI
+
+# Every PR and every push to main runs the full quality gate. Deployment is
+# separate: Render auto-deploys main, so a red main means a bad deploy.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  quality:
+    name: Lint, types, data, unit tests, build, e2e, Lighthouse
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type-check
+        run: pnpm type-check
+
+      - name: Validate content
+        run: pnpm validate:data
+
+      - name: Unit tests
+        run: pnpm test
+
+      - name: Build (static export)
+        run: pnpm build
+
+      - name: Install Playwright browser
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: End-to-end tests (routes, lang, hreflang, contrast, hydration)
+        run: pnpm test:e2e
+
+      - name: Lighthouse budget
+        run: pnpm lhci
+
+      - name: Upload test and audit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: |
+            test-results/
+            .lighthouseci/
+          if-no-files-found: ignore
+          retention-days: 14
