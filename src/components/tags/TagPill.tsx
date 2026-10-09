@@ -98,7 +98,8 @@ export function TagPill({
       data-state={state}
       data-tag-type={type}
       onClick={state === "removable" ? undefined : onClick}
-      aria-pressed={state === "active" ? true : undefined}
+      // aria-pressed is only valid on buttons; an inert pill is a plain span.
+      aria-pressed={Component === "button" && state === "active" ? true : undefined}
       className={cn(
         BASE_CLASSES,
         STATE_CLASSES[state],
