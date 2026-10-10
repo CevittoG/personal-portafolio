@@ -294,6 +294,15 @@ What happens when a filter changes, in the order the visitor reads it:
 - **Color:** bars are `text-muted`; Lamp Ember marks only the ongoing role (the one "you are here" moment).
 - **Motion:** bars draw in left to right (`scaleX`, origin left), as time passing: once on load on `/story`, where the swimlane opens the page (lanes 50ms apart), and scroll-linked on the landing teaser. CSS only (`.lane-bar` in `globals.css`). Positions are computed at build time.
 
+### Career Strip
+The swimlane as the filter's readout: "where in my career did I use this?". Sits in the Explorer results, between the Active Filter Row and the sort bar.
+- **Pattern:** the same four lanes and 2016 → now axis as the Career Swimlane, one compact 28px row each: label, track, and from `sm` up the years and organization. Phones show a year label every four years instead of two.
+- **No filter:** every bar is filled (`text-muted`; Lamp Ember for the ongoing role), every label Text Primary.
+- **With a filter:** lanes whose role matches stay filled; the others go **hollow** (a 1px outline of the same color) and their label drops to Text Muted. Filled against hollow is a change of shape, so the readout never rests on color alone. Screen readers get "Matches your filter" or "Not in your filter" per lane.
+- **Linked to the cards:** hovering or focusing a lane gives that role's card the hover's tonal lift and border (not the glow, which stays a pointer response). Pressing a lane opens the role's drawer.
+- **Motion:** fill and label change color over 200ms; bars draw in on scroll like the swimlane's.
+- **Rule:** the strip gets positions as plain numbers from the server (`toCareerStrip`). It never reads the clock, so the hydrated strip always matches the static HTML.
+
 ### Tracing Story Rail (signature component)
 - **Pattern:** vertical rail on `/story`, anchored to the centre on `lg+` with entries alternating left/right, single-column left-rail below.
 - **Motion:** scroll-linked progress fill via Framer Motion `useScroll` + `useSpring`. Custom implementation — Aceternity's TracingBeam is hard-coded for a left-rail layout that doesn't fit this alternating centre rail.
