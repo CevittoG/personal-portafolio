@@ -1,4 +1,4 @@
-import { monthRange } from "@/lib/experience/format";
+import { getHeadingLine, monthRange } from "@/lib/experience/format";
 import type { ExperienceEntry } from "@/lib/experience/types";
 import type { MessageKey } from "@/i18n/translator";
 
@@ -103,4 +103,45 @@ export function buildSwimlane(
     ticks.push({ year: y, left: pct(y * 12 + 1) });
   }
   return { lanes: built.filter((l) => l.bars.length > 0), ticks };
+}
+
+/**
+ * The swimlane as plain data: one row per bar, no entry objects. This is
+ * what a client component gets (the landing's career strip), so "now" stays
+ * the build date and the browser never recomputes a position.
+ */
+export interface CareerStripRow {
+  laneId: string;
+  labelKey: MessageKey;
+  entryId: string;
+  /** Organization shown next to the years. */
+  org: string | null;
+  left: number;
+  width: number;
+  startYear: number;
+  /** null while ongoing. */
+  endYear: number | null;
+}
+
+export interface CareerStripData {
+  rows: CareerStripRow[];
+  ticks: Swimlane["ticks"];
+}
+
+export function toCareerStrip(swimlane: Swimlane): CareerStripData {
+  return {
+    rows: swimlane.lanes.flatMap((lane) =>
+      lane.bars.map((bar) => ({
+        laneId: lane.id,
+        labelKey: lane.labelKey,
+        entryId: bar.entry.id,
+        org: getHeadingLine(bar.entry).secondary,
+        left: bar.left,
+        width: bar.width,
+        startYear: bar.startYear,
+        endYear: bar.endYear,
+      })),
+    ),
+    ticks: swimlane.ticks,
+  };
 }

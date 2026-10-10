@@ -8,6 +8,7 @@ import type { ExperienceEntry } from "@/lib/experience/types";
 import { isSearchable } from "@/lib/search/scope";
 import { STARTER_TAGS } from "@/lib/search/starters";
 import { getEngineeringYears } from "@/lib/site/profile";
+import { buildSwimlane, toCareerStrip, type CareerStripData } from "@/lib/story/career-lanes";
 import { taxonomyRepository } from "@/lib/taxonomy/json-repository";
 import { buildTagIndex, tagRef } from "@/lib/taxonomy/tag-index";
 import { TAG_TYPES, type TagRef } from "@/lib/taxonomy/types";
@@ -27,6 +28,8 @@ export interface LandingData {
   starters: TagRef[];
   /** Labels and types for every tag the island can show or filter by. */
   tagIndex: Record<string, TagRef>;
+  /** The career swimlane as plain positions, for the strip in the results. */
+  career: CareerStripData;
   /** Whole years in engineering, for the hero proof line. */
   years: number;
 }
@@ -58,6 +61,7 @@ export function buildLandingData(locale: Locale): LandingData {
     searchable,
     starters,
     tagIndex: buildTagIndex(slugs),
+    career: toCareerStrip(buildSwimlane(experienceRepository.getAll())),
     years: getEngineeringYears(),
   };
 }
