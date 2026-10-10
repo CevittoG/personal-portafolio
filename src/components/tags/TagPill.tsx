@@ -22,7 +22,7 @@ export interface TagPillProps {
   state?: TagPillState;
   /** Optional secondary label rendered after a thin separator (e.g. taxonomy
    *  type name on a filter chip — "Python · Language"). Visually quieter than
-   *  the primary label. */
+   *  the primary label (lighter weight, same color). */
   sublabel?: string;
   /** Click handler (e.g. add to filter). Ignored when state is "removable". */
   onClick?: () => void;
@@ -115,7 +115,8 @@ export function TagPill({
       {sublabel && (
         <span
           aria-hidden="true"
-          className="text-xs uppercase tracking-wider opacity-60"
+          // Quieter by weight, not opacity: dimmed, it fell below AA contrast.
+          className="text-xs font-normal uppercase tracking-wider"
         >
           · {sublabel}
         </span>
