@@ -99,6 +99,7 @@ export const es: Messages = {
   },
   filters: {
     region: "Filtros activos",
+    empty: "Aún no hay filtros. Elige una habilidad arriba o en cualquier tarjeta.",
     clearAll: "Limpiar todo",
     removeTag: "Quitar {label}",
   },

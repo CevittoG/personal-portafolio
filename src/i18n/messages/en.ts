@@ -101,6 +101,7 @@ export const en = {
   },
   filters: {
     region: "Active filters",
+    empty: "No filters yet. Pick a skill above or on any card.",
     clearAll: "Clear all",
     removeTag: "Remove {label}",
   },

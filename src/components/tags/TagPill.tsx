@@ -45,8 +45,9 @@ const BASE_CLASSES = cn(
 );
 
 const STATE_CLASSES: Record<TagPillState, string> = {
-  // Filled, full-color — currently selected/matching
-  active: "border-current",
+  // Filled, full-color — currently selected/matching. A parent may set
+  // `--pill-delay` so matches light up in sequence (the Explorer grid).
+  active: "border-current delay-(--pill-delay)",
   // Default — color-tinted outline, no fill. Hover only when clickable
   // (added below), so an inert label never pretends to be a button.
   inactive: "border-current/50",

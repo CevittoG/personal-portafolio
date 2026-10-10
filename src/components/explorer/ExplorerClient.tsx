@@ -1,10 +1,12 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useRef, useState } from "react";
 import { StickyContactPill } from "@/components/contact/StickyContactPill";
 import { SearchBar } from "@/components/search/SearchBar";
 import { StarterChips } from "@/components/search/StarterChips";
 import { ActiveFilterChips } from "@/components/filters/ActiveFilterChips";
+import { useKeepResultsInView } from "@/components/filters/use-keep-results-in-view";
+import { usePillTravel } from "@/components/filters/use-pill-travel";
 import { ExperienceDrawer } from "@/components/explorer/ExperienceDrawer";
 import { ExperienceGrid } from "@/components/explorer/ExperienceGrid";
 import { FeaturedRoles } from "@/components/explorer/FeaturedRoles";
@@ -24,6 +26,10 @@ import { useTranslations } from "@/i18n/I18nProvider";
  * repositories, so experience.json and taxonomy.json stay out of the
  * browser bundle. The Hero before it and `LandingTail` after it are server
  * components (see `Landing`).
+ *
+ * Filtering is the page's one orchestrated moment: the pressed pill flies
+ * to the sticky filter row (`usePillTravel`), the grid reshapes, and if the
+ * results had scrolled away they come back (`useKeepResultsInView`).
  */
 export type ExplorerClientProps = Omit<LandingData, "years"> & {
   /** Hero's DOM id: the sticky pill appears once it scrolls away. */
@@ -58,6 +64,23 @@ export function ExplorerClient({
   const filter = useFilterTags();
   const activeSlugs = filter.slugs;
 
+  const sectionRef = useRef<HTMLElement>(null);
+  const travel = usePillTravel(sectionRef, activeSlugs);
+  const { resultsRef, byVisitor } = useKeepResultsInView<HTMLDivElement>(activeSlugs);
+  const addTag = (slug: string) => {
+    byVisitor();
+    travel.noteAdded(slug);
+    filter.add(slug);
+  };
+  const removeTag = (slug: string) => {
+    byVisitor();
+    filter.remove(slug);
+  };
+  const clearTags = () => {
+    byVisitor();
+    filter.clear();
+  };
+
   const [selected, setSelected] = useState<ExperienceEntry | null>(null);
   const handleSelect = (entry: ExperienceEntry) => setSelected(entry);
   const handleClose = () => setSelected(null);
@@ -67,7 +90,9 @@ export function ExplorerClient({
       <FeaturedRoles id={workId} entries={featured} onSelect={handleSelect} />
 
       <section
+        ref={sectionRef}
         id={FILTER_ID}
+        onClickCapture={travel.onClickCapture}
         aria-labelledby="discover-title"
         className="scroll-mt-24 px-6 py-16 sm:py-20"
       >
@@ -92,27 +117,31 @@ export function ExplorerClient({
               suggestions={searchable}
               topSuggestions={starterSlugs}
               excludeSlugs={activeSlugs}
-              onSelect={filter.add}
-            />
-            <ActiveFilterChips
-              slugs={activeSlugs}
-              taxonomyBySlug={tagsBySlug}
-              onRemove={filter.remove}
-              onClear={filter.clear}
+              onSelect={addTag}
             />
             <StarterChips
               tags={starters}
               activeSlugs={activeSlugs}
-              onSelect={filter.add}
+              onSelect={addTag}
             />
           </div>
 
           <ExperienceGrid
+            ref={resultsRef}
             entries={entries}
             activeSlugs={activeSlugs}
             featuredFallback={featured}
             onSelect={handleSelect}
-            onTagSelect={filter.add}
+            onTagSelect={addTag}
+            filterBar={
+              <ActiveFilterChips
+                slugs={activeSlugs}
+                taxonomyBySlug={tagsBySlug}
+                onRemove={removeTag}
+                onClear={clearTags}
+                arrival={travel.arrival}
+              />
+            }
           />
         </div>
       </section>
