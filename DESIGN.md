@@ -322,6 +322,14 @@ The swimlane as the filter's readout: "where in my career did I use this?". Sits
 
 **The Largest Paint Rule.** Whatever element is the Largest Contentful Paint never gets a delayed fade. On the landing that is the name on desktop and the positioning sentence on phones (measured with Lighthouse, 2026-10-10). Re-measure before adding an entrance to any page's first screen.
 
+### Story Progress
+A 36px bar fixed under the navbar on `/story`, visible only while the three acts are being read.
+- **Pattern:** the act and year on the left ("Act 3 · 2021"), then the career axis from 2016 to now: a 1px Border Slate line, the time passed so far in `text-muted`, and an 8px Lamp Ember dot for "you are here" (the same role the accent has on the swimlane).
+- **What moves it:** the last timeline card whose top has passed 35% of the viewport. Cards are not evenly spaced in time, so the marker steps from card to card instead of following scroll progress. Act 2 has no date of its own: the label changes and the marker holds where Act 1 ended.
+- **Motion:** the dot and the line move over 320ms ease-out-quint (transform only); the bar fades in and out over 200ms.
+- **Surface:** opaque Workshop Black with a bottom border, like the stuck filter row. No blur.
+- **Decorative:** `aria-hidden`. It repeats what the page already says.
+
 ## 6. Do's and Don'ts
 
 ### Do:
