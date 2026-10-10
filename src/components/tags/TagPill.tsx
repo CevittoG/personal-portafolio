@@ -51,7 +51,9 @@ const STATE_CLASSES: Record<TagPillState, string> = {
   // Default — color-tinted outline, no fill. Hover only when clickable
   // (added below), so an inert label never pretends to be a button.
   inactive: "border-current/50",
-  // Greyed out — visible but de-emphasized (doesn't match filter)
+  // Greyed out — visible but de-emphasized (doesn't match filter). Still
+  // a button when given `onClick` (narrow the filter further); the hover
+  // for that is added below.
   muted: "border-border text-text-muted bg-transparent",
   // Active + interactive remove control
   removable: "border-current",
@@ -89,7 +91,7 @@ export function TagPill({
   removeAriaLabel,
   className,
 }: TagPillProps) {
-  const interactive = state !== "muted" && (onClick || state === "removable");
+  const interactive = Boolean(onClick) || state === "removable";
   const Component = interactive && state !== "removable" ? "button" : "span";
 
   return (
@@ -108,6 +110,7 @@ export function TagPill({
           state !== "removable" &&
           "cursor-pointer active:scale-[0.97] motion-reduce:active:scale-100",
         interactive && state === "inactive" && "hover:border-current",
+        interactive && state === "muted" && "hover:border-text-muted hover:text-text-secondary",
         className,
       )}
       style={styleFor(type, state)}

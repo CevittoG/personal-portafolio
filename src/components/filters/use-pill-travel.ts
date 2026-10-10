@@ -26,7 +26,7 @@ const FLIGHT = DURATION.reveal;
 const FADE = 0.12;
 
 /** A clickable, not yet selected pill: the only kind that adds a filter. */
-const ADDABLE_PILL = "button[data-slug][data-state='inactive']";
+const ADDABLE_PILL = "button[data-slug]:is([data-state='inactive'], [data-state='muted'])";
 
 interface Departure {
   slug: string;
