@@ -72,7 +72,7 @@ export function ExplorerClient({
         className="scroll-mt-24 px-6 py-16 sm:py-20"
       >
         <div className="mx-auto max-w-6xl space-y-10">
-          <header className="space-y-2 text-center">
+          <header className="reveal space-y-2 text-center">
             <p className="text-xs uppercase tracking-[0.2em] text-text-secondary">
               {t("discover.eyebrow")}
             </p>

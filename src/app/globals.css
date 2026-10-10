@@ -161,6 +161,45 @@ body {
   }
 }
 
+/* Hero entrance: one short load sequence. `--i` picks the step (0 to 3),
+   50ms apart, so the last step starts at the 150ms stagger cap. Never put
+   it on the name or the positioning sentence (see Hero.tsx). */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-enter {
+    animation: reveal-in var(--duration-reveal) var(--ease-out-quint) both;
+    animation-delay: calc(var(--i, 0) * 50ms);
+  }
+}
+
+/* Career swimlane: bars draw left to right, as time passing. On load where
+   the swimlane opens the page (`--i` staggers the lanes), on scroll where
+   it sits further down. No scroll-driven support: the bars are just there. */
+@media (prefers-reduced-motion: no-preference) {
+  .lane-bar {
+    transform-origin: left center;
+  }
+  .lane-draw-load .lane-bar {
+    animation: lane-draw var(--duration-reveal) var(--ease-out-quint) both;
+    animation-delay: calc(var(--i, 0) * 50ms);
+  }
+  @supports (animation-timeline: view()) {
+    .lane-draw-scroll .lane-bar {
+      animation: lane-draw linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 25%;
+    }
+  }
+}
+
+@keyframes lane-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: none;
+  }
+}
+
 @keyframes reveal-in {
   from {
     opacity: 0;

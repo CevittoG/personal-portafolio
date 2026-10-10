@@ -38,7 +38,7 @@ export function FeaturedRoles({ id, entries, onSelect }: FeaturedRolesProps) {
       className="scroll-mt-24 px-6 py-16 sm:py-20"
     >
       <div className="mx-auto max-w-6xl space-y-10">
-        <header className="space-y-2 text-center">
+        <header className="reveal space-y-2 text-center">
           <p className="text-xs uppercase tracking-[0.2em] text-text-secondary">
             {t("featured.eyebrow")}
           </p>
@@ -56,7 +56,7 @@ export function FeaturedRoles({ id, entries, onSelect }: FeaturedRolesProps) {
             return (
               <li
                 key={entry.id}
-                className="flex flex-col gap-5 rounded-2xl border border-border bg-surface p-6"
+                className="reveal flex flex-col gap-5 rounded-2xl border border-border bg-surface p-6"
               >
                 <header className="space-y-1">
                   <p className="text-xs uppercase tracking-wider text-text-muted">

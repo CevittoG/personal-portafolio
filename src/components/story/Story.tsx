@@ -72,7 +72,7 @@ export function Story({ locale }: StoryProps) {
           >
             {t("career.title")}
           </h2>
-          <CareerSwimlane entries={all} locale={locale} linkToDeepDive />
+          <CareerSwimlane entries={all} locale={locale} linkToDeepDive draw="load" />
         </section>
 
         <Act

@@ -39,7 +39,7 @@ export function LandingTail({
         className="px-6 py-16 sm:py-20"
       >
         <div className="mx-auto max-w-3xl space-y-8">
-          <header className="space-y-2 text-center">
+          <header className="reveal space-y-2 text-center">
             <p className="text-xs uppercase tracking-[0.2em] text-text-secondary">
               {t("storyTeaser.eyebrow")}
             </p>
@@ -53,6 +53,7 @@ export function LandingTail({
           <CareerSwimlane
             entries={experienceRepository.getAll()}
             locale={locale}
+            draw="scroll"
           />
           <p className="text-center">
             <Link href={withLocale("/story", locale)} className={LINK}>
@@ -68,7 +69,7 @@ export function LandingTail({
         aria-labelledby="landing-contact-title"
         className="px-6 pb-20 pt-4 sm:pb-28"
       >
-        <div className="mx-auto max-w-2xl space-y-5 rounded-2xl border border-border bg-surface/40 px-6 py-8 text-center sm:px-10">
+        <div className="reveal mx-auto max-w-2xl space-y-5 rounded-2xl border border-border bg-surface/40 px-6 py-8 text-center sm:px-10">
           <h2
             id="landing-contact-title"
             className="text-2xl font-semibold tracking-tight text-text-primary"
