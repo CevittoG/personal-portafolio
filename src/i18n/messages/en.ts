@@ -282,11 +282,11 @@ export const en = {
       },
       {
         title: "End-to-end tests",
-        body: "Every page in both languages returns 200 with the right language, canonical link and hreflang, and hydrates without errors, with and without reduced motion.",
+        body: "Every page in both languages returns 200 with the right language, canonical link and hreflang, and hydrates without errors, with and without reduced motion. Animation has its own checks: where each one ends, what must never animate, and that reduced motion shows everything at once.",
       },
       {
         title: "Accessibility",
-        body: "Automated color-contrast checks in dark and light theme on every page. Their first run found real failures; the color tokens are now computed to clear 4.6:1 on every surface.",
+        body: "Automated color-contrast checks in dark and light theme, on every page and again with a filter applied. Their first run found real failures, and so did the first run with a filter on; the color tokens are now computed to clear 4.6:1 on every surface.",
       },
       {
         title: "Lighthouse budget",
@@ -325,6 +325,11 @@ export const en = {
         title: "Accessibility is tested",
         body: "Contrast is measured, text never goes below 12px, touch targets are at least 24px, and motion respects the reduced-motion setting.",
         tradeoff: "a slightly less saturated tag palette.",
+      },
+      {
+        title: "Motion has to answer something",
+        body: "Animation here responds to what you do (the list reshaping when you filter, a tag flying to the filter row) or shows a relationship in the data (time drawing across the career timeline). Entrances are limited to one short sequence at the top of the landing page and a fade on scroll, and the largest text on each first screen never fades in, so the page paints as fast as it did before.",
+        tradeoff: "less spectacle than a typical portfolio, and every animation needs its own test, because a broken one doesn't fail a build by itself.",
       },
     ],
     sourceTitle: "Read the code",
