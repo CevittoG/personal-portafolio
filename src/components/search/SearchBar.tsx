@@ -17,6 +17,7 @@ import type { SearchStrategy } from "@/lib/search/types";
 import { TAG_TYPES, type TagRef, type TagType } from "@/lib/taxonomy/types";
 import { tagColorVar } from "@/components/tags/tag-colors";
 import { useTranslations } from "@/i18n/I18nProvider";
+import { DURATION, EASE_OUT_QUINT } from "@/lib/motion/tokens";
 import { cn } from "@/lib/utils";
 
 /**
@@ -182,7 +183,7 @@ export function SearchBar({
         initial: { opacity: 0, y: -6 },
         animate: { opacity: 1, y: 0 },
         exit: { opacity: 0, y: -6 },
-        transition: { duration: 0.18, ease: [0.22, 1, 0.36, 1] as const },
+        transition: { duration: DURATION.quick, ease: EASE_OUT_QUINT },
       };
 
   return (

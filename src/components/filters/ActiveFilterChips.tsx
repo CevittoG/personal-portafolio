@@ -7,6 +7,7 @@ import { tagTypeLabel } from "@/lib/taxonomy/labels";
 import { useTranslations } from "@/i18n/I18nProvider";
 import { track } from "@/lib/analytics/umami";
 import type { TagRef } from "@/lib/taxonomy/types";
+import { DURATION, EASE_OUT_QUINT } from "@/lib/motion/tokens";
 import { cn } from "@/lib/utils";
 
 /**
@@ -49,7 +50,7 @@ export function ActiveFilterChips({
         initial: { opacity: 0, scale: 0.92, y: -2 },
         animate: { opacity: 1, scale: 1, y: 0 },
         exit: { opacity: 0, scale: 0.92, y: -2 },
-        transition: { duration: 0.18, ease: [0.22, 1, 0.36, 1] as const },
+        transition: { duration: DURATION.quick, ease: EASE_OUT_QUINT },
         layout: true,
       };
 

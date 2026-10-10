@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import * as m from "motion/react-m";
 import { AnimatePresence, useReducedMotion } from "motion/react";
 import { ExperienceCard } from "@/components/experience/ExperienceCard";
-import { MAX_STAGGER_DELAY } from "@/components/motion/Reveal";
+import { DURATION, EASE_OUT_QUINT, MAX_STAGGER_DELAY } from "@/lib/motion/tokens";
 import { matchesAllTags } from "@/lib/filters/tag-match";
 import {
   SORT_IDS,
@@ -20,8 +20,6 @@ const SORT_KEYS: Record<SortId, MessageKey> = {
   recent: "grid.sortRecent",
   relevant: "grid.sortRelevant",
 };
-
-const EASE_OUT_QUINT: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 /**
  * ExperienceGrid — Explorer Zone 4 (plan §6).
@@ -88,7 +86,7 @@ export function ExperienceGrid({
           animate: { opacity: 1, y: 0 },
           exit: { opacity: 0, y: -4 },
           transition: {
-            duration: 0.32,
+            duration: DURATION.reveal,
             delay: Math.min(index * 0.05, MAX_STAGGER_DELAY),
             ease: EASE_OUT_QUINT,
           },

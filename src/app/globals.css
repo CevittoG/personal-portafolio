@@ -41,6 +41,14 @@
   --color-tag-soft-skills:  #D771C3;
 }
 
+/* Motion tokens. Mirrored for JavaScript-driven animation in
+   src/lib/motion/tokens.ts; change both together. */
+:root {
+  --ease-out-quint:  cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-quick:  180ms;
+  --duration-reveal: 320ms;
+}
+
 /* Light mode override (plan §17). Dark remains default; this block only
    takes effect when `<html data-theme="light">` is set. Same eight tag-type
    hues, darkened and slightly desaturated so chips stay legible on a light
@@ -132,7 +140,7 @@ body {
    HTML; only the animation dips it, and only when motion is allowed. */
 @media (prefers-reduced-motion: no-preference) {
   .route-fade {
-    animation: route-fade 180ms cubic-bezier(0.22, 1, 0.36, 1);
+    animation: route-fade var(--duration-quick) var(--ease-out-quint);
   }
 }
 
