@@ -53,8 +53,10 @@ jobs:
       - name: End-to-end tests (routes, lang, hreflang, contrast, hydration)
         run: pnpm test:e2e
 
+      # One retry: a starved runner can fail a run with NO_FCP (2026-09-29).
+      # A real budget miss is deterministic, so it fails both attempts.
       - name: Lighthouse budget
-        run: pnpm lhci
+        run: pnpm lhci || pnpm lhci
 
       - name: Upload test and audit reports
         if: always()
@@ -64,5 +66,8 @@ jobs:
           path: |
             test-results/
             .lighthouseci/
+          # .lighthouseci/ is a hidden directory; without this the reports
+          # are silently dropped (upload-artifact skips hidden files).
+          include-hidden-files: true
           if-no-files-found: ignore
           retention-days: 14

@@ -18,6 +18,12 @@ const PAGES = [
   { path: `/es/experience/${DEEP_DIVE}`, lang: "es", canonical: `/es/experience/${DEEP_DIVE}` },
 ] as const;
 
+/**
+ * WCAG tags for axe. Lighthouse's accessibility score draws on these rules
+ * plus a few best-practice ones, which are left out here.
+ */
+const WCAG_TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
+
 for (const page of PAGES) {
   test.describe(page.path, () => {
     test("returns 200 with the right lang, canonical and hreflang", async ({ page: p }) => {
@@ -43,6 +49,21 @@ for (const page of PAGES) {
         expect(summary).toEqual([]);
       });
     }
+
+    // Contrast is checked per theme above; everything else is theme-agnostic.
+    // Catches e.g. aria-pressed on a <span> here, with the rule and node
+    // named, instead of as a bare Lighthouse score miss.
+    test("has no WCAG violations", async ({ page: p }) => {
+      await p.goto(page.path);
+      const results = await new AxeBuilder({ page: p })
+        .withTags(WCAG_TAGS)
+        .disableRules(["color-contrast"])
+        .analyze();
+      const summary = results.violations.flatMap((v) =>
+        v.nodes.map((n) => `${v.id}: ${n.target.join(" ")}`),
+      );
+      expect(summary).toEqual([]);
+    });
   });
 }
 
