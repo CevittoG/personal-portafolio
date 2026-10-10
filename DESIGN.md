@@ -241,8 +241,9 @@ The site's most-used primitive. Four states, one prop interface (LSP).
 - **Style:** fully pill-rounded, 1px border in the type's color, label in `0.75rem` weight 500. The type's color carries via `currentColor` so the border, text, and `color-mix` fill stay in sync.
 - **Active:** `border-current` + `color-mix(in srgb, [type-color] 14%, transparent)` background fill. Aria-pressed.
 - **Inactive:** `border-current/50`, no fill. Hover bumps the border to full opacity **only when the pill is clickable**; an inert pill (Related section, deep-dive sidebar, Story) has no hover, so it never pretends to be a button.
-- **Muted:** `border-border`, `text-text-muted`, transparent. Shown when a filter is active and this tag doesn't match — "here's why this entry isn't a primary hit."
+- **Muted:** `border-border`, `text-text-muted`, transparent. Shown when a filter is active and this tag isn't part of it. In the Explorer grid it is still a button (pressing it narrows the filter further) and hovers to a `text-muted` border with `text-secondary` text; anywhere it is inert it has no hover.
 - **Removable:** active state + a tappable × button that uses `aria-label="Remove {label}"` (localized per locale).
+- **Sublabel** (the type name on a filter chip): quieter by weight (400 against the label's 500), same color. Never by opacity: a dimmed tag color falls below AA on the chip's tint.
 
 ### Experience Card
 The Explorer's primary container, also used in the Related section on deep-dive pages.
@@ -252,8 +253,22 @@ The Explorer's primary container, also used in the Related section on deep-dive 
 - **Hover:** `-translate-y-0.5` plus the Card Hover Glow shadow (the one shadow in the system). 200ms ease-out.
 - **Focus:** 2px Lamp Ember ring on focus-within with 2px offset.
 - **Padding:** 20px internal (`p-5`), 16px gap (`gap-4`) between header, meta, summary, impact callout, and tag cluster.
-- **Tag cluster:** at most six pills (filter matches, then languages and technologies) plus a quiet "+N". In the Explorer grid a pill adds its tag to the filter; elsewhere pills are inert.
+- **Tag cluster:** at most six pills (filter matches, then languages and technologies) plus a quiet "+N". In the Explorer grid any pill not yet in the filter adds its tag, so a visitor can keep narrowing from a card (the card always survives its own pill); elsewhere pills are inert.
 - **Impact callout:** quiet warm bar above the tag cluster (the headline result reads second, after the role) — `color-mix(in srgb, accent 8%, transparent)` background, leading 6px accent dot, italic body text. Replaces the banned side-stripe border pattern.
+
+### Active Filter Row
+The first thing in the results, above the sort bar.
+- **At rest:** one line, 44px, always present. With no filter it holds a `text-muted` hint ("No filters yet. Pick a skill above or on any card."), so adding the first filter never pushes the results down.
+- **With filters:** removable chips and a "Clear all" link at the right end. The row sticks under the navbar (`top: 64px`) for as long as the results are in view, on an opaque Workshop Black surface (no blur; the navbar keeps that exception). A 1px Border Slate bottom edge appears only while it is stuck.
+- **Phones:** the chips are a single horizontally scrolling line with no scrollbar; the chip clipped at the edge says there is more. On `sm+` they wrap.
+
+### Filter Reshape (signature moment)
+What happens when a filter changes, in the order the visitor reads it:
+- **The pill travels.** Pressing a pill that adds a filter (a starter chip or a card pill) sends a copy of it to its new chip in the filter row: 320ms ease-out-quint, then a 120ms fade. The real chip waits for it. Filters added from the search box or the URL simply appear.
+- **The grid reshapes.** Cards that stay glide to their new places at once (320ms). Cards that leave fade in 180ms and are out of the flow immediately, so they never hold the others back. Only entering cards keep the short stagger.
+- **Matches light up.** On each remaining card the matched pills fill in, card by card (50ms steps, 150ms cap).
+- **The results stay in view.** If the start of the results had scrolled above the navbar, the page scrolls it back, so the reshaped list is what the visitor sees. Only for changes the visitor makes; filters read from the URL never move the page.
+- **Reduced motion:** no travel, no glide, an instant scroll. The same end state.
 
 ### Search Bar (combobox)
 - **Style:** `surface` background, `border-border` outline, `rounded-lg` (12px), padded `10px 14px`. WAI-ARIA combobox pattern (`role="combobox"`, `aria-activedescendant`).
