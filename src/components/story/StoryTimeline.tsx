@@ -13,6 +13,7 @@ import {
   getHeadingLine,
 } from "@/lib/experience/format";
 import type { ExperienceEntry } from "@/lib/experience/types";
+import type { StoryAxisPoint } from "@/lib/story/career-lanes";
 import { useTagLabel } from "@/components/tags/TagIndex";
 import { withLocale } from "@/i18n/path";
 import type { Locale } from "@/i18n/locale";
@@ -45,6 +46,11 @@ export interface StoryTimelineProps {
   /** When set, each card adds one result line under the reflective line:
    *  this label followed by the entry's headline `impact[0]` (Act 3). */
   resultLabel?: string;
+  /** The act these entries belong to ("Act 1"), and where each one starts
+   *  on the career axis. Each row carries them as data attributes: that is
+   *  all the sticky `StoryProgress` marker reads. */
+  actLabel?: string;
+  axis?: Readonly<Record<string, StoryAxisPoint>>;
   className?: string;
 }
 
@@ -54,6 +60,8 @@ export function StoryTimeline({
   linkToDeepDive = false,
   locale = "en",
   resultLabel,
+  actLabel,
+  axis,
   className,
 }: StoryTimelineProps) {
   // After mount only: omitting the rail on the first render would not
@@ -108,6 +116,8 @@ export function StoryTimeline({
           linkToDeepDive={linkToDeepDive}
           locale={locale}
           resultLabel={resultLabel}
+          actLabel={actLabel}
+          point={axis?.[entry.id]}
         />
       ))}
     </ol>
@@ -121,6 +131,8 @@ function TimelineRow({
   linkToDeepDive,
   locale,
   resultLabel,
+  actLabel,
+  point,
 }: {
   entry: ExperienceEntry;
   side: "left" | "right";
@@ -128,6 +140,8 @@ function TimelineRow({
   linkToDeepDive: boolean;
   locale: Locale;
   resultLabel?: string;
+  actLabel?: string;
+  point?: StoryAxisPoint;
 }) {
   const tagLabel = useTagLabel();
   const heading = getHeadingLine(entry);
@@ -138,6 +152,10 @@ function TimelineRow({
 
   return (
     <li
+      data-story-step=""
+      data-act={actLabel}
+      data-year={point?.year}
+      data-left={point?.left}
       className={cn(
         "relative pl-10 pb-12 last:pb-0",
         // Desktop split: even-index → left column, odd → right column
