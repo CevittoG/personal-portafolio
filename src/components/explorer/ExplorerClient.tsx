@@ -7,6 +7,7 @@ import { StarterChips } from "@/components/search/StarterChips";
 import { ActiveFilterChips } from "@/components/filters/ActiveFilterChips";
 import { useKeepResultsInView } from "@/components/filters/use-keep-results-in-view";
 import { usePillTravel } from "@/components/filters/use-pill-travel";
+import { CareerStrip } from "@/components/explorer/CareerStrip";
 import { ExperienceDrawer } from "@/components/explorer/ExperienceDrawer";
 import { ExperienceGrid } from "@/components/explorer/ExperienceGrid";
 import { FeaturedRoles } from "@/components/explorer/FeaturedRoles";
@@ -29,7 +30,9 @@ import { useTranslations } from "@/i18n/I18nProvider";
  *
  * Filtering is the page's one orchestrated moment: the pressed pill flies
  * to the sticky filter row (`usePillTravel`), the grid reshapes, and if the
- * results had scrolled away they come back (`useKeepResultsInView`).
+ * results had scrolled away they come back (`useKeepResultsInView`). The
+ * career strip in the results answers the same filter: lanes where the
+ * skill was used stay filled, the others go hollow.
  */
 export type ExplorerClientProps = Omit<LandingData, "years"> & {
   /** Hero's DOM id: the sticky pill appears once it scrolls away. */
@@ -48,6 +51,7 @@ export function ExplorerClient({
   searchable,
   starters,
   tagIndex,
+  career,
   heroId,
   workId,
   contactId,
@@ -84,6 +88,8 @@ export function ExplorerClient({
   const [selected, setSelected] = useState<ExperienceEntry | null>(null);
   const handleSelect = (entry: ExperienceEntry) => setSelected(entry);
   const handleClose = () => setSelected(null);
+  // The role whose lane is hovered or focused in the career strip.
+  const [highlightedId, setHighlightedId] = useState<string | null>(null);
 
   return (
     <TagIndexProvider index={tagIndex}>
@@ -133,6 +139,16 @@ export function ExplorerClient({
             featuredFallback={featured}
             onSelect={handleSelect}
             onTagSelect={addTag}
+            highlightedId={highlightedId}
+            timeline={
+              <CareerStrip
+                strip={career}
+                entries={entries}
+                activeSlugs={activeSlugs}
+                onSelect={handleSelect}
+                onHighlight={setHighlightedId}
+              />
+            }
             filterBar={
               <ActiveFilterChips
                 slugs={activeSlugs}

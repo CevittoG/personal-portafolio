@@ -70,6 +70,8 @@ export const es: Messages = {
   career: {
     title: "Mi carrera de un vistazo",
     present: "Presente",
+    match: "Coincide con tu filtro",
+    noMatch: "Fuera de tu filtro",
     lanes: {
       teaching: "Enseñanza",
       founding: "Emprendimiento",

@@ -43,6 +43,9 @@ export interface ExperienceCardProps {
   onSelect?: (entry: ExperienceEntry) => void;
   /** Adds a tag to the Explorer filter. Omit to render pills as inert labels. */
   onTagSelect?: (slug: string) => void;
+  /** Lit from elsewhere (its lane in the career strip): the hover's tonal
+   *  lift and border, without the glow, which is kept for the pointer. */
+  highlighted?: boolean;
   className?: string;
 }
 
@@ -51,6 +54,7 @@ export function ExperienceCard({
   filterTags,
   onSelect,
   onTagSelect,
+  highlighted = false,
   className,
 }: ExperienceCardProps) {
   const t = useTranslations();
@@ -88,9 +92,11 @@ export function ExperienceCard({
 
   return (
     <article
+      data-highlighted={highlighted ? "" : undefined}
       className={cn(
         "group flex h-full flex-col gap-4 rounded-2xl border border-border",
         "bg-surface p-5 text-left",
+        highlighted && "border-accent/40 bg-surface-elevated",
         "transition-[transform,background-color,border-color,box-shadow] duration-200 ease-out",
         interactive && [
           "relative cursor-pointer",

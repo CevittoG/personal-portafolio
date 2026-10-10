@@ -56,6 +56,10 @@ export interface ExperienceGridProps {
   /** Rendered first, above the sort bar: the active-filter row, which
    *  sticks for as long as these results are in view. */
   filterBar?: ReactNode;
+  /** Rendered between the filter row and the sort bar: the career strip. */
+  timeline?: ReactNode;
+  /** Entry whose card is lit from the career strip. */
+  highlightedId?: string | null;
   /** The results' root, for scrolling them back into view. */
   ref?: Ref<HTMLDivElement>;
   className?: string;
@@ -68,6 +72,8 @@ export function ExperienceGrid({
   onTagSelect,
   featuredFallback,
   filterBar,
+  timeline,
+  highlightedId,
   ref,
   className,
 }: ExperienceGridProps) {
@@ -121,6 +127,7 @@ export function ExperienceGrid({
   return (
     <div ref={ref} className={cn("scroll-mt-16 space-y-5", className)}>
       {filterBar}
+      {timeline}
 
       {/* Secondary filter bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
@@ -162,12 +169,13 @@ export function ExperienceGrid({
         <div className="relative grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <AnimatePresence initial={true} mode="popLayout">
             {sorted.map((entry, i) => (
-              <m.div key={entry.id} {...cardMotion(i)}>
+              <m.div key={entry.id} data-entry-id={entry.id} {...cardMotion(i)}>
                 <ExperienceCard
                   entry={entry}
                   filterTags={activeSlugs as string[]}
                   onSelect={onSelect ? () => onSelect(entry) : undefined}
                   onTagSelect={onTagSelect}
+                  highlighted={entry.id === highlightedId}
                   className={PILL_DELAY[Math.min(i, PILL_DELAY.length - 1)]}
                 />
               </m.div>

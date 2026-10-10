@@ -72,6 +72,8 @@ export const en = {
   career: {
     title: "Career at a glance",
     present: "Present",
+    match: "Matches your filter",
+    noMatch: "Not in your filter",
     lanes: {
       teaching: "Teaching",
       founding: "Founding",
