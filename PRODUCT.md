@@ -55,7 +55,7 @@ What this site must NOT look or read like:
 2. **Craft is the evidence.** For an engineer whose pitch is "I build systems that don't fall over," the site must be one. Performance, accessibility, polish, and bilingual parity are part of the message — not decoration. Static export, 0-client-JS on deep-dive pages, real focus rings, real keyboard nav. Practice what you preach.
 3. **Three layers, three time budgets.** Card (~30s) → Drawer (~2–3m) → Deep-dive (~5–10m). Each layer must work alone. A skimming recruiter should leave qualified; a reading hiring manager should find real depth without backtracking.
 4. **Plain-spoken over polished.** Tone defaults to a senior engineer writing a thoughtful cover letter, not a marketer writing landing copy. Specific verbs, concrete numbers, no hedging. If a sentence could appear on any portfolio, rewrite it.
-5. **Motion serves comprehension.** Reveals, drawer transitions, the Logo Drop Cluster — they signal "this is alive" and guide the eye. They never gate-keep, never delay interaction, and `prefers-reduced-motion` always has a graceful static fallback.
+5. **Motion serves comprehension.** Motion answers what the visitor did (a filter reshaping the grid, a drawer opening) or shows a relationship in the data (time drawing across the career swimlane). Entrances are few and short: one hero sequence and a scroll reveal. Nothing gate-keeps, nothing delays interaction, and `prefers-reduced-motion` always has a graceful static fallback.
 
 ## Accessibility & Inclusion
 
@@ -63,7 +63,7 @@ What this site must NOT look or read like:
 
 - Color contrast meets AA in both dark and light themes. Light palette was retuned in step 16 specifically for this.
 - Full keyboard navigation across the Explorer flow: search combobox (↑/↓/Enter/Esc/Tab), tag chips, cards, drawer, deep-dive links. Focus rings are visible, not suppressed.
-- `prefers-reduced-motion` is honored by every motion primitive (`<Reveal>`, `<RevealStagger>`, drawer animations, Logo Drop Cluster, route fade). Reduced-motion users get static reveals and instant transitions, not a degraded experience.
+- `prefers-reduced-motion` is honored by every motion primitive (the hero entrance, scroll reveals, swimlane bars, nav underline, grid and drawer animations, route fade). Reduced-motion users get the final state at once, not a degraded experience.
 - Bilingual EN/ES with proper `<html lang>` and `hreflang` alternates per page. The Spanish surface is a first-class experience, not a translated afterthought.
 - Semantic landmarks: navbar uses `aria-current`, drawer uses `role="dialog"` + `aria-modal`, search uses WAI-ARIA combobox pattern, decorative motion is labeled or hidden.
 - No color-only signaling. Tag-type colors are paired with the type's display name in headers and sub-labels.

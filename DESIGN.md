@@ -266,22 +266,37 @@ The Explorer's primary container, also used in the Related section on deep-dive 
 
 ### Navbar
 - **Style:** sticky, 64px, transparent at scroll-top. On scroll: `bg-surface/80` + `backdrop-blur-md` + 1px bottom border. Theme toggle (sun/moon cross-fade) and language switcher (`EN` / `ES` pills) anchor the right side.
-- **Active route:** Lamp Ember text + `aria-current="page"`.
+- **Active route:** Lamp Ember text + `aria-current="page"`, and on desktop a 1px Lamp Ember underline that slides sideways from the previous route's link (Motion `layoutId` with `layout="x"`; a two-axis layout animation would drag the line in from the old scroll position).
 - **Mobile:** hamburger → full-screen overlay (`bg-bg/95` + `backdrop-blur-sm`) with large nav links and a per-link bottom border.
 
 ### Core Stack row
 - **Pattern:** a static, labeled row under the hero CTAs: "Core stack" and the tools from `CORE_STACK`, each with its Simple Icons logo (bundled from the `simple-icons` package) in `currentColor`, text Secondary. Replaced the animated Logo Drop Cluster on 2026-09-27: the stack is information, not an ambient effect.
-- **Motion:** none.
+- **Motion:** none of its own. It arrives with the hero's last entrance step.
 - **Rule:** if a tool has no Simple Icons logo (SQL), show the label only. Do not synthesize a faux logo, and never tint with brand colors (no hex outside the tokens).
 
 ### Career Swimlane
 - **Pattern:** four lanes (Teaching, Founding, Data engineering, Data platform) on a shared 2016 → now axis, at the top of `/story` and in the landing Story teaser. Each row is text first (lane · years · organization) with a 8px bar on a `surface-elevated` track below.
 - **Color:** bars are `text-muted`; Lamp Ember marks only the ongoing role (the one "you are here" moment).
-- **Motion:** none. Positions are computed at build time.
+- **Motion:** bars draw in left to right (`scaleX`, origin left), as time passing: once on load on `/story`, where the swimlane opens the page (lanes 50ms apart), and scroll-linked on the landing teaser. CSS only (`.lane-bar` in `globals.css`). Positions are computed at build time.
 
 ### Tracing Story Rail (signature component)
 - **Pattern:** vertical rail on `/story`, anchored to the centre on `lg+` with entries alternating left/right, single-column left-rail below.
 - **Motion:** scroll-linked progress fill via Framer Motion `useScroll` + `useSpring`. Custom implementation — Aceternity's TracingBeam is hard-coded for a left-rail layout that doesn't fit this alternating centre rail.
+
+### Hero entrance
+- **Pattern:** one load sequence. The availability badge and greeting, the role and proof line, the CTAs, then the résumé link, profile links and Core Stack settle in over four steps, 50ms apart (`.hero-enter` with `--i`, in `globals.css`). 320ms each, ease-out-quint, 8px rise.
+- **Static on purpose:** the name and the positioning sentence. They are the two largest-paint candidates (see The Largest Paint Rule).
+
+### Motion
+- **Tokens:** `--ease-out-quint`, `--duration-quick` (180ms: chips, menus, the route fade) and `--duration-reveal` (320ms: content settling in) in `globals.css`, mirrored for JavaScript in `src/lib/motion/tokens.ts`. Hover and color transitions keep Tailwind's 150ms and 200ms steps.
+- **Scroll reveal:** the `reveal` class (or `<Reveal>`) fades a block in over the first 35% of its own height as it enters. Use it on headers and single cards, never on a whole section: a tall block would stay see-through for too long.
+- **Stagger cap:** 150ms (`MAX_STAGGER_DELAY`). Past that a stagger reads as the page being slow.
+
+### Named Rules
+
+**The Response Rule.** New motion must either answer something the visitor did (a filter, a hover, a navigation) or show a relationship in the data (time on the swimlane, a card moving to its new place). Entrances are capped at what exists: the hero sequence and the scroll reveal. If an animation would play the same way with nobody at the page and no data behind it, it is decoration; leave it out.
+
+**The Largest Paint Rule.** Whatever element is the Largest Contentful Paint never gets a delayed fade. On the landing that is the name on desktop and the positioning sentence on phones (measured with Lighthouse, 2026-10-10). Re-measure before adding an entrance to any page's first screen.
 
 ## 6. Do's and Don'ts
 
@@ -292,7 +307,7 @@ The Explorer's primary container, also used in the Related section on deep-dive 
 - **Do** localize every visible string through `useTranslations` / `getTranslator`. Both EN and ES are first-class.
 - **Do** honor `prefers-reduced-motion`. Every motion primitive in this codebase already does; new ones must.
 - **Do** keep focus rings visible at 2px in Lamp Ember with a 2px offset against `bg`. They are part of the craft, not a debug artifact.
-- **Do** ship the site fast. Static export, 0 client JS on Story/Deep-dive/Contact, system fonts, image decoding deferred. Performance is part of the message.
+- **Do** ship the site fast. Static export, server components by default (client JavaScript is the navbar, the landing island and the Story rail), system fonts, image decoding deferred. Performance is part of the message.
 - **Do** write copy as a senior engineer would — short sentences, specific verbs, concrete numbers, no hedging. The "would a human actually say this?" test gates every line.
 
 ### Don't:

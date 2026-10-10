@@ -29,7 +29,7 @@ Future impeccable commands (`/impeccable shape`, `/impeccable polish`, `/impecca
 
 **Shared page bodies:** `Landing.tsx` (server: `Hero` → client island `ExplorerClient` → `LandingTail`), `Story.tsx` / `Contact.tsx` / `DeepDive.tsx` / `HowItsBuilt.tsx` (server, take `locale`). Route files are tiny wrappers. **The browser never loads experience.json or taxonomy.json**: `buildLandingData(locale)` gives the island localized entries trimmed by `toClientEntry()` (description = drawer teaser) and a `tagIndex`; client components read tag labels via `useTagLabel()` from `TagIndexProvider`, never `formatTagLabel` (server-only).
 
-**Motion:** `motion` 13 via `MotionProvider` (`LazyMotion strict`, `domMax` loaded in its own chunk): use `import * as m from "motion/react-m"` and hooks from `"motion/react"`; never `motion.*` (throws under strict). `Reveal` is CSS only (scroll-driven `.reveal` in `globals.css`). Honors `prefers-reduced-motion` everywhere.
+**Motion:** `motion` 13 via `MotionProvider` (`LazyMotion strict`, `domMax` loaded in its own chunk): use `import * as m from "motion/react-m"` and hooks from `"motion/react"`; never `motion.*` (throws under strict). `Reveal` is CSS only (scroll-driven `.reveal` in `globals.css`; put the class on short blocks, never a whole section). Durations and easing come from the motion tokens. Honors `prefers-reduced-motion` everywhere.
 
 **Navbar:** scroll-aware, includes `ThemeToggle` (sun/moon cross-fade) + `LanguageSwitcher` (writes `NEXT_LOCALE` cookie, preserves query + hash via `switchLocale()`).
 
@@ -60,6 +60,8 @@ Future impeccable commands (`/impeccable shape`, `/impeccable polish`, `/impecca
 **Expert-review Phase 5 (2026-09-28):** content types come from Zod schemas (`src/content/schema.ts`, `z.infer`); `src/content/validate.ts` checks cross-file rules; the root layout's `assertValidContent()` fails the build on invalid data; `src/content/data.ts` is the one typed boundary over the raw JSON (repositories import from it). Tests: `pnpm test` (Vitest, `tests/unit`), `pnpm test:e2e` (Playwright + axe, `tests/e2e`, serves `out/` with clean URLs; run it in `mcr.microsoft.com/playwright:v1.63.0-noble`, the Alpine dev image can't run browsers), `pnpm lhci` (Lighthouse budget). CI in `.github/workflows/ci.yml` (Lighthouse retries once; the reports upload with `include-hidden-files`). **Render deploys on commit, not on green CI** (Auto-Deploy "On Commit"; "After CI Checks Pass" is a dashboard setting). E2E also runs axe's WCAG rules on every page and locale, not only contrast; `TagPill` sets `aria-pressed` only in its `<button>` form (an inert pill is a `<span>`). **When reduced motion changes what renders, use `useReducedMotionAfterMount`** (Framer's hook breaks hydration). Color tokens are computed to clear 4.6:1 on bg, surface, surface-elevated and the active pill tint; re-check with the e2e contrast tests after any token change. Security headers: `docker/security-headers.conf` (preview) and `docs/deploy/security-headers.md` (Render dashboard; CSP is report-only). `/how-its-built` mirrors the README. 
 
 **Expert-review Phase 6 (2026-09-29):** per-locale root layouts (`lang` in static HTML, no lang script), one catalogue per page, server-shaped client island (landing JS 204 → 141 kB by Next 15's First Load metric), plain modules, `motion` 13 with `LazyMotion`, CSS reveals, Next 16.3 + React 19.3 with native flat ESLint config (`eslint.config.mjs`) and the stricter React Hooks rules (no setState in effects: derive state, adjust during render, or `useSyncExternalStore`). Next up: Phase 7 (next-level bets).
+
+**Phase 7, responsive motion (in progress, started 2026-10-10, branch `phase-7-responsive-motion`):** the rule is DESIGN.md's "The Response Rule": new motion answers the visitor or shows a relationship in the data. Done: motion tokens (`globals.css` `--ease-out-quint` / `--duration-quick` / `--duration-reveal`, mirrored in `src/lib/motion/tokens.ts`), the CSS hero entrance (`.hero-enter`; **never on the name or the positioning sentence**, they are the largest paint on desktop and phones), landing scroll reveals, swimlane bar draw-in (`draw="load" | "scroll"`), the sliding nav underline (`layoutId` + `layout="x"`), and `tests/e2e/motion.spec.ts`. Still to do, in order: (2) filter reshape with a sticky active-filter row and pill-to-chip travel, (3) a compact interactive swimlane strip in the Discover section (server-computed positions passed as props), (4) a sticky progress marker on `/story`, (5) README and How it's built.
 
 **Deferred (plan §18 Phase 2):** taxonomy `display_name_es` (still English). Entry prose translations exist only for the three technical entries (Phase 3); foundation entries and all `description`s stay English.
 
@@ -223,7 +225,7 @@ Follow this sequence to avoid rework:
 
 **Experience Card** accepts the full entry object + `filterTags: string[]` to determine which tag pills render highlighted vs. muted.
 
-**Motion caps:** staggers never exceed 150ms (`MAX_STAGGER_DELAY` in `Reveal.tsx`); no count-ups; the drawer body renders at once.
+**Motion caps:** staggers never exceed 150ms (`MAX_STAGGER_DELAY` in `src/lib/motion/tokens.ts`); no count-ups; the drawer body renders at once.
 
 **Navbar:** 64px, transparent by default. On scroll: `backdrop-blur-md` + `bg-surface/80`. Mobile: hamburger → full-screen overlay.
 
