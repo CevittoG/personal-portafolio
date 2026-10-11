@@ -41,6 +41,14 @@
   --color-tag-soft-skills:  #D771C3;
 }
 
+/* Motion tokens. Mirrored for JavaScript-driven animation in
+   src/lib/motion/tokens.ts; change both together. */
+:root {
+  --ease-out-quint:  cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-quick:  180ms;
+  --duration-reveal: 320ms;
+}
+
 /* Light mode override (plan §17). Dark remains default; this block only
    takes effect when `<html data-theme="light">` is set. Same eight tag-type
    hues, darkened and slightly desaturated so chips stay legible on a light
@@ -132,7 +140,7 @@ body {
    HTML; only the animation dips it, and only when motion is allowed. */
 @media (prefers-reduced-motion: no-preference) {
   .route-fade {
-    animation: route-fade 180ms cubic-bezier(0.22, 1, 0.36, 1);
+    animation: route-fade var(--duration-quick) var(--ease-out-quint);
   }
 }
 
@@ -150,6 +158,45 @@ body {
       animation-timeline: view();
       animation-range: entry 0% entry 35%;
     }
+  }
+}
+
+/* Hero entrance: one short load sequence. `--i` picks the step (0 to 3),
+   50ms apart, so the last step starts at the 150ms stagger cap. Never put
+   it on the name or the positioning sentence (see Hero.tsx). */
+@media (prefers-reduced-motion: no-preference) {
+  .hero-enter {
+    animation: reveal-in var(--duration-reveal) var(--ease-out-quint) both;
+    animation-delay: calc(var(--i, 0) * 50ms);
+  }
+}
+
+/* Career swimlane: bars draw left to right, as time passing. On load where
+   the swimlane opens the page (`--i` staggers the lanes), on scroll where
+   it sits further down. No scroll-driven support: the bars are just there. */
+@media (prefers-reduced-motion: no-preference) {
+  .lane-bar {
+    transform-origin: left center;
+  }
+  .lane-draw-load .lane-bar {
+    animation: lane-draw var(--duration-reveal) var(--ease-out-quint) both;
+    animation-delay: calc(var(--i, 0) * 50ms);
+  }
+  @supports (animation-timeline: view()) {
+    .lane-draw-scroll .lane-bar {
+      animation: lane-draw linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 25%;
+    }
+  }
+}
+
+@keyframes lane-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: none;
   }
 }
 

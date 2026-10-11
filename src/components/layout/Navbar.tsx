@@ -3,8 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import * as m from "motion/react-m";
-import { AnimatePresence } from "motion/react";
+import { AnimatePresence, useReducedMotion } from "motion/react";
 import { useEffect, useState } from "react";
+import { DURATION, EASE_OUT_QUINT } from "@/lib/motion/tokens";
 import { cn } from "@/lib/utils";
 import { NAV_ITEMS } from "./nav-items";
 import { OWNER_NAME } from "./social-links";
@@ -22,7 +23,8 @@ const SCROLL_THRESHOLD_PX = 16;
  * Global Navbar (plan §10, §18).
  * - Sticky top-0, 64px tall.
  * - Transparent by default; backdrop-blur + bg-surface/80 once scrolled.
- * - Active route gets accent treatment + aria-current.
+ * - Active route gets accent treatment + aria-current; on desktop a thin
+ *   underline slides from the previous route's link to the new one.
  * - Mobile breakpoint: hamburger toggles a full-screen overlay with large
  *   nav links (Framer Motion fade + scale).
  * - Theme toggle + language switcher live to the right of the nav links.
@@ -246,13 +248,14 @@ function NavLink({
   pathname: string | null;
 }) {
   const active = isActive(href, pathname);
+  const reduceMotion = useReducedMotion();
   return (
     <li>
       <Link
         href={href}
         aria-current={active ? "page" : undefined}
         className={cn(
-          "inline-block rounded-md px-3 py-2 text-sm font-medium",
+          "relative inline-block rounded-md px-3 py-2 text-sm font-medium",
           "transition-colors duration-150",
           active
             ? "text-accent"
@@ -262,6 +265,23 @@ function NavLink({
         )}
       >
         {label}
+        {active && (
+          // layout="x": slide sideways only. The header is stuck to the
+          // viewport while the page scrolls back to the top on navigation,
+          // and a two-axis layout animation would fly the line in from
+          // wherever the page had been scrolled to.
+          <m.span
+            layoutId="nav-active-underline"
+            layout="x"
+            aria-hidden="true"
+            transition={
+              reduceMotion
+                ? { duration: 0 }
+                : { duration: DURATION.reveal, ease: EASE_OUT_QUINT }
+            }
+            className="absolute inset-x-3 bottom-1 h-px rounded-full bg-accent"
+          />
+        )}
       </Link>
     </li>
   );

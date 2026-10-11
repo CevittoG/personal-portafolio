@@ -18,6 +18,11 @@ import { cn } from "@/lib/utils";
  * links and a static "Core stack" row. Height follows the content: no
  * forced minimum, so the next section starts right after on mobile.
  *
+ * Entrance: the supporting lines settle in over four CSS steps
+ * (`.hero-enter` in globals.css). The name and the positioning sentence
+ * carry no step: one of them is the largest paint (the name on desktop,
+ * the sentence on phones), and a delayed fade would push that paint back.
+ *
  * Server component: rendered once at build, so its copy and the Core stack
  * logos never ship as client JavaScript. Owns no data; every value comes
  * from the caller.
@@ -68,19 +73,19 @@ export function Hero({
         <AvailabilityBadge
           open={availability.open}
           label={availability.label}
-          className="mb-6"
+          className="mb-6 hero-enter"
         />
-        <p className="mb-4 text-xs uppercase tracking-[0.25em] text-text-secondary">
+        <p className="hero-enter mb-4 text-xs uppercase tracking-[0.25em] text-text-secondary">
           {t("hero.greeting")}
         </p>
         <h1 className="text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-text-primary">
           {name}
         </h1>
 
-        <p className="mt-6 text-xl sm:text-2xl font-medium text-accent leading-snug">
+        <p className="hero-enter [--i:1] mt-6 text-xl sm:text-2xl font-medium text-accent leading-snug">
           {role}
         </p>
-        <p className="mt-3 text-sm sm:text-base text-text-secondary">
+        <p className="hero-enter [--i:1] mt-3 text-sm sm:text-base text-text-secondary">
           {proofLine}
         </p>
 
@@ -88,7 +93,7 @@ export function Hero({
           {positioningStatement}
         </p>
 
-        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+        <div className="hero-enter [--i:2] mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
           <a
             href={`#${exploreTargetId}`}
             className={cn(
@@ -123,7 +128,7 @@ export function Hero({
           </Link>
         </div>
 
-        <p className="mt-6 text-sm text-text-secondary">
+        <p className="hero-enter [--i:3] mt-6 text-sm text-text-secondary">
           {t("hero.resumePrompt")}{" "}
           <Link
             href={`${withLocale("/contact", locale)}#resume`}
@@ -145,10 +150,10 @@ export function Hero({
         <SocialLinks
           source="hero"
           showLabels
-          className="mt-3 justify-center gap-2"
+          className="hero-enter [--i:3] mt-3 justify-center gap-2"
         />
 
-        <CoreStack label={t("hero.coreStack")} className="mt-10 sm:mt-12" />
+        <CoreStack label={t("hero.coreStack")} className="hero-enter [--i:3] mt-10 sm:mt-12" />
       </div>
 
     </section>

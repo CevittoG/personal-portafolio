@@ -241,8 +241,9 @@ The site's most-used primitive. Four states, one prop interface (LSP).
 - **Style:** fully pill-rounded, 1px border in the type's color, label in `0.75rem` weight 500. The type's color carries via `currentColor` so the border, text, and `color-mix` fill stay in sync.
 - **Active:** `border-current` + `color-mix(in srgb, [type-color] 14%, transparent)` background fill. Aria-pressed.
 - **Inactive:** `border-current/50`, no fill. Hover bumps the border to full opacity **only when the pill is clickable**; an inert pill (Related section, deep-dive sidebar, Story) has no hover, so it never pretends to be a button.
-- **Muted:** `border-border`, `text-text-muted`, transparent. Shown when a filter is active and this tag doesn't match — "here's why this entry isn't a primary hit."
+- **Muted:** `border-border`, `text-text-muted`, transparent. Shown when a filter is active and this tag isn't part of it. In the Explorer grid it is still a button (pressing it narrows the filter further) and hovers to a `text-muted` border with `text-secondary` text; anywhere it is inert it has no hover.
 - **Removable:** active state + a tappable × button that uses `aria-label="Remove {label}"` (localized per locale).
+- **Sublabel** (the type name on a filter chip): quieter by weight (400 against the label's 500), same color. Never by opacity: a dimmed tag color falls below AA on the chip's tint.
 
 ### Experience Card
 The Explorer's primary container, also used in the Related section on deep-dive pages.
@@ -252,8 +253,22 @@ The Explorer's primary container, also used in the Related section on deep-dive 
 - **Hover:** `-translate-y-0.5` plus the Card Hover Glow shadow (the one shadow in the system). 200ms ease-out.
 - **Focus:** 2px Lamp Ember ring on focus-within with 2px offset.
 - **Padding:** 20px internal (`p-5`), 16px gap (`gap-4`) between header, meta, summary, impact callout, and tag cluster.
-- **Tag cluster:** at most six pills (filter matches, then languages and technologies) plus a quiet "+N". In the Explorer grid a pill adds its tag to the filter; elsewhere pills are inert.
+- **Tag cluster:** at most six pills (filter matches, then languages and technologies) plus a quiet "+N". In the Explorer grid any pill not yet in the filter adds its tag, so a visitor can keep narrowing from a card (the card always survives its own pill); elsewhere pills are inert.
 - **Impact callout:** quiet warm bar above the tag cluster (the headline result reads second, after the role) — `color-mix(in srgb, accent 8%, transparent)` background, leading 6px accent dot, italic body text. Replaces the banned side-stripe border pattern.
+
+### Active Filter Row
+The first thing in the results, above the sort bar.
+- **At rest:** one line, 44px, always present. With no filter it holds a `text-muted` hint ("No filters yet. Pick a skill above or on any card."), so adding the first filter never pushes the results down.
+- **With filters:** removable chips and a "Clear all" link at the right end. The row sticks under the navbar (`top: 64px`) for as long as the results are in view, on an opaque Workshop Black surface (no blur; the navbar keeps that exception). A 1px Border Slate bottom edge appears only while it is stuck.
+- **Phones:** the chips are a single horizontally scrolling line with no scrollbar; the chip clipped at the edge says there is more. On `sm+` they wrap.
+
+### Filter Reshape (signature moment)
+What happens when a filter changes, in the order the visitor reads it:
+- **The pill travels.** Pressing a pill that adds a filter (a starter chip or a card pill) sends a copy of it to its new chip in the filter row: 320ms ease-out-quint, then a 120ms fade. The real chip waits for it. Filters added from the search box or the URL simply appear.
+- **The grid reshapes.** Cards that stay glide to their new places at once (320ms). Cards that leave fade in 180ms and are out of the flow immediately, so they never hold the others back. Only entering cards keep the short stagger.
+- **Matches light up.** On each remaining card the matched pills fill in, card by card (50ms steps, 150ms cap).
+- **The results stay in view.** If the start of the results had scrolled above the navbar, the page scrolls it back, so the reshaped list is what the visitor sees. Only for changes the visitor makes; filters read from the URL never move the page.
+- **Reduced motion:** no travel, no glide, an instant scroll. The same end state.
 
 ### Search Bar (combobox)
 - **Style:** `surface` background, `border-border` outline, `rounded-lg` (12px), padded `10px 14px`. WAI-ARIA combobox pattern (`role="combobox"`, `aria-activedescendant`).
@@ -266,22 +281,54 @@ The Explorer's primary container, also used in the Related section on deep-dive 
 
 ### Navbar
 - **Style:** sticky, 64px, transparent at scroll-top. On scroll: `bg-surface/80` + `backdrop-blur-md` + 1px bottom border. Theme toggle (sun/moon cross-fade) and language switcher (`EN` / `ES` pills) anchor the right side.
-- **Active route:** Lamp Ember text + `aria-current="page"`.
+- **Active route:** Lamp Ember text + `aria-current="page"`, and on desktop a 1px Lamp Ember underline that slides sideways from the previous route's link (Motion `layoutId` with `layout="x"`; a two-axis layout animation would drag the line in from the old scroll position).
 - **Mobile:** hamburger → full-screen overlay (`bg-bg/95` + `backdrop-blur-sm`) with large nav links and a per-link bottom border.
 
 ### Core Stack row
 - **Pattern:** a static, labeled row under the hero CTAs: "Core stack" and the tools from `CORE_STACK`, each with its Simple Icons logo (bundled from the `simple-icons` package) in `currentColor`, text Secondary. Replaced the animated Logo Drop Cluster on 2026-09-27: the stack is information, not an ambient effect.
-- **Motion:** none.
+- **Motion:** none of its own. It arrives with the hero's last entrance step.
 - **Rule:** if a tool has no Simple Icons logo (SQL), show the label only. Do not synthesize a faux logo, and never tint with brand colors (no hex outside the tokens).
 
 ### Career Swimlane
 - **Pattern:** four lanes (Teaching, Founding, Data engineering, Data platform) on a shared 2016 → now axis, at the top of `/story` and in the landing Story teaser. Each row is text first (lane · years · organization) with a 8px bar on a `surface-elevated` track below.
 - **Color:** bars are `text-muted`; Lamp Ember marks only the ongoing role (the one "you are here" moment).
-- **Motion:** none. Positions are computed at build time.
+- **Motion:** bars draw in left to right (`scaleX`, origin left), as time passing: once on load on `/story`, where the swimlane opens the page (lanes 50ms apart), and scroll-linked on the landing teaser. CSS only (`.lane-bar` in `globals.css`). Positions are computed at build time.
+
+### Career Strip
+The swimlane as the filter's readout: "where in my career did I use this?". Sits in the Explorer results, between the Active Filter Row and the sort bar.
+- **Pattern:** the same four lanes and 2016 → now axis as the Career Swimlane, one compact 28px row each: label, track, and from `sm` up the years and organization. Phones show a year label every four years instead of two.
+- **No filter:** every bar is filled (`text-muted`; Lamp Ember for the ongoing role), every label Text Primary.
+- **With a filter:** lanes whose role matches stay filled; the others go **hollow** (a 1px outline of the same color) and their label drops to Text Muted. Filled against hollow is a change of shape, so the readout never rests on color alone. Screen readers get "Matches your filter" or "Not in your filter" per lane.
+- **Linked to the cards:** hovering or focusing a lane gives that role's card the hover's tonal lift and border (not the glow, which stays a pointer response). Pressing a lane opens the role's drawer.
+- **Motion:** fill and label change color over 200ms; bars draw in on scroll like the swimlane's.
+- **Rule:** the strip gets positions as plain numbers from the server (`toCareerStrip`). It never reads the clock, so the hydrated strip always matches the static HTML.
 
 ### Tracing Story Rail (signature component)
 - **Pattern:** vertical rail on `/story`, anchored to the centre on `lg+` with entries alternating left/right, single-column left-rail below.
 - **Motion:** scroll-linked progress fill via Framer Motion `useScroll` + `useSpring`. Custom implementation — Aceternity's TracingBeam is hard-coded for a left-rail layout that doesn't fit this alternating centre rail.
+
+### Hero entrance
+- **Pattern:** one load sequence. The availability badge and greeting, the role and proof line, the CTAs, then the résumé link, profile links and Core Stack settle in over four steps, 50ms apart (`.hero-enter` with `--i`, in `globals.css`). 320ms each, ease-out-quint, 8px rise.
+- **Static on purpose:** the name and the positioning sentence. They are the two largest-paint candidates (see The Largest Paint Rule).
+
+### Motion
+- **Tokens:** `--ease-out-quint`, `--duration-quick` (180ms: chips, menus, the route fade) and `--duration-reveal` (320ms: content settling in) in `globals.css`, mirrored for JavaScript in `src/lib/motion/tokens.ts`. Hover and color transitions keep Tailwind's 150ms and 200ms steps.
+- **Scroll reveal:** the `reveal` class (or `<Reveal>`) fades a block in over the first 35% of its own height as it enters. Use it on headers and single cards, never on a whole section: a tall block would stay see-through for too long.
+- **Stagger cap:** 150ms (`MAX_STAGGER_DELAY`). Past that a stagger reads as the page being slow.
+
+### Named Rules
+
+**The Response Rule.** New motion must either answer something the visitor did (a filter, a hover, a navigation) or show a relationship in the data (time on the swimlane, a card moving to its new place). Entrances are capped at what exists: the hero sequence and the scroll reveal. If an animation would play the same way with nobody at the page and no data behind it, it is decoration; leave it out.
+
+**The Largest Paint Rule.** Whatever element is the Largest Contentful Paint never gets a delayed fade. On the landing that is the name on desktop and the positioning sentence on phones (measured with Lighthouse, 2026-10-10). Re-measure before adding an entrance to any page's first screen.
+
+### Story Progress
+A 36px bar fixed under the navbar on `/story`, visible only while the three acts are being read.
+- **Pattern:** the act and year on the left ("Act 3 · 2021"), then the career axis from 2016 to now: a 1px Border Slate line, the time passed so far in `text-muted`, and an 8px Lamp Ember dot for "you are here" (the same role the accent has on the swimlane).
+- **What moves it:** the last timeline card whose top has passed 35% of the viewport. Cards are not evenly spaced in time, so the marker steps from card to card instead of following scroll progress. Act 2 has no date of its own: the label changes and the marker holds where Act 1 ended.
+- **Motion:** the dot and the line move over 320ms ease-out-quint (transform only); the bar fades in and out over 200ms.
+- **Surface:** opaque Workshop Black with a bottom border, like the stuck filter row. No blur.
+- **Decorative:** `aria-hidden`. It repeats what the page already says.
 
 ## 6. Do's and Don'ts
 
@@ -292,7 +339,7 @@ The Explorer's primary container, also used in the Related section on deep-dive 
 - **Do** localize every visible string through `useTranslations` / `getTranslator`. Both EN and ES are first-class.
 - **Do** honor `prefers-reduced-motion`. Every motion primitive in this codebase already does; new ones must.
 - **Do** keep focus rings visible at 2px in Lamp Ember with a 2px offset against `bg`. They are part of the craft, not a debug artifact.
-- **Do** ship the site fast. Static export, 0 client JS on Story/Deep-dive/Contact, system fonts, image decoding deferred. Performance is part of the message.
+- **Do** ship the site fast. Static export, server components by default (client JavaScript is the navbar, the landing island and the Story rail), system fonts, image decoding deferred. Performance is part of the message.
 - **Do** write copy as a senior engineer would — short sentences, specific verbs, concrete numbers, no hedging. The "would a human actually say this?" test gates every line.
 
 ### Don't:

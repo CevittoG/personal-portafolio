@@ -1,10 +1,10 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ReactNode, type Ref } from "react";
 import * as m from "motion/react-m";
 import { AnimatePresence, useReducedMotion } from "motion/react";
 import { ExperienceCard } from "@/components/experience/ExperienceCard";
-import { MAX_STAGGER_DELAY } from "@/components/motion/Reveal";
+import { DURATION, EASE_OUT_QUINT, MAX_STAGGER_DELAY } from "@/lib/motion/tokens";
 import { matchesAllTags } from "@/lib/filters/tag-match";
 import {
   SORT_IDS,
@@ -21,12 +21,22 @@ const SORT_KEYS: Record<SortId, MessageKey> = {
   relevant: "grid.sortRelevant",
 };
 
-const EASE_OUT_QUINT: [number, number, number, number] = [0.22, 1, 0.36, 1];
+/** Matched pills light up card by card: one 50ms step each, capped at 150ms. */
+const PILL_DELAY = [
+  "[--pill-delay:0ms]",
+  "[--pill-delay:50ms]",
+  "[--pill-delay:100ms]",
+  "[--pill-delay:150ms]",
+];
 
 /**
  * ExperienceGrid — Explorer Zone 4 (plan §6).
  *
  * Wraps the card grid with the secondary filter bar (sort + count) and an explicit empty state with featured-entry fallback.
+ *
+ * On a filter change the cards that stay glide to their new places at once
+ * (`popLayout` takes the leaving cards out of the flow), the leaving ones
+ * fade quickly, and only entering cards keep the short stagger.
  *
  * Owns its own UI state (`sort` selection); receives entries and active
  * filter slugs from the page. Filtering is performed inside via the default
@@ -43,6 +53,15 @@ export interface ExperienceGridProps {
   /** When activeSlugs is empty AND there are no entries, show these as a
    *  fallback (plan §6 Zone 4 empty state). */
   featuredFallback?: readonly ExperienceEntry[];
+  /** Rendered first, above the sort bar: the active-filter row, which
+   *  sticks for as long as these results are in view. */
+  filterBar?: ReactNode;
+  /** Rendered between the filter row and the sort bar: the career strip. */
+  timeline?: ReactNode;
+  /** Entry whose card is lit from the career strip. */
+  highlightedId?: string | null;
+  /** The results' root, for scrolling them back into view. */
+  ref?: Ref<HTMLDivElement>;
   className?: string;
 }
 
@@ -52,6 +71,10 @@ export function ExperienceGrid({
   onSelect,
   onTagSelect,
   featuredFallback,
+  filterBar,
+  timeline,
+  highlightedId,
+  ref,
   className,
 }: ExperienceGridProps) {
   const t = useTranslations();
@@ -78,25 +101,34 @@ export function ExperienceGrid({
   );
 
   const reduceMotion = useReducedMotion();
-  // Stagger first paint reveal across the visible cards; filter changes
-  // get a quieter same-position fade via `layout`. Layer A of plan §15.
+  // Entering cards stagger in. The stagger must not hold back the cards
+  // that stay (their move has its own undelayed `layout` transition) or
+  // the ones that leave (a quicker exit of their own).
   const cardMotion = (index: number) =>
     reduceMotion
       ? {}
       : ({
           initial: { opacity: 0, y: 8 },
           animate: { opacity: 1, y: 0 },
-          exit: { opacity: 0, y: -4 },
+          exit: {
+            opacity: 0,
+            y: -4,
+            transition: { duration: DURATION.quick, ease: EASE_OUT_QUINT },
+          },
           transition: {
-            duration: 0.32,
+            duration: DURATION.reveal,
             delay: Math.min(index * 0.05, MAX_STAGGER_DELAY),
             ease: EASE_OUT_QUINT,
+            layout: { duration: DURATION.reveal, ease: EASE_OUT_QUINT },
           },
           layout: true,
         } as const);
 
   return (
-    <div className={cn("space-y-5", className)}>
+    <div ref={ref} className={cn("scroll-mt-16 space-y-5", className)}>
+      {filterBar}
+      {timeline}
+
       {/* Secondary filter bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 text-sm">
         <div className="flex items-center gap-3">
@@ -125,7 +157,7 @@ export function ExperienceGrid({
               </option>
             ))}
           </select>
-          <span className="text-xs text-text-muted">
+          <span role="status" className="text-xs text-text-muted">
             {t("grid.showing", { visible: sorted.length, total: entries.length })}
           </span>
         </div>
@@ -133,20 +165,23 @@ export function ExperienceGrid({
 
       {/* Grid or empty state */}
       {!isEmpty && (
-        <m.div layout className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <AnimatePresence initial={true}>
+        // relative: popLayout positions the leaving cards against the grid.
+        <div className="relative grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <AnimatePresence initial={true} mode="popLayout">
             {sorted.map((entry, i) => (
-              <m.div key={entry.id} {...cardMotion(i)}>
+              <m.div key={entry.id} data-entry-id={entry.id} {...cardMotion(i)}>
                 <ExperienceCard
                   entry={entry}
                   filterTags={activeSlugs as string[]}
                   onSelect={onSelect ? () => onSelect(entry) : undefined}
                   onTagSelect={onTagSelect}
+                  highlighted={entry.id === highlightedId}
+                  className={PILL_DELAY[Math.min(i, PILL_DELAY.length - 1)]}
                 />
               </m.div>
             ))}
           </AnimatePresence>
-        </m.div>
+        </div>
       )}
 
       {isEmpty && (

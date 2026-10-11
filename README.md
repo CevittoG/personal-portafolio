@@ -57,15 +57,21 @@ Every pull request and every push to `main` runs, in order:
 |---|---|
 | `pnpm lint`, `pnpm type-check` | Code style and types |
 | `pnpm validate:data` | Content matches its schema and cross-file rules |
-| `pnpm test` | Unit tests: locale paths, translator and catalogue parity, date math, overlap-merged years, sorting, related-role scoring, card tag selection, translations, search aliases and typo matching, and data integrity (including tests that break the data on purpose) |
+| `pnpm test` | Unit tests: locale paths, translator and catalogue parity, date math, overlap-merged years, sorting, related-role scoring, card tag selection, translations, search aliases and typo matching, career-axis positions, and data integrity (including tests that break the data on purpose) |
 | `pnpm build` | Static export succeeds (and re-validates content) |
-| `pnpm test:e2e` | Playwright tests against the served export: every page returns 200 with the right `lang`, canonical and hreflang; zero axe color-contrast violations in dark **and** light theme; no page throws or fails hydration, with and without reduced motion |
+| `pnpm test:e2e` | Playwright tests against the served export: every page returns 200 with the right `lang`, canonical and hreflang; zero axe violations in dark **and** light theme, on every page and again with a filter applied; no page throws or fails hydration, with and without reduced motion; and the motion contracts (where each animation ends, what must never animate, that reduced motion shows everything at once) |
 | `pnpm lhci` | Lighthouse budget: accessibility ≥ 95, SEO ≥ 95, best practices ≥ 90 (errors); performance ≥ 90 (warning) |
 
 The end-to-end suite has already paid for itself: its first run found tag
 colors below 4.5:1 contrast and a hydration mismatch that reset the Spanish
 `lang` for visitors with reduced motion enabled. Both are fixed, and the
 color tokens are now computed to clear 4.6:1 on every surface they sit on.
+It kept paying when motion arrived: a test caught the navigation underline
+flying in from 1,600px below the header after a scrolled page, and the first
+axe run with a filter applied found a chip label that had been below AA
+contrast for months, because until then axe had only seen the unfiltered
+page. The lesson is in the suite now: every new state of a page gets its own
+accessibility run.
 
 ## Architecture decisions
 
@@ -95,7 +101,8 @@ build validates first.
 **4. Server by default, client islands only where interactive.** Pages are
 React Server Components; the filterable grid, drawer and search are the
 client island. Anything computed from "today" (the career timeline's ongoing
-bar) renders on the server, so static HTML and hydration can't disagree.
+bar) is computed on the server, even where a client component draws it, so
+static HTML and hydration can't disagree.
 Reduced-motion variants switch only after mount for the same reason. The
 server shapes what the island gets: entries with descriptions cut to the
 drawer teaser, and a small tag index instead of the taxonomy, so neither
@@ -122,16 +129,28 @@ compose (search: an alias strategy wraps the substring one). *Trade-off:*
 swapping an implementation later means editing its callers, which a
 single-implementation codebase does rarely.
 
+**8. Motion has to answer something.** New animation must respond to what
+the visitor did (the grid reshaping on a filter, a pill flying to its chip,
+a card lighting up from its career lane) or show a relationship in the data
+(time drawing across the swimlane, a marker on the career axis while reading
+the story). Entrances are capped at one hero sequence and a scroll reveal,
+both in CSS, and whatever element is the largest paint never gets a delayed
+fade: on the landing that is the name on desktop and the positioning
+sentence on phones, measured with Lighthouse rather than guessed.
+*Trade-off:* less spectacle than a typical portfolio, and every animation
+needs its own end-to-end test, because a broken one doesn't fail a build by
+itself.
+
 ## Project map
 
 ```
 src/
   app/            routes: (en)/… and es/…, sitemap, robots, og/[image] share images
-  components/     explorer, story, contact, experience (deep dive), hero, search, tags
+  components/     explorer, filters, story, contact, experience (deep dive), hero, search, tags, motion
   content/        schema.ts (Zod), validate.ts, data.ts (typed boundary), assert-valid.ts
   data/           taxonomy.json, experience.json
   i18n/           messages (en, es), translator, provider, path helpers
-  lib/            experience, search, story, related, stats, site, analytics, theme
+  lib/            experience, search, story, related, stats, site, analytics, theme, motion
 tests/
   unit/           Vitest
   e2e/            Playwright + axe

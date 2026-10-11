@@ -131,7 +131,8 @@
     "motion": [
       { "name": "duration-fast", "value": "150ms", "purpose": "Color transitions, hover state shifts on buttons, pills, links." },
       { "name": "duration-base", "value": "200ms", "purpose": "Theme cross-fade on <html>, card hover lift, navbar scroll transition." },
-      { "name": "duration-reveal", "value": "320ms", "purpose": "Scroll-enter reveal primitive (Reveal / RevealStagger)." },
+      { "name": "duration-quick", "value": "180ms", "purpose": "Filter chips, menus and the route fade. CSS --duration-quick; DURATION.quick in src/lib/motion/tokens.ts." },
+      { "name": "duration-reveal", "value": "320ms", "purpose": "Content settling in: hero entrance, grid cards, swimlane bars, nav underline. CSS --duration-reveal; DURATION.reveal in src/lib/motion/tokens.ts." },
       { "name": "duration-drawer", "value": "300ms", "purpose": "Drawer slide-in (desktop) and bottom-sheet slide-up (mobile)." },
       { "name": "ease-out-quint", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Default reveal easing. Starts fast, settles slow — quiet but deliberate." },
       { "name": "ease-out", "value": "cubic-bezier(0, 0, 0.2, 1)", "purpose": "Color/hover transitions where the eased exit isn't load-bearing." },

@@ -22,7 +22,7 @@ export interface TagPillProps {
   state?: TagPillState;
   /** Optional secondary label rendered after a thin separator (e.g. taxonomy
    *  type name on a filter chip — "Python · Language"). Visually quieter than
-   *  the primary label. */
+   *  the primary label (lighter weight, same color). */
   sublabel?: string;
   /** Click handler (e.g. add to filter). Ignored when state is "removable". */
   onClick?: () => void;
@@ -45,12 +45,15 @@ const BASE_CLASSES = cn(
 );
 
 const STATE_CLASSES: Record<TagPillState, string> = {
-  // Filled, full-color — currently selected/matching
-  active: "border-current",
+  // Filled, full-color — currently selected/matching. A parent may set
+  // `--pill-delay` so matches light up in sequence (the Explorer grid).
+  active: "border-current delay-(--pill-delay)",
   // Default — color-tinted outline, no fill. Hover only when clickable
   // (added below), so an inert label never pretends to be a button.
   inactive: "border-current/50",
-  // Greyed out — visible but de-emphasized (doesn't match filter)
+  // Greyed out — visible but de-emphasized (doesn't match filter). Still
+  // a button when given `onClick` (narrow the filter further); the hover
+  // for that is added below.
   muted: "border-border text-text-muted bg-transparent",
   // Active + interactive remove control
   removable: "border-current",
@@ -88,7 +91,7 @@ export function TagPill({
   removeAriaLabel,
   className,
 }: TagPillProps) {
-  const interactive = state !== "muted" && (onClick || state === "removable");
+  const interactive = Boolean(onClick) || state === "removable";
   const Component = interactive && state !== "removable" ? "button" : "span";
 
   return (
@@ -107,6 +110,7 @@ export function TagPill({
           state !== "removable" &&
           "cursor-pointer active:scale-[0.97] motion-reduce:active:scale-100",
         interactive && state === "inactive" && "hover:border-current",
+        interactive && state === "muted" && "hover:border-text-muted hover:text-text-secondary",
         className,
       )}
       style={styleFor(type, state)}
@@ -115,7 +119,8 @@ export function TagPill({
       {sublabel && (
         <span
           aria-hidden="true"
-          className="text-xs uppercase tracking-wider opacity-60"
+          // Quieter by weight, not opacity: dimmed, it fell below AA contrast.
+          className="text-xs font-normal uppercase tracking-wider"
         >
           · {sublabel}
         </span>

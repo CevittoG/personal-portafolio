@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import Link from "next/link";
 import { getHeadingLine } from "@/lib/experience/format";
 import type { ExperienceEntry } from "@/lib/experience/types";
@@ -17,12 +18,18 @@ import { cn } from "@/lib/utils";
  * Each row reads as text first (lane · years · organization) with the bar
  * underneath, so it stays legible at phone width where bars get narrow.
  * Bars are neutral: the accent is kept for the one ongoing role.
+ *
+ * `draw` lets the bars draw in left to right, in CSS (`.lane-bar` in
+ * globals.css): "load" where the swimlane opens the page, "scroll" where
+ * the visitor scrolls down to it.
  */
 export interface CareerSwimlaneProps {
   entries: readonly ExperienceEntry[];
   locale: Locale;
   /** Link each row to its deep dive (new tab), like the Story cards. */
   linkToDeepDive?: boolean;
+  /** Draw the bars in on page load or as they scroll into view. */
+  draw?: "load" | "scroll";
   className?: string;
 }
 
@@ -30,6 +37,7 @@ export function CareerSwimlane({
   entries,
   locale,
   linkToDeepDive = false,
+  draw,
   className,
 }: CareerSwimlaneProps) {
   const t = getTranslator(locale);
@@ -37,10 +45,10 @@ export function CareerSwimlane({
   if (lanes.length === 0) return null;
 
   return (
-    <figure className={cn("space-y-4", className)}>
+    <figure className={cn("space-y-4", draw && `lane-draw-${draw}`, className)}>
       <figcaption className="sr-only">{t("career.title")}</figcaption>
       <ol className="space-y-4">
-        {lanes.map((lane) => (
+        {lanes.map((lane, laneIndex) => (
           <li key={lane.id} className="space-y-1.5">
             {lane.bars.map((bar) => {
               const org = getHeadingLine(bar.entry).secondary;
@@ -63,10 +71,16 @@ export function CareerSwimlane({
                 >
                   <span
                     className={cn(
-                      "absolute inset-y-0 rounded-full",
+                      "lane-bar absolute inset-y-0 rounded-full",
                       bar.endYear === null ? "bg-accent" : "bg-text-muted",
                     )}
-                    style={{ left: `${bar.left}%`, width: `${bar.width}%` }}
+                    style={
+                      {
+                        left: `${bar.left}%`,
+                        width: `${bar.width}%`,
+                        "--i": Math.min(laneIndex, 3),
+                      } as CSSProperties
+                    }
                   />
                 </span>
               );

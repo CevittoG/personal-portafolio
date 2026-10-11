@@ -30,8 +30,10 @@ import { cn } from "@/lib/utils";
  *                        the rest are `muted` ("here's why this matched").
  *
  * Pills either do something or look inert: with `onTagSelect` (Explorer
- * grid) an inactive pill adds that tag to the filter; without it (Related
- * section) pills render as plain labels with no hover affordance.
+ * grid) any pill not yet in the filter adds its tag, so a visitor can keep
+ * narrowing from a card (a muted pill is on this card, so the card always
+ * survives its own pill); without it (Related section) pills render as
+ * plain labels with no hover affordance.
  */
 export interface ExperienceCardProps {
   entry: ExperienceEntry;
@@ -41,6 +43,9 @@ export interface ExperienceCardProps {
   onSelect?: (entry: ExperienceEntry) => void;
   /** Adds a tag to the Explorer filter. Omit to render pills as inert labels. */
   onTagSelect?: (slug: string) => void;
+  /** Lit from elsewhere (its lane in the career strip): the hover's tonal
+   *  lift and border, without the glow, which is kept for the pointer. */
+  highlighted?: boolean;
   className?: string;
 }
 
@@ -49,6 +54,7 @@ export function ExperienceCard({
   filterTags,
   onSelect,
   onTagSelect,
+  highlighted = false,
   className,
 }: ExperienceCardProps) {
   const t = useTranslations();
@@ -77,7 +83,7 @@ export function ExperienceCard({
   const interactive = Boolean(handleClick);
 
   const pillClick = (slug: string, type: TagType, state: TagPillState) =>
-    onTagSelect && state === "inactive"
+    onTagSelect && state !== "active"
       ? () => {
           track("filter_added", { slug, type, source: "card" });
           onTagSelect(slug);
@@ -86,9 +92,11 @@ export function ExperienceCard({
 
   return (
     <article
+      data-highlighted={highlighted ? "" : undefined}
       className={cn(
         "group flex h-full flex-col gap-4 rounded-2xl border border-border",
         "bg-surface p-5 text-left",
+        highlighted && "border-accent/40 bg-surface-elevated",
         "transition-[transform,background-color,border-color,box-shadow] duration-200 ease-out",
         interactive && [
           "relative cursor-pointer",

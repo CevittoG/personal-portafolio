@@ -70,6 +70,8 @@ export const es: Messages = {
   career: {
     title: "Mi carrera de un vistazo",
     present: "Presente",
+    match: "Coincide con tu filtro",
+    noMatch: "Fuera de tu filtro",
     lanes: {
       teaching: "Enseñanza",
       founding: "Emprendimiento",
@@ -99,6 +101,7 @@ export const es: Messages = {
   },
   filters: {
     region: "Filtros activos",
+    empty: "Aún no hay filtros. Elige una habilidad arriba o en cualquier tarjeta.",
     clearAll: "Limpiar todo",
     removeTag: "Quitar {label}",
   },
@@ -277,11 +280,11 @@ export const es: Messages = {
       },
       {
         title: "Pruebas end-to-end",
-        body: "Cada página en ambos idiomas responde 200 con el idioma, el enlace canónico y el hreflang correctos, y se hidrata sin errores, con y sin movimiento reducido.",
+        body: "Cada página en ambos idiomas responde 200 con el idioma, el enlace canónico y el hreflang correctos, y se hidrata sin errores, con y sin movimiento reducido. Las animaciones tienen sus propios chequeos: dónde termina cada una, qué nunca debe animarse y que el movimiento reducido muestre todo de una vez.",
       },
       {
         title: "Accesibilidad",
-        body: "Chequeos automáticos de contraste en tema oscuro y claro en cada página. Su primera ejecución encontró fallas reales; los tokens de color ahora se calculan para superar 4,6:1 en cada superficie.",
+        body: "Chequeos automáticos de contraste en tema oscuro y claro, en cada página y otra vez con un filtro aplicado. Su primera ejecución encontró fallas reales, y también la primera con un filtro activo; los tokens de color ahora se calculan para superar 4,6:1 en cada superficie.",
       },
       {
         title: "Presupuesto de Lighthouse",
@@ -320,6 +323,11 @@ export const es: Messages = {
         title: "La accesibilidad se prueba",
         body: "El contraste se mide, el texto nunca baja de 12px, las zonas táctiles miden al menos 24px y el movimiento respeta la preferencia de movimiento reducido.",
         tradeoff: "una paleta de etiquetas un poco menos saturada.",
+      },
+      {
+        title: "El movimiento tiene que responder a algo",
+        body: "Aquí la animación responde a lo que haces (la lista se reordena al filtrar, una etiqueta vuela a la fila de filtros) o muestra una relación en los datos (el tiempo dibujándose en la línea de carrera). Las entradas se limitan a una secuencia corta al inicio de la página principal y a una aparición gradual al hacer scroll, y el texto más grande de cada primera pantalla nunca aparece gradualmente, así la página se pinta tan rápido como antes.",
+        tradeoff: "menos espectáculo que un portafolio típico, y cada animación necesita su propia prueba, porque una rota no hace fallar el build por sí sola.",
       },
     ],
     sourceTitle: "Lee el código",

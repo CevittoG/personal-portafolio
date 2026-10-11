@@ -1,10 +1,12 @@
 import { CareerSwimlane } from "@/components/story/CareerSwimlane";
 import { NowMarker } from "@/components/story/NowMarker";
 import { PivotInterlude } from "@/components/story/PivotInterlude";
+import { StoryProgress } from "@/components/story/StoryProgress";
 import { StoryTimeline } from "@/components/story/StoryTimeline";
 import { experienceRepository } from "@/lib/experience/json-repository";
 import { toClientEntry } from "@/lib/experience/client-entry";
 import { localizeEntry } from "@/lib/experience/localize";
+import { buildStoryAxis } from "@/lib/story/career-lanes";
 import { buildTagIndex } from "@/lib/taxonomy/tag-index";
 import { TagIndexProvider } from "@/components/tags/TagIndex";
 import { sortEntries } from "@/lib/experience/sort";
@@ -23,8 +25,11 @@ import { cn } from "@/lib/utils";
  * the same call site as the client hook.
  *
  * Pure server-renderable still — no client JS shipped from this component.
- * The interactive bits (rail draw-in, reveal stagger) live inside the client
- * `StoryTimeline`.
+ * The interactive bits live in two client components: `StoryTimeline` (the
+ * rail that draws in) and `StoryProgress` (the sticky marker that shows
+ * where on the career axis the reader is). The marker reads only data
+ * attributes: the acts wrapper (`data-story-acts`) says when to show, and
+ * each step (`data-story-step`) says which act and year it stands for.
  */
 export interface StoryProps {
   locale: Locale;
@@ -49,9 +54,11 @@ export function Story({ locale }: StoryProps) {
     ...act1Entries.flatMap((e) => e.tags.soft_skills),
     ...act3Entries.flatMap((e) => e.tags.concepts),
   ]);
+  const axis = buildStoryAxis(all);
 
   return (
     <main className="px-6 py-12 sm:py-16">
+      <StoryProgress startYear={axis.startYear} endYear={axis.endYear} />
       <div className="mx-auto max-w-5xl space-y-20 sm:space-y-24">
         <header className="text-center">
           <p className="text-xs uppercase tracking-[0.25em] text-text-secondary">
@@ -72,59 +79,68 @@ export function Story({ locale }: StoryProps) {
           >
             {t("career.title")}
           </h2>
-          <CareerSwimlane entries={all} locale={locale} linkToDeepDive />
+          <CareerSwimlane entries={all} locale={locale} linkToDeepDive draw="load" />
         </section>
 
-        <Act
-          eyebrow={t("story.actOne.eyebrow")}
-          title={t("story.actOne.title")}
-          intro={t("story.actOne.intro")}
-        >
-          {act1Entries.length > 0 ? (
-            <TagIndexProvider index={tagIndex}>
-              <StoryTimeline
-                entries={act1Entries}
-                highlightTagType="soft_skills"
-                linkToDeepDive
-                locale={locale}
+        <div data-story-acts="" className="space-y-20 sm:space-y-24">
+          <Act
+            eyebrow={t("story.actOne.eyebrow")}
+            title={t("story.actOne.title")}
+            intro={t("story.actOne.intro")}
+          >
+            {act1Entries.length > 0 ? (
+              <TagIndexProvider index={tagIndex}>
+                <StoryTimeline
+                  entries={act1Entries}
+                  highlightTagType="soft_skills"
+                  linkToDeepDive
+                  locale={locale}
+                  actLabel={t("story.actOne.eyebrow")}
+                  axis={axis.points}
+                />
+              </TagIndexProvider>
+            ) : (
+              <ActPlaceholder
+                title={t("story.actOne.emptyTitle")}
+                hint={t("story.actOne.emptyHint")}
               />
-            </TagIndexProvider>
-          ) : (
-            <ActPlaceholder
-              title={t("story.actOne.emptyTitle")}
-              hint={t("story.actOne.emptyHint")}
+            )}
+          </Act>
+
+          {/* A step with no year of its own: the marker holds where Act 1 ended. */}
+          <div data-story-step="" data-act={t("story.actTwo.eyebrow")}>
+            <PivotInterlude
+              eyebrow={t("story.actTwo.eyebrow")}
+              title={t("story.actTwo.title")}
+              paragraphs={messages.story.actTwo.paragraphs}
             />
-          )}
-        </Act>
+          </div>
 
-        <PivotInterlude
-          eyebrow={t("story.actTwo.eyebrow")}
-          title={t("story.actTwo.title")}
-          paragraphs={messages.story.actTwo.paragraphs}
-        />
-
-        <Act
-          eyebrow={t("story.actThree.eyebrow")}
-          title={t("story.actThree.title")}
-          intro={t("story.actThree.intro")}
-        >
-          {act3Entries.length > 0 ? (
-            <TagIndexProvider index={tagIndex}>
-              <StoryTimeline
-                entries={act3Entries}
-                highlightTagType="concepts"
-                linkToDeepDive
-                locale={locale}
-                resultLabel={t("story.actThree.resultLabel")}
+          <Act
+            eyebrow={t("story.actThree.eyebrow")}
+            title={t("story.actThree.title")}
+            intro={t("story.actThree.intro")}
+          >
+            {act3Entries.length > 0 ? (
+              <TagIndexProvider index={tagIndex}>
+                <StoryTimeline
+                  entries={act3Entries}
+                  highlightTagType="concepts"
+                  linkToDeepDive
+                  locale={locale}
+                  resultLabel={t("story.actThree.resultLabel")}
+                  actLabel={t("story.actThree.eyebrow")}
+                  axis={axis.points}
+                />
+              </TagIndexProvider>
+            ) : (
+              <ActPlaceholder
+                title={t("story.actThree.emptyTitle")}
+                hint={t("story.actThree.emptyHint")}
               />
-            </TagIndexProvider>
-          ) : (
-            <ActPlaceholder
-              title={t("story.actThree.emptyTitle")}
-              hint={t("story.actThree.emptyHint")}
-            />
-          )}
-        </Act>
+            )}
+          </Act>
+        </div>
 
         <NowMarker
           eyebrow={t("story.now.eyebrow")}

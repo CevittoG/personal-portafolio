@@ -29,3 +29,20 @@ describe("TagPill aria-pressed", () => {
     }
   });
 });
+
+describe("TagPill muted", () => {
+  // In the Explorer grid a muted pill narrows the filter further.
+  it("is a button when it can be pressed", () => {
+    const html = renderToStaticMarkup(
+      createElement(TagPill, { ...base, state: "muted", onClick: () => {} }),
+    );
+    expect(html).toMatch(/^<button/);
+    expect(html).toContain("hover:border-text-muted");
+  });
+
+  it("is an inert label otherwise, with no hover", () => {
+    const html = renderToStaticMarkup(createElement(TagPill, { ...base, state: "muted" }));
+    expect(html).toMatch(/^<span/);
+    expect(html).not.toContain("hover:");
+  });
+});
