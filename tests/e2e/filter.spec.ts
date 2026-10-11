@@ -77,43 +77,57 @@ for (const reducedMotion of ["reduce", "no-preference"] as const) {
 test.describe("pill travel with motion allowed", () => {
   test.use({ contextOptions: { reducedMotion: "no-preference" } });
 
+  /**
+   * Record the flying copy the moment it is added. It lives for under half
+   * a second, so looking for it after the click would be a race on a busy
+   * machine; this notes it, and where it is headed, as it appears.
+   */
+  const watchForGhost = (page: Page, slug: string) =>
+    page.evaluate((slug) => {
+      const seen = ((window as unknown as { __ghosts: unknown[] }).__ghosts = [] as unknown[]);
+      new MutationObserver((records) => {
+        for (const node of records.flatMap((r) => Array.from(r.addedNodes))) {
+          if (!(node instanceof HTMLElement) || !node.hasAttribute("data-pill-ghost")) continue;
+          const from = node.getBoundingClientRect();
+          const frames = (node.getAnimations()[0].effect as KeyframeEffect).getKeyframes();
+          const [dx, dy] = String(frames[frames.length - 1].transform).match(/-?[\d.]+/g)!.map(Number);
+          const chip = document.querySelector(`[data-filter-chip="${slug}"]`)!.getBoundingClientRect();
+          seen.push({
+            x: Math.abs(from.left + dx - chip.left),
+            y: Math.abs(from.top + dy - chip.top),
+            hidden: node.getAttribute("aria-hidden"),
+            inert: node.inert,
+          });
+        }
+      }).observe(document.body, { childList: true });
+    }, slug);
+  const ghosts = (page: Page) =>
+    page.evaluate(() => (window as unknown as { __ghosts: { x: number; y: number; hidden: string; inert: boolean }[] }).__ghosts);
+
   test("a pressed pill flies to its chip and is then removed", async ({ page }) => {
     await page.goto("/");
+    await watchForGhost(page, "python");
     await starter(page, "python").click();
 
-    const ghost = page.locator("[data-pill-ghost]");
-    await expect(ghost).toHaveCount(1);
-    // Where it is headed (its last keyframe) against where the chip is.
-    const miss = await ghost.evaluate((el) => {
-      const from = el.getBoundingClientRect();
-      const animation = el.getAnimations()[0];
-      const frames = (animation.effect as KeyframeEffect).getKeyframes();
-      const [dx, dy] = String(frames[frames.length - 1].transform)
-        .match(/-?[\d.]+/g)!
-        .map(Number);
-      const now = new DOMMatrix(getComputedStyle(el).transform);
-      const chip = document.querySelector("[data-filter-chip='python']")!.getBoundingClientRect();
-      return {
-        x: Math.abs(from.left - now.e + dx - chip.left),
-        y: Math.abs(from.top - now.f + dy - chip.top),
-        hidden: el.getAttribute("aria-hidden"),
-        inert: (el as HTMLElement).inert,
-      };
-    });
-    // The chip is still popping in (a few px of scale), hence the tolerance.
-    expect(miss.x).toBeLessThan(8);
-    expect(miss.y).toBeLessThan(8);
-    expect(miss.hidden).toBe("true");
-    expect(miss.inert).toBe(true);
+    await expect.poll(async () => (await ghosts(page)).length).toBe(1);
+    const [flight] = await ghosts(page);
+    // Where it is headed (its last keyframe) against where the chip is. The
+    // chip is still popping in (a few px of scale), hence the tolerance.
+    expect(flight.x).toBeLessThan(8);
+    expect(flight.y).toBeLessThan(8);
+    expect(flight.hidden).toBe("true");
+    expect(flight.inert).toBe(true);
 
-    await expect(ghost).toHaveCount(0);
+    await expect(page.locator("[data-pill-ghost]")).toHaveCount(0);
     await expect(filterRow(page).getByRole("button", { name: "Remove Python" })).toBeVisible();
   });
 
   test("a muted card pill flies too", async ({ page }) => {
     await page.goto("/?tags=python");
-    await page.locator("#discover article button[data-state='muted']").first().click();
-    await expect(page.locator("[data-pill-ghost]")).toHaveCount(1);
+    const muted = page.locator("#discover article button[data-state='muted']").first();
+    await watchForGhost(page, (await muted.getAttribute("data-slug"))!);
+    await muted.click();
+    await expect.poll(async () => (await ghosts(page)).length).toBe(1);
     await expect(page.locator("[data-pill-ghost]")).toHaveCount(0);
   });
 
