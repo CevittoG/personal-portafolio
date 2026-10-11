@@ -3,6 +3,9 @@ import { AvailabilityBadge } from "@/components/contact/AvailabilityBadge";
 import { SocialLinks } from "@/components/contact/ContactLinks";
 import { umamiAttributes } from "@/lib/analytics/umami";
 import { CoreStack } from "./CoreStack";
+import { ToolField } from "./ToolField";
+import { toolIconsScript } from "./tool-icons-script";
+import type { ToolFieldData } from "@/lib/explorer/tool-field";
 import type { Locale } from "@/i18n/locale";
 import { getTranslator } from "@/i18n/server";
 import { withLocale } from "@/i18n/path";
@@ -15,8 +18,10 @@ import { cn } from "@/lib/utils";
  * role, a proof line (current role, years, location), one positioning
  * sentence, two CTAs that split the audience (technical recruiter vs
  * culture-curious hiring manager), a quiet résumé-request link, profile
- * links and a static "Core stack" row. Height follows the content: no
- * forced minimum, so the next section starts right after on mobile.
+ * links, a static "Core stack" row, and the tool field: the wider stack
+ * scattered around the copy, each tool a filter (`ToolField`, the hero's
+ * one client island). Height follows the content: no forced minimum, so
+ * the next section starts right after on mobile.
  *
  * Entrance: the supporting lines settle in over four CSS steps
  * (`.hero-enter` in globals.css). The name and the positioning sentence
@@ -24,8 +29,8 @@ import { cn } from "@/lib/utils";
  * the sentence on phones), and a delayed fade would push that paint back.
  *
  * Server component: rendered once at build, so its copy and the Core stack
- * logos never ship as client JavaScript. Owns no data; every value comes
- * from the caller.
+ * logos never ship as client JavaScript; only the tool field hydrates.
+ * Owns no data; every value comes from the caller.
  */
 export interface HeroProps {
   locale: Locale;
@@ -39,6 +44,9 @@ export interface HeroProps {
   availability: { open: boolean; label: string };
   /** ID of the scroll target for the primary CTA (Zone 2 anchor). */
   exploreTargetId: string;
+  /** The tools scattered around the copy, and the section they filter. */
+  field: ToolFieldData;
+  filterTargetId: string;
   /** DOM id of the section, observed by the sticky mobile contact pill. */
   id?: string;
   className?: string;
@@ -52,6 +60,8 @@ export function Hero({
   proofLine,
   availability,
   exploreTargetId,
+  field,
+  filterTargetId,
   id,
   className,
 }: HeroProps) {
@@ -69,91 +79,109 @@ export function Hero({
       {/* Ambient visual — soft accent blooms + a top-edge vignette. */}
       <AmbientBackdrop />
 
-      <div className="relative z-10 mx-auto max-w-3xl text-center">
-        <AvailabilityBadge
-          open={availability.open}
-          label={availability.label}
-          className="mb-6 hero-enter"
-        />
-        <p className="hero-enter mb-4 text-xs uppercase tracking-[0.25em] text-text-secondary">
-          {t("hero.greeting")}
-        </p>
-        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-text-primary">
-          {name}
-        </h1>
+      {/* One column, then on wide screens the copy between two gutters for
+          the tool field (which spans all three columns, and a second row
+          for its caption). */}
+      <div
+        className={cn(
+          "relative z-10 mx-auto grid max-w-3xl",
+          "xl:max-w-[88rem] xl:grid-cols-[minmax(0,1fr)_minmax(0,44rem)_minmax(0,1fr)]",
+          "xl:grid-rows-[auto_auto] xl:gap-x-8",
+        )}
+      >
+        <div className="text-center xl:col-start-2 xl:row-start-1">
+          <AvailabilityBadge
+            open={availability.open}
+            label={availability.label}
+            className="mb-6 hero-enter"
+          />
+          <p className="hero-enter mb-4 text-xs uppercase tracking-[0.25em] text-text-secondary">
+            {t("hero.greeting")}
+          </p>
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-text-primary">
+            {name}
+          </h1>
 
-        <p className="hero-enter [--i:1] mt-6 text-xl sm:text-2xl font-medium text-accent leading-snug">
-          {role}
-        </p>
-        <p className="hero-enter [--i:1] mt-3 text-sm sm:text-base text-text-secondary">
-          {proofLine}
-        </p>
+          <p className="hero-enter [--i:1] mt-6 text-xl sm:text-2xl font-medium text-accent leading-snug">
+            {role}
+          </p>
+          <p className="hero-enter [--i:1] mt-3 text-sm sm:text-base text-text-secondary">
+            {proofLine}
+          </p>
 
-        <p className="mt-8 mx-auto max-w-2xl text-base sm:text-lg leading-relaxed text-text-secondary">
-          {positioningStatement}
-        </p>
+          <p className="mt-8 mx-auto max-w-2xl text-base sm:text-lg leading-relaxed text-text-secondary">
+            {positioningStatement}
+          </p>
 
-        <div className="hero-enter [--i:2] mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
-          <a
-            href={`#${exploreTargetId}`}
-            className={cn(
-              "inline-flex items-center justify-center rounded-full",
-              "px-6 py-3 text-sm font-medium",
-              "bg-accent text-on-accent hover:bg-accent-hover",
-              "transition-colors duration-150",
-              "focus-visible:outline-none focus-visible:ring-2",
-              "focus-visible:ring-accent focus-visible:ring-offset-2",
-              "focus-visible:ring-offset-bg",
-            )}
-          >
-            {t("hero.cta.explore")}
-            <span aria-hidden="true" className="ml-2">
-              ↓
-            </span>
-          </a>
-          <Link
-            href={withLocale("/story", locale)}
-            className={cn(
-              "inline-flex items-center justify-center rounded-full",
-              "px-6 py-3 text-sm font-medium",
-              "border border-border bg-surface text-text-primary",
-              "hover:bg-surface-elevated hover:border-text-muted",
-              "transition-colors duration-150",
-              "focus-visible:outline-none focus-visible:ring-2",
-              "focus-visible:ring-accent focus-visible:ring-offset-2",
-              "focus-visible:ring-offset-bg",
-            )}
-          >
-            {t("hero.cta.story")}
-          </Link>
+          <div className="hero-enter [--i:2] mt-10 flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+            <a
+              href={`#${exploreTargetId}`}
+              className={cn(
+                "inline-flex items-center justify-center rounded-full",
+                "px-6 py-3 text-sm font-medium",
+                "bg-accent text-on-accent hover:bg-accent-hover",
+                "transition-colors duration-150",
+                "focus-visible:outline-none focus-visible:ring-2",
+                "focus-visible:ring-accent focus-visible:ring-offset-2",
+                "focus-visible:ring-offset-bg",
+              )}
+            >
+              {t("hero.cta.explore")}
+              <span aria-hidden="true" className="ml-2">
+                ↓
+              </span>
+            </a>
+            <Link
+              href={withLocale("/story", locale)}
+              className={cn(
+                "inline-flex items-center justify-center rounded-full",
+                "px-6 py-3 text-sm font-medium",
+                "border border-border bg-surface text-text-primary",
+                "hover:bg-surface-elevated hover:border-text-muted",
+                "transition-colors duration-150",
+                "focus-visible:outline-none focus-visible:ring-2",
+                "focus-visible:ring-accent focus-visible:ring-offset-2",
+                "focus-visible:ring-offset-bg",
+              )}
+            >
+              {t("hero.cta.story")}
+            </Link>
+          </div>
+
+          <p className="hero-enter [--i:3] mt-6 text-sm text-text-secondary">
+            {t("hero.resumePrompt")}{" "}
+            <Link
+              href={`${withLocale("/contact", locale)}#resume`}
+              {...umamiAttributes("contact_clicked", {
+                kind: "resume_request",
+                source: "hero",
+              })}
+              className={cn(
+                "font-medium text-text-primary underline decoration-accent",
+                "underline-offset-4 hover:text-accent transition-colors duration-150",
+                "focus-visible:outline-none focus-visible:ring-2",
+                "focus-visible:ring-accent focus-visible:ring-offset-2",
+                "focus-visible:ring-offset-bg rounded-sm",
+              )}
+            >
+              {t("hero.resumeLink")}
+            </Link>
+          </p>
+          <SocialLinks
+            source="hero"
+            showLabels
+            className="hero-enter [--i:3] mt-3 justify-center gap-2"
+          />
+
+          <CoreStack label={t("hero.coreStack")} className="hero-enter [--i:3] mt-10 sm:mt-12" />
         </div>
-
-        <p className="hero-enter [--i:3] mt-6 text-sm text-text-secondary">
-          {t("hero.resumePrompt")}{" "}
-          <Link
-            href={`${withLocale("/contact", locale)}#resume`}
-            {...umamiAttributes("contact_clicked", {
-              kind: "resume_request",
-              source: "hero",
-            })}
-            className={cn(
-              "font-medium text-text-primary underline decoration-accent",
-              "underline-offset-4 hover:text-accent transition-colors duration-150",
-              "focus-visible:outline-none focus-visible:ring-2",
-              "focus-visible:ring-accent focus-visible:ring-offset-2",
-              "focus-visible:ring-offset-bg rounded-sm",
-            )}
-          >
-            {t("hero.resumeLink")}
-          </Link>
-        </p>
-        <SocialLinks
-          source="hero"
-          showLabels
-          className="hero-enter [--i:3] mt-3 justify-center gap-2"
+        <ToolField
+          {...field}
+          resultsId={filterTargetId}
+          className="hero-enter [--i:3] mt-12 xl:col-span-3 xl:col-start-1 xl:row-span-2 xl:row-start-1 xl:mt-0"
         />
-
-        <CoreStack label={t("hero.coreStack")} className="hero-enter [--i:3] mt-10 sm:mt-12" />
+        {/* Starts the icons loading on wide screens, before hydration. */}
+        <script dangerouslySetInnerHTML={{ __html: toolIconsScript }} />
       </div>
 
     </section>

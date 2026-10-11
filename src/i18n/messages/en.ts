@@ -107,6 +107,14 @@ export const en = {
     clearAll: "Clear all",
     removeTag: "Remove {label}",
   },
+  field: {
+    label: "Filter by tool",
+    hint: "Pick a tool to see where I used it.",
+    count: "{count} of {total} roles match your filter.",
+    see: "See them",
+    clear: "Clear",
+    off: "{name}: no role combines it with your filter",
+  },
   grid: {
     sortLabel: "Sort",
     sortRecent: "Most recent",
@@ -313,7 +321,7 @@ export const en = {
       },
       {
         title: "Server by default",
-        body: "Pages render on the server; only the search, grid and drawer run in the browser. Anything that depends on today's date renders at build time, so the HTML and the hydrated page can't disagree.",
+        body: "Pages render on the server; only the tool field in the header, the search, the grid and the drawer run in the browser. Anything that depends on today's date renders at build time, so the HTML and the hydrated page can't disagree.",
         tradeoff: "the server shapes the data twice: once for the pages and once, trimmed, for the interactive part.",
       },
       {

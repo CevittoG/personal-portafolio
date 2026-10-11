@@ -191,6 +191,154 @@ body {
   }
 }
 
+/* ── Tool field (hero) ──────────────────────────────────────────────────
+   The tools scattered around the hero copy. The server decides each
+   tool's cell, nudge, size and tilt (`scatter`); this turns them into a
+   position. A field is `--cols` by `--rows` cells; a tool sits at its
+   cell's centre plus its nudge times the room the cell really has, so
+   tools stay apart at every width. Three arrangements, one per
+   breakpoint: two bands under the copy, then the hero's side gutters. */
+/* In the components layer so Tailwind utilities on a tool (the classes that
+   hide the later tools on small screens) still win over `display: grid`. */
+@layer components {
+  .tool-field {
+    --cols: 4;
+    --rows: 2;
+    position: relative;
+  }
+  .tool {
+    --c: var(--c-sm);
+    --r: var(--r-sm);
+    --tip: var(--tip-sm);
+    --box: calc(var(--size) + 14px);
+    /* How far across the hero the tool is, 0 to 1: when the gust reaches it. */
+    --gx: calc((var(--c) + 0.5) / var(--cols));
+    position: absolute;
+    left: calc((var(--c) + 0.5) / var(--cols) * 100% + var(--jx) * max(0px, 100% / var(--cols) - var(--box)));
+    top: calc((var(--r) + 0.5) / var(--rows) * 100% + var(--jy) * max(0px, 100% / var(--rows) - var(--box)));
+    width: var(--box);
+    height: var(--box);
+    translate: -50% -50%;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    color: var(--color-text-muted);
+    cursor: pointer;
+    transition:
+      color 200ms ease-out,
+      opacity 200ms ease-out;
+  }
+  @media (min-width: 40rem) {
+    .tool-field {
+      --cols: 7;
+    }
+    .tool {
+      --c: var(--c-md);
+      --r: var(--r-md);
+      --tip: var(--tip-md);
+    }
+  }
+  @media (min-width: 80rem) {
+    .tool-field {
+      --cols: 3;
+      --rows: 8;
+    }
+    .tool {
+      --c: var(--c-xl);
+      --r: var(--r-xl);
+      --tip: var(--tip-xl);
+      /* The fields are the outer fifths of the hero. */
+      --gx: calc(var(--side) * 0.8 + (var(--c) + 0.5) / var(--cols) * 0.2);
+    }
+  }
+  .tool:hover {
+    color: var(--color-text-primary);
+  }
+  .tool:focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+  .tool[aria-pressed="true"] {
+    color: var(--tag);
+  }
+  .tool[aria-disabled="true"] {
+    opacity: 0.28;
+    cursor: default;
+  }
+  .tool[aria-disabled="true"]:hover {
+    color: var(--color-text-muted);
+  }
+  /* One element, three independent movements: `rotate` is the tilt at
+     rest, `translate` the push from the pointer (ToolField sets --lx and
+     --ly), and `transform` is left free for the gust to animate. */
+  .tool-icon {
+    display: block;
+    width: var(--size);
+    height: var(--size);
+    fill: currentColor;
+    rotate: var(--rest);
+    translate: var(--lx, 0px) var(--ly, 0px);
+    transition: translate 260ms var(--ease-out-quint);
+  }
+  /* The name: on hover and focus, and for as long as the tool is selected.
+     `--tip` hangs it from the tool's start, centre or end, so a name in an
+     edge column opens inwards instead of over the copy or off the screen. */
+  .tool::after {
+    content: attr(aria-label);
+    position: absolute;
+    z-index: 2;
+    bottom: calc(100% + 2px);
+    left: calc(var(--tip) * 100%);
+    translate: calc(var(--tip) * -100%) 4px;
+    padding: 3px 8px;
+    border: 1px solid var(--color-border);
+    border-radius: 9999px;
+    background: var(--color-surface-elevated);
+    color: var(--color-text-primary);
+    font-size: 0.75rem;
+    line-height: 1.3;
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition:
+      opacity 150ms ease-out,
+      translate 150ms ease-out;
+  }
+  .tool:hover::after,
+  .tool:focus-visible::after,
+  .tool[aria-pressed="true"]::after {
+    opacity: 1;
+    translate: calc(var(--tip) * -100%) 0;
+  }
+  .tool[aria-disabled="true"]::after {
+    content: attr(data-off);
+  }
+}
+
+/* The arrival gust: once, as the last beat of the hero's entrance. Each
+   tool is pushed along when the front reaches it (`--gx`), then comes
+   back. In CSS so it cannot start late on a slow connection. */
+@media (prefers-reduced-motion: no-preference) {
+  .tool-icon {
+    animation: tool-gust 800ms both;
+    animation-delay: calc(350ms + var(--gx) * 700ms + var(--r) * 20ms);
+  }
+}
+
+@keyframes tool-gust {
+  0% {
+    transform: none;
+    animation-timing-function: var(--ease-out-quint);
+  }
+  25% {
+    transform: translate(calc(var(--k) * 14px), calc(var(--k) * var(--uy) * 14px)) rotate(calc(var(--k) * 6deg));
+    animation-timing-function: var(--ease-out-quint);
+  }
+  100% {
+    transform: none;
+  }
+}
+
 @keyframes lane-draw {
   from {
     transform: scaleX(0);
