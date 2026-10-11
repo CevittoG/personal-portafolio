@@ -2,6 +2,7 @@ import type { z } from "zod";
 import { SEARCH_ALIASES } from "@/lib/search/aliases";
 import { SEARCHABLE_CONCEPTS } from "@/lib/search/scope";
 import { STARTER_TAGS } from "@/lib/search/starters";
+import { FIELD_TOOLS } from "@/lib/site/field-tools";
 import { CAREER_LANES } from "@/lib/story/career-lanes";
 import { TAG_TYPES } from "@/lib/taxonomy/types";
 import { ExperienceSchema, TaxonomySchema } from "./schema";
@@ -15,7 +16,7 @@ import { ExperienceSchema, TaxonomySchema } from "./schema";
  *     are unique across buckets, and `related` slugs resolve
  *   - experience ids are unique
  *   - hand-maintained references resolve: starter tags, search aliases,
- *     searchable concepts, career-lane entry ids
+ *     searchable concepts, the hero's field tools, career-lane entry ids
  *
  * Returns a list of human-readable problems; empty means valid.
  */
@@ -74,6 +75,12 @@ export function validateContent(taxonomyRaw: unknown, experienceRaw: unknown): s
   }
   for (const slug of SEARCHABLE_CONCEPTS) {
     if (typeOf.get(slug) !== "concepts") errors.push(`search/scope.ts: "${slug}" is not a concepts tag`);
+  }
+  for (const slug of FIELD_TOOLS) {
+    const type = typeOf.get(slug);
+    if (type !== "languages" && type !== "technologies" && type !== "libraries") {
+      errors.push(`site/field-tools.ts: "${slug}" is not a languages, technologies or libraries tag`);
+    }
   }
   for (const lane of CAREER_LANES) {
     for (const id of lane.entryIds) {
