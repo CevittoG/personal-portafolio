@@ -99,8 +99,11 @@ typed data is one documented cast (`src/content/data.ts`) trusted because the
 build validates first.
 
 **4. Server by default, client islands only where interactive.** Pages are
-React Server Components; the filterable grid, drawer and search are the
-client island. Anything computed from "today" (the career timeline's ongoing
+React Server Components; the hero's tool field and the filterable grid,
+drawer and search are the client islands. The two share the filter without
+a provider around the server-rendered page between them, because the filter's
+state is the URL (`useSyncExternalStore` over `location.search`). Anything
+computed from "today" (the career timeline's ongoing
 bar) is computed on the server, even where a client component draws it, so
 static HTML and hydration can't disagree.
 Reduced-motion variants switch only after mount for the same reason. The
@@ -133,8 +136,11 @@ single-implementation codebase does rarely.
 the visitor did (the grid reshaping on a filter, a pill flying to its chip,
 a card lighting up from its career lane) or show a relationship in the data
 (time drawing across the swimlane, a marker on the career axis while reading
-the story). Entrances are capped at one hero sequence and a scroll reveal,
-both in CSS, and whatever element is the largest paint never gets a delayed
+the story). The hero's tool field follows the same rule: 36 of the tools I
+have used sit scattered around the copy, still until you press one (it
+filters the grid) or pass the pointer through them. Entrances are capped at
+one hero sequence, which ends with a single gust across that field, and a
+scroll reveal, both in CSS, and whatever element is the largest paint never gets a delayed
 fade: on the landing that is the name on desktop and the positioning
 sentence on phones, measured with Lighthouse rather than guessed.
 *Trade-off:* less spectacle than a typical portfolio, and every animation
