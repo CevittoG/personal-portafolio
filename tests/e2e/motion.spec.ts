@@ -106,7 +106,7 @@ test.describe("with reduced motion", () => {
     test(`${path} shows everything at once`, async ({ page }) => {
       await page.goto(path);
       const moving = await page
-        .locator(".hero-enter, .reveal, .lane-bar")
+        .locator(".hero-enter, .reveal, .lane-bar, .tool-icon")
         .evaluateAll((els) =>
           els.filter((el) => {
             const style = getComputedStyle(el);

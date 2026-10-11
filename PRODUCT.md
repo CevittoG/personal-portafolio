@@ -63,7 +63,7 @@ What this site must NOT look or read like:
 
 - Color contrast meets AA in both dark and light themes. Light palette was retuned in step 16 specifically for this.
 - Full keyboard navigation across the Explorer flow: search combobox (↑/↓/Enter/Esc/Tab), tag chips, cards, drawer, deep-dive links. Focus rings are visible, not suppressed.
-- `prefers-reduced-motion` is honored by every motion primitive (the hero entrance, scroll reveals, swimlane bars, nav underline, grid and drawer animations, route fade). Reduced-motion users get the final state at once, not a degraded experience.
+- `prefers-reduced-motion` is honored by every motion primitive (the hero entrance and its tool field, scroll reveals, swimlane bars, nav underline, grid and drawer animations, route fade). Reduced-motion users get the final state at once, not a degraded experience.
 - Bilingual EN/ES with proper `<html lang>` and `hreflang` alternates per page. The Spanish surface is a first-class experience, not a translated afterthought.
 - Semantic landmarks: navbar uses `aria-current`, drawer uses `role="dialog"` + `aria-modal`, search uses WAI-ARIA combobox pattern, decorative motion is labeled or hidden.
 - No color-only signaling. Tag-type colors are paired with the type's display name in headers and sub-labels.

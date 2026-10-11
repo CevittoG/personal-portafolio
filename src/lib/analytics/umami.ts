@@ -26,7 +26,7 @@ export type EventMap = {
   filter_added: {
     slug: string;
     type: string;
-    source: "search" | "shortcut" | "card" | "drawer";
+    source: "search" | "shortcut" | "card" | "drawer" | "field";
   };
   filter_removed: { slug: string; type: string };
   search_typed: { query: string };

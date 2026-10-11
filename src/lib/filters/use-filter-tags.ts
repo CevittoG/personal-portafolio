@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 
 /**
  * URL-synced filter state for the Explorer (plan §6, Zone 2).
@@ -8,17 +8,22 @@ import { useCallback, useEffect, useState } from "react";
  * Keeps an array of tag slugs in sync with the `?tags=` query param so that
  * filtered views are shareable and linkable (e.g. `/?tags=python,etl`).
  *
- * Implementation: direct `history.replaceState` + `popstate` listener. We
- * avoid `next/navigation` here because static export + `useSearchParams`
- * requires a Suspense boundary the Explorer doesn't otherwise need, and
- * replacing history (vs pushing) keeps the back button untouched as
- * recruiters tinker with filters.
+ * The URL is the state. Every caller of `useFilterTags()` reads the same
+ * store (`useSyncExternalStore` over `location.search`), so separate client
+ * islands (the hero's tool field and the Explorer further down) always
+ * agree without a provider around the server-rendered page between them.
  *
- * SRP: this hook owns *only* the URL ↔ state contract. Components decide
+ * Writes use `history.replaceState`, not `next/navigation`: static export +
+ * `useSearchParams` needs a Suspense boundary the Explorer doesn't otherwise
+ * need, and replacing history (vs pushing) keeps the back button untouched
+ * as recruiters tinker with filters.
+ *
+ * SRP: this module owns *only* the URL ↔ state contract. Components decide
  * what filtering to do with the slugs it returns.
  */
 
 const PARAM = "tags";
+const EMPTY: readonly string[] = [];
 
 export interface FilterTagsApi {
   slugs: readonly string[];
@@ -29,57 +34,66 @@ export interface FilterTagsApi {
   set: (slugs: readonly string[]) => void;
 }
 
+/* ── The store ───────────────────────────────────────────────────────── */
+
+const listeners = new Set<() => void>();
+const emit = () => listeners.forEach((listener) => listener());
+
+function subscribe(listener: () => void): () => void {
+  listeners.add(listener);
+  // Back and forward change the URL without going through `write`.
+  if (listeners.size === 1) window.addEventListener("popstate", emit);
+  return () => {
+    listeners.delete(listener);
+    if (listeners.size === 0) window.removeEventListener("popstate", emit);
+  };
+}
+
+/** The parsed slugs for the current URL, with a stable identity per URL. */
+let cachedSearch: string | null = null;
+let cachedSlugs: readonly string[] = EMPTY;
+function getSnapshot(): readonly string[] {
+  const search = window.location.search;
+  if (search !== cachedSearch) {
+    cachedSearch = search;
+    const slugs = parseTagsParam(search);
+    cachedSlugs = slugs.length > 0 ? slugs : EMPTY;
+  }
+  return cachedSlugs;
+}
+
+/** The server never sees a query string: every page is prerendered once. */
+const getServerSnapshot = (): readonly string[] => EMPTY;
+
+function write(next: readonly string[]): void {
+  writeTagsParam(next);
+  emit();
+}
+
+const actions: Omit<FilterTagsApi, "slugs"> = {
+  add(slug) {
+    const current = getSnapshot();
+    if (!current.includes(slug)) write([...current, slug]);
+  },
+  remove(slug) {
+    const current = getSnapshot();
+    if (current.includes(slug)) write(current.filter((s) => s !== slug));
+  },
+  toggle(slug) {
+    const current = getSnapshot();
+    write(current.includes(slug) ? current.filter((s) => s !== slug) : [...current, slug]);
+  },
+  clear() {
+    if (getSnapshot().length > 0) write([]);
+  },
+  set(slugs) {
+    write(dedupe(slugs));
+  },
+};
+
 export function useFilterTags(): FilterTagsApi {
-  const [slugs, setSlugsState] = useState<readonly string[]>([]);
-
-  // Hydrate from URL once on mount + react to browser back/forward.
-  useEffect(() => {
-    const readFromUrl = () => setSlugsState(parseTagsParam(window.location.search));
-    readFromUrl();
-    window.addEventListener("popstate", readFromUrl);
-    return () => window.removeEventListener("popstate", readFromUrl);
-  }, []);
-
-  const commit = useCallback((next: readonly string[]) => {
-    setSlugsState(next);
-    writeTagsParam(next);
-  }, []);
-
-  const add = useCallback(
-    (slug: string) => {
-      setSlugsState((prev) => {
-        if (prev.includes(slug)) return prev;
-        const next = [...prev, slug];
-        writeTagsParam(next);
-        return next;
-      });
-    },
-    [],
-  );
-
-  const remove = useCallback((slug: string) => {
-    setSlugsState((prev) => {
-      if (!prev.includes(slug)) return prev;
-      const next = prev.filter((s) => s !== slug);
-      writeTagsParam(next);
-      return next;
-    });
-  }, []);
-
-  const toggle = useCallback((slug: string) => {
-    setSlugsState((prev) => {
-      const next = prev.includes(slug)
-        ? prev.filter((s) => s !== slug)
-        : [...prev, slug];
-      writeTagsParam(next);
-      return next;
-    });
-  }, []);
-
-  const clear = useCallback(() => commit([]), [commit]);
-  const set = useCallback((s: readonly string[]) => commit(dedupe(s)), [commit]);
-
-  return { slugs, add, remove, toggle, clear, set };
+  const slugs = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+  return { slugs, ...actions };
 }
 
 /* ── URL <-> slugs helpers (pure, exported for testing) ───────────────── */
@@ -97,7 +111,6 @@ export function parseTagsParam(search: string): string[] {
 }
 
 function writeTagsParam(slugs: readonly string[]): void {
-  if (typeof window === "undefined") return;
   const params = new URLSearchParams(window.location.search);
   if (slugs.length === 0) {
     params.delete(PARAM);

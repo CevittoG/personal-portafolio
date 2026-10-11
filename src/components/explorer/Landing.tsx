@@ -4,14 +4,19 @@ import { Hero } from "@/components/hero/Hero";
 import type { Locale } from "@/i18n/locale";
 import { getTranslator } from "@/i18n/server";
 import { buildLandingData } from "@/lib/explorer/landing-data";
+import { buildToolField } from "@/lib/explorer/tool-field";
 import { siteConfig } from "@/lib/site/config";
 
 /**
  * Landing — the whole `/` (and `/es`) page, server-rendered around one
  * client island.
  *
- *   Hero (server) → ExplorerClient (client: featured roles, filter, drawer)
- *   → LandingTail (server: Story teaser, Contact)
+ *   Hero (server, with the ToolField client island) → ExplorerClient
+ *   (client: featured roles, filter, drawer) → LandingTail (server: Story
+ *   teaser, Contact)
+ *
+ * The two islands share the filter through `useFilterTags`, whose state is
+ * the URL, so nothing has to wrap the server-rendered page between them.
  *
  * Data is computed here (`buildLandingData`) and handed to the island as
  * props, so the browser gets only the fields it renders.
@@ -19,6 +24,8 @@ import { siteConfig } from "@/lib/site/config";
 const HERO_ID = "hero";
 const WORK_ID = "work";
 const CONTACT_ID = "landing-contact";
+/** The Explorer's filter section (`ExplorerClient`): the tool field links to it. */
+const FILTER_ID = "discover";
 
 export function Landing({ locale }: { locale: Locale }) {
   const t = getTranslator(locale);
@@ -31,6 +38,8 @@ export function Landing({ locale }: { locale: Locale }) {
         locale={locale}
         id={HERO_ID}
         exploreTargetId={WORK_ID}
+        field={buildToolField()}
+        filterTargetId={FILTER_ID}
         name={siteConfig.name}
         role={t("hero.role")}
         proofLine={t("hero.proofLine", { years })}

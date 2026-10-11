@@ -289,6 +289,19 @@ What happens when a filter changes, in the order the visitor reads it:
 - **Motion:** none of its own. It arrives with the hero's last entrance step.
 - **Rule:** if a tool has no Simple Icons logo (SQL), show the label only. Do not synthesize a faux logo, and never tint with brand colors (no hex outside the tokens).
 
+### Tool Field
+The wider stack, scattered around the hero copy: 36 real tools, each one a tag and a toggle that filters the Explorer. The Core Stack row above stays as the readable text; the field is where the stack can be played with.
+- **Layout:** a loose scatter, not a grid. On `xl` and up the tools fill the gutters either side of the copy (18 a side); below that they gather in two bands under the Core Stack row, 20 tools on tablets and 12 on phones. Sizes run from 20 to 40px (the core stack slightly larger) and each tool rests at a small tilt. **The copy is never touched:** tools live only in their own fields, one to a cell, and a test measures it at five widths.
+- **Rest:** one colour, Text Muted, like the Core Stack logos. No brand colours. AWS and Azure are absent because their icons in the repo are multi-colour.
+- **Selected:** the tool takes its tag-type colour (it is a tag, so the spectrum stays semantic) and its name stays up. The hero's caption then reads "2 of 4 roles match your filter. See them ↓ · Clear".
+- **Names:** on hover and focus, in a small pill above the tool. In an edge column the pill opens inwards, so a name never crosses into the copy or off the screen.
+- **Switched off:** a tool that would leave no role if added is disabled and dimmed, with the reason in its name pill. A press never empties the results.
+- **Motion (drift):** a gust pushes a tool about 14px along the wind with a slight turn, and it comes back. No rock-back, no loop. One gust crosses the field on arrival (CSS, the last beat of the hero entrance); pressing a tool sends one outwards from it; tools near the pointer move up to 10px away. Otherwise the field is still. Touch gets the arrival and press gusts only; reduced motion gets none of it.
+- **Keyboard:** one tab stop. Arrow keys, Home and End move between tools; Enter or Space toggles.
+- **Icons:** one cached sprite, `/sprites/tools.svg`, referenced with `<use>`. Never inline: the field is a client component, and inline paths would ship twice. On `xl` and up, where the field is on the first screen, the sprite starts loading while the page is parsed; below that the field is under the first screen, so the sprite waits for the page's load event and never competes with the text.
+- **Markup:** three elements per tool (button, `svg`, `use`). The tilt, the pointer push and the gust are `rotate`, `translate` and `transform` on the one `svg`; do not add wrappers for them.
+- **Rule:** every position comes from `scatter()` on the server (seed and looseness are constants there). The browser computes none of it, so there is no layout shift and nothing to hydrate differently.
+
 ### Career Swimlane
 - **Pattern:** four lanes (Teaching, Founding, Data engineering, Data platform) on a shared 2016 → now axis, at the top of `/story` and in the landing Story teaser. Each row is text first (lane · years · organization) with a 8px bar on a `surface-elevated` track below.
 - **Color:** bars are `text-muted`; Lamp Ember marks only the ongoing role (the one "you are here" moment).
@@ -310,6 +323,7 @@ The swimlane as the filter's readout: "where in my career did I use this?". Sits
 ### Hero entrance
 - **Pattern:** one load sequence. The availability badge and greeting, the role and proof line, the CTAs, then the résumé link, profile links and Core Stack settle in over four steps, 50ms apart (`.hero-enter` with `--i`, in `globals.css`). 320ms each, ease-out-quint, 8px rise.
 - **Static on purpose:** the name and the positioning sentence. They are the two largest-paint candidates (see The Largest Paint Rule).
+- **Last beat:** one gust across the Tool Field, starting as the fourth step lands. It is part of this sequence, not a second entrance.
 
 ### Motion
 - **Tokens:** `--ease-out-quint`, `--duration-quick` (180ms: chips, menus, the route fade) and `--duration-reveal` (320ms: content settling in) in `globals.css`, mirrored for JavaScript in `src/lib/motion/tokens.ts`. Hover and color transitions keep Tailwind's 150ms and 200ms steps.
@@ -318,7 +332,7 @@ The swimlane as the filter's readout: "where in my career did I use this?". Sits
 
 ### Named Rules
 
-**The Response Rule.** New motion must either answer something the visitor did (a filter, a hover, a navigation) or show a relationship in the data (time on the swimlane, a card moving to its new place). Entrances are capped at what exists: the hero sequence and the scroll reveal. If an animation would play the same way with nobody at the page and no data behind it, it is decoration; leave it out.
+**The Response Rule.** New motion must either answer something the visitor did (a filter, a hover, a navigation) or show a relationship in the data (time on the swimlane, a card moving to its new place). Entrances are capped at what exists: the hero sequence (which ends with one gust across the tool field) and the scroll reveal. If an animation would play the same way with nobody at the page and no data behind it, it is decoration; leave it out.
 
 **The Largest Paint Rule.** Whatever element is the Largest Contentful Paint never gets a delayed fade. On the landing that is the name on desktop and the positioning sentence on phones (measured with Lighthouse, 2026-10-10). Re-measure before adding an entrance to any page's first screen.
 

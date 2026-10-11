@@ -105,6 +105,14 @@ export const es: Messages = {
     clearAll: "Limpiar todo",
     removeTag: "Quitar {label}",
   },
+  field: {
+    label: "Filtrar por herramienta",
+    hint: "Elige una herramienta para ver dónde la usé.",
+    count: "{count} de {total} roles coinciden con tu filtro.",
+    see: "Verlos",
+    clear: "Limpiar",
+    off: "{name}: ningún rol la combina con tu filtro",
+  },
   grid: {
     sortLabel: "Ordenar",
     sortRecent: "Más recientes",
@@ -311,7 +319,7 @@ export const es: Messages = {
       },
       {
         title: "Servidor por defecto",
-        body: "Las páginas se renderizan en el servidor; solo la búsqueda, la grilla y el panel corren en el navegador. Lo que depende de la fecha de hoy se renderiza en el build, así el HTML y la página hidratada no pueden diferir.",
+        body: "Las páginas se renderizan en el servidor; solo el campo de herramientas del encabezado, la búsqueda, la grilla y el panel corren en el navegador. Lo que depende de la fecha de hoy se renderiza en el build, así el HTML y la página hidratada no pueden diferir.",
         tradeoff: "el servidor prepara los datos dos veces: una para las páginas y otra, recortada, para la parte interactiva.",
       },
       {
