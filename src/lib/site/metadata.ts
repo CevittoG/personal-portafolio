@@ -68,7 +68,7 @@ export function buildMetadata({
 
 /* ── Per-page presets ────────────────────────────────────────────────── */
 
-export type StaticPage = "home" | "story" | "contact" | "how-its-built";
+export type StaticPage = "home" | "story" | "contact" | "faq" | "how-its-built";
 
 const STATIC_PAGES = {
   home: { path: "/", title: "meta.title", description: "meta.description" },
@@ -81,6 +81,11 @@ const STATIC_PAGES = {
     path: "/contact",
     title: "contact.metaTitle",
     description: "contact.metaDescription",
+  },
+  faq: {
+    path: "/faq",
+    title: "faq.metaTitle",
+    description: "faq.metaDescription",
   },
   "how-its-built": {
     path: "/how-its-built",

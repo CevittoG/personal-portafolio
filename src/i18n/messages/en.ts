@@ -15,7 +15,7 @@ export const en = {
     title:
       "{name} | Senior Data Platform Engineer (Python, Snowflake, Kubernetes)",
     description:
-      "Senior data platform engineer in Austin, TX. {years}+ years building ingestion pipelines, APIs and data platforms in Python, Snowflake and Kubernetes.",
+      "Senior data platform engineer in Austin, TX, open to remote or hybrid. {years}+ years in Python, Snowflake and Kubernetes. Works in English and Spanish.",
   },
   nav: {
     explorer: "Explorer",
@@ -35,6 +35,8 @@ export const en = {
     linkedin: "LinkedIn",
     email: "Email",
     howItsBuilt: "How it's built",
+    faq: "FAQ",
+    location: "Austin, TX · Remote or hybrid · English and Spanish",
   },
   hero: {
     greeting: "Hi, I'm",
@@ -344,6 +346,17 @@ export const en = {
     sourceBody:
       "The repository is public: the data contracts, the tests and the CI workflow are all there, with an architecture overview in the README.",
     sourceCta: "View the repository",
+  },
+  faq: {
+    metaTitle: "FAQ: data platform engineer in Austin, TX | {name}",
+    metaDescription:
+      "Where Sebastián is based, whether he can work remotely, his work authorization, what a data platform engineer does, and how to request his résumé.",
+    eyebrow: "FAQ",
+    title: "Questions people ask about working with me",
+    intro:
+      "Short answers about where I work, what I build and how to reach me, for recruiters, hiring managers and anyone checking my background.",
+    jumpLabel: "Jump to a section",
+    ctaTitle: "Still have a question?",
   },
   notFound: {
     code: "404",

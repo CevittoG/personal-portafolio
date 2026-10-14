@@ -24,6 +24,18 @@ export interface SiteConfig {
     /** This site's source, linked from "How it's built". */
     repo: string;
   };
+  /** Home base and how I work, for the footer line, JSON-LD and llms.txt. */
+  location: {
+    locality: string;
+    region: string;
+    regionName: string;
+    country: string;
+    countryName: string;
+    /** Work modes I'm open to; the human copy lives in the catalogues. */
+    openTo: readonly ("remote" | "hybrid")[];
+  };
+  /** Languages I work in, as BCP 47 codes and English names. */
+  languages: readonly { code: string; name: string }[];
   /** Availability boolean for the Contact page badge (plan §9). The
    *  human-readable strings come from `t("contact.availability.*")`. */
   availability: {
@@ -41,6 +53,18 @@ export const siteConfig: SiteConfig = {
     linkedin: "https://www.linkedin.com/in/asebagutierrezm/",
     repo: "https://github.com/CevittoG/personal-portafolio",
   },
+  location: {
+    locality: "Austin",
+    region: "TX",
+    regionName: "Texas",
+    country: "US",
+    countryName: "United States",
+    openTo: ["remote", "hybrid"],
+  },
+  languages: [
+    { code: "en", name: "English" },
+    { code: "es", name: "Spanish" },
+  ],
   availability: {
     open: true,
   },
