@@ -9,11 +9,13 @@ const PAGES = [
   { path: "/", lang: "en", canonical: "" },
   { path: "/story", lang: "en", canonical: "/story" },
   { path: "/contact", lang: "en", canonical: "/contact" },
+  { path: "/faq", lang: "en", canonical: "/faq" },
   { path: "/how-its-built", lang: "en", canonical: "/how-its-built" },
   { path: `/experience/${DEEP_DIVE}`, lang: "en", canonical: `/experience/${DEEP_DIVE}` },
   { path: "/es", lang: "es", canonical: "/es" },
   { path: "/es/story", lang: "es", canonical: "/es/story" },
   { path: "/es/contact", lang: "es", canonical: "/es/contact" },
+  { path: "/es/faq", lang: "es", canonical: "/es/faq" },
   { path: "/es/how-its-built", lang: "es", canonical: "/es/how-its-built" },
   { path: `/es/experience/${DEEP_DIVE}`, lang: "es", canonical: `/es/experience/${DEEP_DIVE}` },
 ] as const;
@@ -68,7 +70,7 @@ for (const page of PAGES) {
 }
 
 test("static SEO files and share images are served", async ({ request }) => {
-  for (const path of ["/sitemap.xml", "/robots.txt", "/og/en-home.png", "/og/es-story.png", "/og/en-how-its-built.png"]) {
+  for (const path of ["/sitemap.xml", "/robots.txt", "/llms.txt", "/og/en-home.png", "/og/es-story.png", "/og/en-how-its-built.png"]) {
     const res = await request.get(path);
     expect(res.status(), path).toBe(200);
   }
