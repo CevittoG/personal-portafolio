@@ -103,6 +103,7 @@ const PAGE_EYEBROW = {
   home: null,
   story: "story.eyebrow",
   contact: "contact.eyebrow",
+  faq: "faq.eyebrow",
   "how-its-built": "howItsBuilt.eyebrow",
 } as const satisfies Record<StaticPage, string | null>;
 

@@ -13,7 +13,7 @@ export const es: Messages = {
     title:
       "{name} | Ingeniero Senior de Plataformas de Datos (Python, Snowflake, Kubernetes)",
     description:
-      "Ingeniero senior de plataformas de datos en Austin, TX. {years}+ años construyendo pipelines de ingesta, APIs y plataformas de datos con Python, Snowflake y Kubernetes.",
+      "Ingeniero senior de plataformas de datos en Austin, TX, abierto a trabajo remoto o híbrido. {years}+ años con Python, Snowflake y Kubernetes. Trabaja en inglés y español.",
   },
   nav: {
     explorer: "Explorar",
@@ -33,6 +33,8 @@ export const es: Messages = {
     linkedin: "LinkedIn",
     email: "Correo",
     howItsBuilt: "Cómo está construido",
+    faq: "Preguntas frecuentes",
+    location: "Austin, TX · Remoto o híbrido · Inglés y español",
   },
   hero: {
     greeting: "Hola, soy",
@@ -342,6 +344,17 @@ export const es: Messages = {
     sourceBody:
       "El repositorio es público: los contratos de datos, las pruebas y el workflow de CI están ahí, con una descripción de la arquitectura en el README.",
     sourceCta: "Ver el repositorio",
+  },
+  faq: {
+    metaTitle: "Preguntas frecuentes: ingeniero de plataformas de datos en Austin, TX | {name}",
+    metaDescription:
+      "Dónde vive Sebastián, si puede trabajar de forma remota, su autorización de trabajo, qué hace un ingeniero de plataformas de datos y cómo pedir su CV.",
+    eyebrow: "Preguntas frecuentes",
+    title: "Lo que se pregunta sobre trabajar conmigo",
+    intro:
+      "Respuestas breves sobre dónde trabajo, qué construyo y cómo contactarme, para reclutadores, gerentes de contratación y cualquiera que revise mi trayectoria.",
+    jumpLabel: "Ir a una sección",
+    ctaTitle: "¿Sigues con una duda?",
   },
   notFound: {
     code: "404",

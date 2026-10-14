@@ -18,6 +18,7 @@ export type ContactSource =
   | "deep_dive"
   | "sticky"
   | "landing"
+  | "faq"
   | "contact";
 
 export type ContactKind = "email" | "resume_request" | "linkedin" | "github";

@@ -17,6 +17,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/",
     "/story",
     "/contact",
+    "/faq",
     "/how-its-built",
     ...experienceRepository.getAll().map((e) => `/experience/${e.id}`),
   ];

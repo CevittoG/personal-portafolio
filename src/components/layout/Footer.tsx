@@ -41,6 +41,17 @@ export function Footer() {
           >
             {t("footer.howItsBuilt")}
           </Link>
+          <Link
+            href={withLocale("/faq", locale)}
+            className={cn(
+              "inline-flex min-h-6 items-center rounded-sm text-xs text-text-secondary",
+              "underline decoration-border underline-offset-4",
+              "hover:text-accent hover:decoration-accent transition-colors duration-150",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent",
+            )}
+          >
+            {t("footer.faq")}
+          </Link>
         </div>
         <ul className="flex items-center gap-2">
           {SOCIAL_LINKS.map((link) => (
@@ -77,6 +88,9 @@ export function Footer() {
           ))}
         </ul>
       </div>
+      <p className="px-6 pb-6 text-center text-xs text-text-muted">
+        {t("footer.location")}
+      </p>
     </footer>
   );
 }
