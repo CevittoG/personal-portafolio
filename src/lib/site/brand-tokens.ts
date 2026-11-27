@@ -13,4 +13,17 @@ export const OG_COLORS = {
   textPrimary: "#F0F0FF",
   textSecondary: "#A6A6C0",
   accent: "#E5642E",
+  accentHover: "#F07A45",
 } as const;
+
+/** The eight `--color-tag-*` dark values, for the share image artwork. */
+export const OG_STRAND_COLORS = [
+  "#D9798C",
+  "#56A0CF",
+  "#56CF9E",
+  "#CF9A56",
+  "#B680DB",
+  "#D28162",
+  "#56CF56",
+  "#D771C3",
+] as const;
