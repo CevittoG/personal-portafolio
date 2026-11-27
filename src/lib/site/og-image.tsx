@@ -4,6 +4,7 @@ import { experienceRepository } from "@/lib/experience/json-repository";
 import type { ExperienceEntry } from "@/lib/experience/types";
 import { getTranslator } from "@/i18n/server";
 import { OG_COLORS as c } from "./brand-tokens";
+import { ogArtwork } from "./og-artwork";
 import { siteConfig } from "./config";
 import { CORE_STACK } from "./profile";
 import type { StaticPage } from "./metadata";
@@ -11,8 +12,8 @@ import { experienceTitle } from "@/lib/experience/format";
 
 /**
  * Branded 1200×630 share card, rendered at build time (static-export safe).
- * Served by `app/og/[image]/route.tsx`; one design for every page: page
- * label, name, target role (or the role and company on a deep dive) and
+ * Served by `app/og/[image]/route.tsx`; one design for every page: abstract
+ * artwork (`og-artwork.ts`), page label, name, target role (or the role and company on a deep dive) and
  * core stack.
  */
 export const OG_SIZE = { width: 1200, height: 630 };
@@ -38,49 +39,47 @@ export function renderShareImage({
           height: "100%",
           display: "flex",
           flexDirection: "column",
-          justifyContent: "space-between",
-          padding: "72px 80px",
+          justifyContent: "flex-end",
+          position: "relative",
+          padding: "0 80px 44px",
           background: c.bg,
           color: c.textPrimary,
-          borderLeft: `16px solid ${c.accent}`,
         }}
       >
-        <div style={{ display: "flex", flexDirection: "column" }}>
-          {eyebrow && (
-            <div
-              style={{
-                fontSize: 26,
-                letterSpacing: 4,
-                textTransform: "uppercase",
-                color: c.textSecondary,
-                marginBottom: 20,
-              }}
-            >
-              {eyebrow}
-            </div>
-          )}
-          <div style={{ fontSize: 84, fontWeight: 700, letterSpacing: -2 }}>
-            {siteConfig.name}
+        {/* eslint-disable-next-line @next/next/no-img-element -- rendered by next/og, not the DOM */}
+        <img
+          alt=""
+          src={ogArtwork()}
+          width={OG_SIZE.width}
+          height={OG_SIZE.height}
+          style={{ position: "absolute", top: 0, left: 0 }}
+        />
+        {eyebrow && (
+          <div style={{ fontSize: 28, color: c.textSecondary, marginBottom: 6 }}>
+            {eyebrow}
           </div>
-          <div
-            style={{
-              fontSize: 44,
-              color: c.accent,
-              marginTop: 16,
-              lineHeight: 1.2,
-            }}
-          >
-            {headline ?? t("hero.role")}
-          </div>
+        )}
+        <div style={{ fontSize: 76, fontWeight: 700, letterSpacing: -2 }}>
+          {siteConfig.name}
+        </div>
+        <div
+          style={{
+            fontSize: 38,
+            color: c.accent,
+            marginTop: 4,
+            lineHeight: 1.2,
+          }}
+        >
+          {headline ?? t("hero.role")}
         </div>
         <div
           style={{
             display: "flex",
             justifyContent: "space-between",
-            alignItems: "flex-end",
             borderTop: `2px solid ${c.border}`,
-            paddingTop: 28,
-            fontSize: 26,
+            marginTop: 28,
+            paddingTop: 22,
+            fontSize: 24,
             color: c.textSecondary,
           }}
         >
